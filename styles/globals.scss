@@ -1,0 +1,20 @@
+@import "../utils/css/reset.css";
+
+body {
+  font-family: "Roboto Condensed", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@supports not (-moz-appearance: none) {
+  /* Add non-firefox CSS code here */
+  * {
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input,
+  textarea {
+    user-select: auto;
+  }
+}
