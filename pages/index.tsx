@@ -1,5 +1,4 @@
-import type { NextPage } from "next";
-import { GetStaticProps } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 
 const Home: NextPage = () => {
@@ -14,10 +13,23 @@ const Home: NextPage = () => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  // console.log(context.req.rawHeaders);
+  const index = context.req.rawHeaders.indexOf("Accept-Language");
+  const acceptLanguage = context.req.rawHeaders[index + 1];
+  // console.log(acceptLanguage);
+  let destination;
+  if (acceptLanguage.startsWith("ua")) {
+    destination = "/ua";
+  } else if (acceptLanguage.startsWith("ru")) {
+    destination = "/ru";
+  } else {
+    destination = "/en";
+  }
+
   return {
     redirect: {
-      destination: "/ua",
+      destination: destination,
       permanent: false
     }
   };
