@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import mobileMenuReducer from "./reducers/mobileMenuSlice";
-import langReducer from "./reducers/langSlice";
+// import langReducer from "./reducers/langSlice";
 
 const store = configureStore({
   reducer: {
-    mobileMenuState: mobileMenuReducer,
-    lang: langReducer
+    mobileMenuState: mobileMenuReducer
+    // lang: langReducer
   }
 });
 

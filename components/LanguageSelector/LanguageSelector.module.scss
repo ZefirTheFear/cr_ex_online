@@ -3,3 +3,86 @@
 .language-selector {
   margin-left: auto;
 }
+
+.language-selector__selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  padding: 0.25rem;
+  // font-size: 1.25rem;
+  cursor: pointer;
+  transition: $main-transition;
+
+  @mixin hover {
+    color: $bg-color-secondary;
+  }
+  &:active {
+    @include hover;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @include hover;
+    }
+  }
+}
+
+.language-selector__selected-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.language-selector__select-arrow {
+  margin-left: 0.25rem;
+  transition: $main-transition;
+
+  svg {
+    display: flex;
+  }
+}
+
+.language-selector__select-arrow_is-opened {
+  transform: rotate(-180deg);
+}
+
+.language-selector__select-options {
+  position: absolute;
+  height: 0;
+  padding: 0;
+  margin-top: -5px;
+  border: 0px solid $grey-color;
+  overflow: hidden;
+  transition: $main-transition;
+  border-radius: $border-radius;
+}
+
+.language-selector__select-options-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-color-main-shadow;
+  height: 2rem;
+  width: 2rem;
+  padding: 0.25rem;
+  border-bottom: 1px solid $grey-color;
+  cursor: pointer;
+  transition: $main-transition;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  @mixin hover {
+    background: $bg-color-secondary;
+  }
+  &:active {
+    @include hover;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @include hover;
+    }
+  }
+}

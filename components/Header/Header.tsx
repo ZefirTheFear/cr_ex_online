@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           ))}
         </nav>
         <LanguageSelector />
-        <div>Auth</div>
+        <div className={classes.header__auth}>Auth</div>
         <div
           className={
             `${classes["header__menu-btn"]}` +
