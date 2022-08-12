@@ -36,7 +36,7 @@
 
 .language-selector__select-arrow {
   margin-left: 0.25rem;
-  transition: $main-transition;
+  transition: transform 0.15s linear;
 
   svg {
     display: flex;
@@ -52,7 +52,7 @@
   height: 0;
   padding: 0;
   margin-top: -5px;
-  border: 0px solid $grey-color;
+  border: 0px solid $light-color;
   overflow: hidden;
   transition: $main-transition;
   border-radius: $border-radius;
@@ -66,7 +66,7 @@
   height: 2rem;
   width: 2rem;
   padding: 0.25rem;
-  border-bottom: 1px solid $grey-color;
+  border-bottom: 1px solid $light-color;
   cursor: pointer;
   transition: $main-transition;
 

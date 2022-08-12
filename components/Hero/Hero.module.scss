@@ -1,0 +1,72 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.hero {
+  display: flex;
+  padding-top: $header-height;
+  background: $bg-color-main;
+  color: $light-color;
+  overflow: hidden;
+  min-height: 90vh;
+}
+
+.hero__inner {
+  @include section;
+  align-items: flex-start;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
+}
+
+.hero__text {
+  background: $bg-color-main;
+  padding: 4rem 4rem 2rem 0;
+}
+
+.hero__text-heading {
+  margin-bottom: 2rem;
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 1.1;
+
+  &::before {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 100px;
+    margin-bottom: 2rem;
+    background: $bg-color-secondary;
+    border-radius: 2px;
+  }
+}
+
+.hero__text-paragraph {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  color: darken($light-color, 15);
+}
+
+.hero__calculator {
+  height: 100%;
+  width: 100%;
+  background: $bg-color-secondary;
+  padding: 2rem 0 2rem 4rem;
+  position: relative;
+  text-align: justify;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background: $bg-color-main-shadow;
+  }
+}
+
+.hero__calculator-inner {
+  position: relative;
+}

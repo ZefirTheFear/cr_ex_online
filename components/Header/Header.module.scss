@@ -9,6 +9,7 @@
   z-index: $header-z-i;
   color: $light-color;
   background: $bg-color-main;
+  // border-bottom: 1px solid $light-color;
 }
 
 .header__inner {
@@ -93,6 +94,20 @@
 
 .header__auth {
   margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @include button;
+}
+
+.header__auth-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.25rem;
+  svg {
+    display: flex;
+  }
 }
 
 .header__menu-btn {

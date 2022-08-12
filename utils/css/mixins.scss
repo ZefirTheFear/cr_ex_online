@@ -35,9 +35,9 @@
 }
 
 @mixin button {
-  // color: $darkest-color;
+  color: $light-color;
   line-height: normal;
-  // background: $main-color;
+  background: $bg-color-secondary;
   border-radius: $border-radius;
   padding: 0.5rem;
   text-transform: uppercase;
@@ -45,12 +45,12 @@
   transition: $main-transition;
 
   &:active {
-    // background: darken($main-color, 30);
+    background: darken($bg-color-secondary, 15);
   }
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      // background: darken($main-color, 30);
+      background: darken($bg-color-secondary, 15);
     }
   }
 }
