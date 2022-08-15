@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { Language } from "../../models/language";
+import { Language, Languages } from "../../models/language";
 
 import ukFlag from "../../assets/flags/uk-flag.png";
 
@@ -10,7 +10,7 @@ interface LanguageState {
 
 const initialState: LanguageState = {
   currentLanguage: {
-    name: "en",
+    name: Languages.en,
     img: ukFlag
   }
 };

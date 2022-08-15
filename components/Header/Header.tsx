@@ -5,6 +5,8 @@ import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 import Logo from "../../assets/logo/logo_full.svg";
 
+import { Languages } from "../../models/language";
+
 import navItemsFn from "../../data/navItems";
 
 import { useAppDispatch, useAppSelector } from "../../utils/ts/hooks";
@@ -13,7 +15,7 @@ import { toggleMobileMenu } from "../../store/reducers/mobileMenuSlice";
 import classes from "./Header.module.scss";
 
 interface HeaderProps {
-  lang: "ua" | "en" | "ru";
+  lang: Languages;
 }
 
 const Header: React.FC<HeaderProps> = ({ lang }) => {

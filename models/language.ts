@@ -1,6 +1,12 @@
 import { StaticImageData } from "next/image";
 
+export enum Languages {
+  ua = "ua",
+  en = "en",
+  ru = "ru"
+}
+
 export interface Language {
-  name: "ua" | "en" | "ru";
+  name: Languages;
   img: StaticImageData;
 }

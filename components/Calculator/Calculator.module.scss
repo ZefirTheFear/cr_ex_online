@@ -1,0 +1,40 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.calculator {
+  width: 100%;
+}
+
+.calculator__rates {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  row-gap: 0.25rem;
+  column-gap: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 767px) {
+    grid-template-columns: auto auto;
+  }
+}
+
+.calculator__rates-item {
+  display: flex;
+  align-items: center;
+  width: 150px;
+  padding: 0.25rem;
+  background: darken($bg-color-main-shadow, 5);
+  border-radius: $border-radius;
+}
+
+.calculator__rates-item-name {
+  margin-left: 0.25rem;
+  font-weight: bold;
+}
+
+.calculator__rates-item-rate {
+  font-weight: 100;
+}
+
+.calculator__rates__note {
+  margin-bottom: 2rem;
+}
