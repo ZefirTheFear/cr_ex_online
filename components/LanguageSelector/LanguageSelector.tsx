@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { FaAngleDown } from "react-icons/fa";
 
@@ -26,7 +26,7 @@ const LanguageSelector: React.FC = () => {
     } else {
       const borderWidth = 1;
       elem.style.borderWidth = `${borderWidth}px`;
-      elem.style.marginTop = "0.5rem";
+      elem.style.marginTop = "0.25rem";
       elem.style.height = elem.scrollHeight + borderWidth * 2 + "px";
     }
     setIsOpenedOptions((prevState) => !prevState);

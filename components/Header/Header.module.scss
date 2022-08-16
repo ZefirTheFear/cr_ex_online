@@ -10,6 +10,10 @@
   color: $light-color;
   background: $bg-color-main;
   border-bottom: 1px solid $light-color;
+
+  @media (max-width: 767px) {
+    height: $header-height-sm;
+  }
 }
 
 .header__inner {
@@ -21,7 +25,7 @@
 }
 
 .header__logo {
-  height: 50%;
+  height: 40%;
   cursor: pointer;
 
   @media (max-width: 1200px) {
@@ -57,7 +61,6 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  // margin: 0 5vw 0 2vw;
   font-size: 1.2rem;
   font-weight: bold;
 
@@ -92,7 +95,7 @@
   }
 }
 
-.header__auth {
+.header__auth-btn {
   margin-left: 1rem;
   display: flex;
   align-items: center;
@@ -100,11 +103,22 @@
   @include button;
 }
 
+.header__auth-btn-title {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
 .header__auth-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-left: 0.25rem;
+
+  @media (max-width: 767px) {
+    margin-left: 0;
+  }
+
   svg {
     display: flex;
   }

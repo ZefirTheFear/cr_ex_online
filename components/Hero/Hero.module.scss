@@ -8,6 +8,10 @@
   color: $light-color;
   overflow: hidden;
   min-height: 90vh;
+
+  @media (max-width: 767px) {
+    padding-top: $header-height-sm;
+  }
 }
 
 .hero__inner {
@@ -26,6 +30,9 @@
   @media (max-width: 992px) {
     padding: 2rem 0;
   }
+  @media (max-width: 767px) {
+    padding: 1rem 0;
+  }
 }
 
 .hero__text-heading {
@@ -42,10 +49,20 @@
     margin-bottom: 2rem;
     background: $bg-color-secondary;
     border-radius: 2px;
+
+    @media (max-width: 767px) {
+      margin-bottom: 1rem;
+    }
   }
 
   @media (max-width: 1200px) {
     font-size: 3rem;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1;
   }
 }
 
@@ -53,6 +70,11 @@
   font-size: 1.5rem;
   line-height: 1.5;
   color: darken($light-color, 15);
+
+  @media (max-width: 767px) {
+    font-size: 1.1rem;
+    line-height: 1.1;
+  }
 }
 
 .hero__calculator {
@@ -81,6 +103,9 @@
 
   @media (max-width: 992px) {
     padding: 2rem 0;
+  }
+  @media (max-width: 767px) {
+    padding: 1rem 0;
   }
 }
 

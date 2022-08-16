@@ -1,7 +1,9 @@
 @import "../utils/css/reset.css";
+@import "../utils/css/variables.scss";
 
 body {
-  font-family: "Roboto Condensed", sans-serif;
+  // font-family: "Roboto Condensed", sans-serif;
+  font-family: "PT Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -17,4 +19,31 @@ body {
   textarea {
     user-select: auto;
   }
+}
+
+/* width */
+::-webkit-scrollbar {
+  // width: 0.5rem;
+  width: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  position: absolute;
+  background: $light-color;
+  padding: 15px;
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: $bg-color-secondary;
+  border-top-right-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: darken($bg-color-secondary, 10);
 }

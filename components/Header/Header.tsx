@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
@@ -44,8 +44,8 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           ))}
         </nav>
         <LanguageSelector />
-        <button className={classes.header__auth} type="button">
-          <span>Login</span>
+        <button className={classes["header__auth-btn"]} type="button">
+          <span className={classes["header__auth-btn-title"]}>Login</span>
           <span className={classes["header__auth-icon"]}>
             <FaSignInAlt />
           </span>

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Calculator from "../Calculator/Calculator";
 
 import { Currency, Currencies } from "../../models/currency";
@@ -13,10 +13,8 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({ text }) => {
   const startingCurrencies = useMemo(() => {
     return {
-      sellingCurrency: currencies.find((currency) => currency.name === Currencies.btc) as Currency,
-      purchasedCurrency: currencies.find(
-        (currency) => currency.name === Currencies.usdt
-      ) as Currency
+      sendingCurrency: currencies.find((currency) => currency.name === Currencies.usdt) as Currency,
+      receivedCurrency: currencies.find((currency) => currency.name === Currencies.uah) as Currency
     };
   }, []);
 
