@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import cloneDeep from "clone-deep";
 
 import { TiArrowRepeat } from "react-icons/ti";
+import { ImCheckboxChecked } from "react-icons/im";
 
 import Spinner from "../Spinner/Spinner";
 import Modal from "../Modal/Modal";
@@ -103,7 +105,14 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
               } else {
                 return (
                   <div className={classes["calculator__rates-item"]} key={currency.name}>
-                    <Image src={currency.img} width={20} height={20} layout="fixed" />
+                    <Image
+                      src={currency.img}
+                      width={20}
+                      height={20}
+                      alt={`${currency.name}-logo`}
+                      layout="fixed"
+                      quality={100}
+                    />
                     <span className={classes["calculator__rates-item-name"]}>{currency.name}</span>
                     <span className={classes["calculator__rates-item-rate"]}>
                       :{" "}
@@ -123,23 +132,51 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
         <div className={classes.calculator__converter__block}>
           <div className={classes.calculator__converter}>
             <ExchangeData
-              title="Send"
+              title={
+                language === Languages.en
+                  ? "Send"
+                  : language === Languages.ua
+                  ? "Відправляєте"
+                  : "Отправляете"
+              }
               currentCurrency={currentSendingCurrency}
-              options={newCurrencies}
+              currencyOptions={newCurrencies}
             />
             <div className={classes.calculator__swaper}>
               <TiArrowRepeat />
             </div>
             <ExchangeData
-              title="Receive"
+              title={
+                language === Languages.en
+                  ? "Receive"
+                  : language === Languages.ua
+                  ? "Отримуєте"
+                  : "Получаете"
+              }
               currentCurrency={currentReceivedCurrency}
-              options={newCurrencies}
+              currencyOptions={newCurrencies}
             />
           </div>
           <div className={classes.calculator__note}>
-            <small className={classes.calculator__rates__note}>
-              you will receive as much as indicated.
-            </small>
+            <span className={classes["calculator__note-icon"]}>
+              <ImCheckboxChecked />
+            </span>
+            <span className={classes["calculator__note-text"]}>
+              {language === Languages.en
+                ? "Already with the commission."
+                : language === Languages.ua
+                ? "Вже з урахуванням комісії."
+                : "Уже с учетом комиссии"}
+            </span>
+            <span className={classes["calculator__note-link"]}>
+              <Link href={`/${encodeURIComponent(language)}/fees`}>
+                {language === Languages.en
+                  ? "Learn more"
+                  : language === Languages.ua
+                  ? "Дізнатися більше"
+                  : "Узнать больше"}
+              </Link>
+            </span>
           </div>
           <button className={classes["calculator__exchange-btn"]}>exchange</button>
         </div>

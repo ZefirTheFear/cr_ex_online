@@ -3,12 +3,12 @@ import { createPortal } from "react-dom";
 
 import classes from "./Modal.module.scss";
 
-interface IModalProps {
+interface ModalProps {
   msg: string;
   closeModal: () => void;
 }
 
-const Modal: React.FC<IModalProps> = ({ msg, closeModal }) => {
+const Modal: React.FC<ModalProps> = ({ msg, closeModal }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

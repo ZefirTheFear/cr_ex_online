@@ -10,7 +10,7 @@ import classes from "./LanguageSelector.module.scss";
 const LanguageSelector: React.FC = () => {
   const router = useRouter();
   const selectedElem = useRef<HTMLDivElement>(null);
-  const optionsListElem = useRef<HTMLDivElement>(null);
+  const optionsListElem = useRef<HTMLUListElement>(null);
 
   const [isOpenedOptions, setIsOpenedOptions] = useState(false);
 
@@ -18,7 +18,7 @@ const LanguageSelector: React.FC = () => {
   const languagesOpts = languages.map((lang) => lang.name).filter((lang) => lang !== currentLang);
 
   const toggleIsOpenedOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLDivElement;
+    const elem = optionsListElem.current as HTMLUListElement;
     if (isOpenedOptions) {
       elem.style.borderWidth = "0";
       elem.style.marginTop = "";
@@ -33,7 +33,7 @@ const LanguageSelector: React.FC = () => {
   }, [isOpenedOptions]);
 
   const closeLangsOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLDivElement;
+    const elem = optionsListElem.current as HTMLUListElement;
     elem.style.borderWidth = "0";
     elem.style.height = "0";
     elem.style.marginTop = "";
@@ -86,27 +86,27 @@ const LanguageSelector: React.FC = () => {
         ref={selectedElem}
       >
         <span className={classes["language-selector__selected-name"]}>{currentLang}</span>
-        <span>
-          <FaAngleDown
-            className={
-              `${classes["language-selector__select-arrow"]}` +
-              (isOpenedOptions ? ` ${classes["language-selector__select-arrow_is-opened"]}` : ``)
-            }
-          />
+        <span
+          className={
+            `${classes["language-selector__select-arrow"]}` +
+            (isOpenedOptions ? ` ${classes["language-selector__select-arrow_is-opened"]}` : ``)
+          }
+        >
+          <FaAngleDown />
         </span>
       </div>
-      <div className={classes["language-selector__select-options"]} ref={optionsListElem}>
+      <ul className={classes["language-selector__select-options"]} ref={optionsListElem}>
         {languagesOpts.map((lang) => (
-          <div
+          <li
             className={classes["language-selector__select-options-item"]}
             data-name={lang}
             onClick={changeLanguage}
             key={lang}
           >
             {lang}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

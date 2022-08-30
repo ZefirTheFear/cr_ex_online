@@ -1,0 +1,15 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.auth-section {
+  padding-top: $header-height;
+  background: $bg-color-main;
+
+  @media (max-width: 767px) {
+    padding-top: $header-height-sm;
+  }
+}
+
+.auth-section__inner {
+  @include section;
+}

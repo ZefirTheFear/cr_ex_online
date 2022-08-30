@@ -68,9 +68,9 @@
     margin: 0 2vw 0 2vw;
     font-size: 1rem;
   }
-  @media (max-width: 992px) {
-    font-size: 0.85rem;
-  }
+  // @media (max-width: 992px) {
+  //   font-size: 0.85rem;
+  // }
   @media (max-width: 767px) {
     display: none;
   }
@@ -82,17 +82,7 @@
   cursor: pointer;
   transition: $main-transition;
 
-  @mixin hover {
-    color: $bg-color-secondary;
-  }
-  &:active {
-    @include hover;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      @include hover;
-    }
-  }
+  @include hover-to-seconadry-color;
 }
 
 .header__auth-btn {

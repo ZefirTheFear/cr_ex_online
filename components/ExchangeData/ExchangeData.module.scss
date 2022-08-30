@@ -21,19 +21,7 @@
 }
 
 .exchange-data__input-group__input {
-  padding: 10px 15px;
-  height: 100%;
-  width: 100%;
-  flex: 1;
-  background: $light-color;
-  color: $bg-color-main-shadow;
-  font-size: 2rem;
-  font-weight: bold;
-  border-right: 2px solid $bg-color-main-shadow;
-
-  @media (max-width: 767px) {
-    font-size: 1.5rem;
-  }
+  @include input;
 }
 
 .exchange-data__currency-selector {
@@ -124,15 +112,5 @@
     border-bottom: 0;
   }
 
-  @mixin hover {
-    background: $bg-color-secondary;
-  }
-  &:active {
-    @include hover;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      @include hover;
-    }
-  }
+  @include hover-bg-to-seconadry-color;
 }

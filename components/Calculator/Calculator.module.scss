@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
 
-  @media (max-width: 767px) {
+  @media (max-width: 992px) {
     flex-direction: column-reverse;
   }
 }
@@ -21,12 +21,14 @@
 
 .calculator__rates {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: 150px 150px 150px;
   row-gap: 0.25rem;
   column-gap: 0.5rem;
+  // grid-auto-rows: 200px;
+  // justify-content: space-between;
 
   @media (max-width: 767px) {
-    grid-template-columns: auto auto;
+    grid-template-columns: 150px 150px;
   }
 }
 
@@ -72,21 +74,42 @@
   cursor: pointer;
   transition: $main-transition;
 
-  @mixin hover {
-    color: $bg-color-secondary;
-  }
-  &:active {
-    @include hover;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      @include hover;
-    }
-  }
+  @include hover-to-seconadry-color;
 }
 
 .calculator__note {
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0 1.5rem 0;
+
+  @media (max-width: 767px) {
+    font-size: 0.8rem;
+  }
+}
+
+.calculator__note-icon {
+  margin-right: 0.5rem;
+  color: $bg-color-secondary;
+  background: $light-color;
+  border-radius: $border-radius;
+
+  svg {
+    display: block;
+  }
+}
+
+.calculator__note-text {
+  margin-right: 0.5rem;
+}
+
+.calculator__note-link {
+  a {
+    text-decoration: none;
+    transition: $main-transition;
+    color: $bg-color-secondary;
+
+    @include hover-over-secondary-color;
+  }
 }
 
 .calculator__exchange-btn {

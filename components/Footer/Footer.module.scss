@@ -1,0 +1,10 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.footer {
+  background: $bg-color-main-dark;
+}
+
+.footer__inner {
+  @include section;
+}

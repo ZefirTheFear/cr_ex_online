@@ -1,0 +1,36 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.auth-form {
+  width: 100%;
+  background: $bg-color-main-shadow;
+  padding: 2rem;
+
+  @media (max-width: 767px) {
+    padding: 1rem;
+  }
+}
+
+.auth-form__heading {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 767px) {
+    font-size: 2rem;
+  }
+}
+
+.auth-form__toggle-message {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.auth-form__toggler {
+  margin-left: 0.5rem;
+  color: $bg-color-secondary;
+  transition: $main-transition;
+  cursor: pointer;
+
+  @include hover-over-secondary-color;
+}

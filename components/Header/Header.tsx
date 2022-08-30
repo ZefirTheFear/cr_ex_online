@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useMemo, useCallback } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 
@@ -33,9 +34,11 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
   return (
     <header className={classes.header}>
       <div className={classes.header__inner}>
-        <div className={classes.header__logo}>
-          <Logo />
-        </div>
+        <Link href={`/${encodeURIComponent(lang)}/`}>
+          <div className={classes.header__logo}>
+            <Logo />
+          </div>
+        </Link>
         <nav className={classes.header__menu}>
           {navItems.map((item) => (
             <div className={classes["header__menu-item"]} key={item.id}>
@@ -44,12 +47,14 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           ))}
         </nav>
         <LanguageSelector />
-        <button className={classes["header__auth-btn"]} type="button">
-          <span className={classes["header__auth-btn-title"]}>Login</span>
-          <span className={classes["header__auth-icon"]}>
-            <FaSignInAlt />
-          </span>
-        </button>
+        <Link href={`/${encodeURIComponent(lang)}/auth`}>
+          <button className={classes["header__auth-btn"]} type="button">
+            <span className={classes["header__auth-btn-title"]}>Login</span>
+            <span className={classes["header__auth-icon"]}>
+              <FaSignInAlt />
+            </span>
+          </button>
+        </Link>
         <div
           className={
             `${classes["header__menu-btn"]}` +

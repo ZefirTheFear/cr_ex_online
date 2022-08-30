@@ -6,8 +6,15 @@ body {
   font-family: "PT Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: $light-color;
 }
 
+// disable dnd for images
+img {
+  pointer-events: none;
+}
+
+// disable text selection
 @supports not (-moz-appearance: none) {
   /* Add non-firefox CSS code here */
   * {
@@ -21,12 +28,24 @@ body {
   }
 }
 
+/* removing arrows/spinners from input type number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+// Custom scrollbar
 /* width */
 ::-webkit-scrollbar {
   // width: 0.5rem;
   width: 0;
 }
-
 /* Track */
 ::-webkit-scrollbar-track {
   position: absolute;
@@ -35,14 +54,12 @@ body {
   border-top-right-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
 }
-
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: $bg-color-secondary;
   border-top-right-radius: $border-radius;
   border-bottom-right-radius: $border-radius;
 }
-
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: darken($bg-color-secondary, 10);

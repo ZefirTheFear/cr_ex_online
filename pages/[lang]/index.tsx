@@ -1,8 +1,10 @@
 import type { NextPage, GetStaticProps, GetStaticPaths } from "next";
+import Head from "next/head";
 import { useMemo } from "react";
 
 import Header from "../../components/Header/Header";
 import Hero from "../../components/Hero/Hero";
+import Footer from "../../components/Footer/Footer";
 
 import { Languages } from "../../models/language";
 
@@ -29,19 +31,30 @@ const textData = (lang: Languages) => {
   }
 };
 
-interface HomeProps {
+interface HomePageProps {
   lang: Languages;
 }
 
-const Home: NextPage<HomeProps> = ({ lang }) => {
+const HomePage: NextPage<HomePageProps> = ({ lang }) => {
   const heroTextData = useMemo(() => {
     return textData(lang);
   }, [lang]);
 
   return (
     <>
+      <Head>
+        <title>
+          {lang === Languages.en
+            ? "Crypto exchange"
+            : lang === Languages.ua
+            ? "Крипто обмін"
+            : "Крипто обмен"}
+        </title>
+        {/* <meta name="description" content="Крипто обмен" /> */}
+      </Head>
       <Header lang={lang} />
       <Hero text={heroTextData} />
+      <Footer />
     </>
   );
 };
@@ -65,4 +78,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: false };
 };
 
-export default Home;
+export default HomePage;

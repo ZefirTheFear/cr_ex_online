@@ -9,17 +9,17 @@ import classes from "./ExchangeData.module.scss";
 interface ExchangeDataProps {
   title: string;
   currentCurrency: Currency;
-  options: Currency[];
+  currencyOptions: Currency[];
 }
 
-const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, options }) => {
+const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, currencyOptions }) => {
   const selectedElem = useRef<HTMLDivElement>(null);
-  const optionsListElem = useRef<HTMLDivElement>(null);
+  const optionsListElem = useRef<HTMLUListElement>(null);
 
   const [isOpenedOptions, setIsOpenedOptions] = useState(false);
 
   const toggleIsOpenedOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLDivElement;
+    const elem = optionsListElem.current as HTMLUListElement;
     if (isOpenedOptions) {
       elem.style.borderWidth = "0";
       elem.style.marginTop = "";
@@ -37,7 +37,7 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, opt
   }, [isOpenedOptions]);
 
   const closeCurrenciesOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLDivElement;
+    const elem = optionsListElem.current as HTMLUListElement;
     elem.style.borderWidth = "0";
     elem.style.height = "0";
     elem.style.marginTop = "";
@@ -96,6 +96,7 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, opt
                 width={30}
                 height={30}
                 layout="fixed"
+                quality={100}
               />
             </span>
             <span className={classes["exchange-data__currency-name"]}>{currentCurrency.name}</span>
@@ -108,27 +109,28 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, opt
               <FaAngleDown />
             </span>
           </div>
-          <div className={classes["exchange-data__select-options"]} ref={optionsListElem}>
-            {options.map((item) => (
-              <div
+          <ul className={classes["exchange-data__select-options"]} ref={optionsListElem}>
+            {currencyOptions.map((currency) => (
+              <li
                 className={classes["exchange-data__select-options-item"]}
-                key={item.name}
-                data-name={item.name}
+                key={currency.name}
+                data-name={currency.name}
                 // onClick={onChangeCurrency}
               >
                 <span className={classes["exchange-data__currency-img"]}>
                   <Image
-                    src={item.img}
-                    alt={item.name + "-logo"}
+                    src={currency.img}
+                    alt={currency.name + "-logo"}
                     width={30}
                     height={30}
                     layout="fixed"
+                    quality={100}
                   />
                 </span>
-                <span className={classes["exchange-data__currency-name"]}>{item.name}</span>
-              </div>
+                <span className={classes["exchange-data__currency-name"]}>{currency.name}</span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </div>
     </div>
