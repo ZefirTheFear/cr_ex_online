@@ -7,7 +7,8 @@ import classes from "./AuthInputGroup.module.scss";
 export enum AuthInputGroupType {
   email = "email",
   password = "password",
-  text = "text"
+  text = "text",
+  tel = "tel"
 }
 
 interface AuthInputGroupProps {

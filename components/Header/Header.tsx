@@ -49,7 +49,9 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
         <LanguageSelector />
         <Link href={`/${encodeURIComponent(lang)}/auth`}>
           <button className={classes["header__auth-btn"]} type="button">
-            <span className={classes["header__auth-btn-title"]}>Login</span>
+            <span className={classes["header__auth-btn-title"]}>
+              {lang === Languages.en ? "Login" : lang === Languages.ua ? "Увійти" : "Войти"}
+            </span>
             <span className={classes["header__auth-icon"]}>
               <FaSignInAlt />
             </span>

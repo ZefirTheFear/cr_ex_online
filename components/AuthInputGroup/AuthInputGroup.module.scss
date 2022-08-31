@@ -4,11 +4,11 @@
 .auth-input-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1.5rem;
 }
 
 .auth-input-group__label {
   margin-bottom: 0.5rem;
+  font-weight: bold;
 }
 
 .auth-input-group__input-container {

@@ -1,2 +1,59 @@
 @import "../../utils/css/variables.scss";
 @import "../../utils/css/mixins.scss";
+
+.register {
+  margin: 2rem 0 3rem 0;
+}
+
+.register__form-row {
+  @include auth-form-row;
+}
+
+.register__submit-btn {
+  @include button;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.register__checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: $light-color;
+  border-radius: 3px;
+  cursor: pointer;
+
+  &::before {
+    position: absolute;
+    top: -1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    content: "\2714";
+    font-weight: bold;
+    color: $bg-color-secondary;
+  }
+}
+
+.register__terms {
+  display: flex;
+  align-items: center;
+}
+
+.register__terms-text {
+  margin-left: 1rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.register__terms-link {
+  a {
+    color: $bg-color-secondary;
+    transition: $main-transition;
+    @include hover-over-secondary-color;
+  }
+}

@@ -29,30 +29,61 @@
 .auth-form__toggler {
   margin-left: 0.5rem;
   color: $bg-color-secondary;
-  transition: $main-transition;
   cursor: pointer;
 
   @include hover-over-secondary-color;
+
+  &:active {
+    transition: $main-transition;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transition: $main-transition;
+    }
+  }
 }
 
 .auth-form__forgot-password {
-  display: inline-block;
-  margin-top: 1rem;
   color: $bg-color-secondary;
   font-weight: bold;
   font-size: 1.25rem;
   cursor: pointer;
-  transition: $main-transition;
 
   &::before {
-    content: "";
-    display: block;
-    height: 5px;
-    width: 100px;
+    @include before-line;
     margin-bottom: 0.5rem;
-    background: $bg-color-secondary;
-    border-radius: 2px;
   }
 
   @include hover-over-secondary-color;
+
+  &:active {
+    transition: $main-transition;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transition: $main-transition;
+    }
+  }
+}
+
+.auth-form__register-note {
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  &::before {
+    @include before-line;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.auth-form__forgot-password-note {
+  font-size: 0.8rem;
+  font-weight: bold;
+
+  &::before {
+    @include before-line;
+    margin-bottom: 0.5rem;
+  }
 }

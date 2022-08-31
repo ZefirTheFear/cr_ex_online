@@ -42,13 +42,8 @@
   line-height: 1.1;
 
   &::before {
-    content: "";
-    display: block;
-    height: 5px;
-    width: 100px;
+    @include before-line;
     margin-bottom: 2rem;
-    background: $bg-color-secondary;
-    border-radius: 2px;
 
     @media (max-width: 767px) {
       margin-bottom: 1rem;

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import LoginForm from "../LoginForm/LoginForm";
 import RegisterForm from "../RegisterForm/RegisterForm";
+import ForgotPasswordForm from "../ForgotPasswordForm/ForgotPasswordForm";
 
 import { Languages } from "../../models/language";
 
@@ -94,7 +95,7 @@ const AuthForm: React.FC = () => {
       ) : authMode === AuthMode.register ? (
         <RegisterForm />
       ) : (
-        <div>ForgotPasswordForm</div>
+        <ForgotPasswordForm />
       )}
       {authMode === AuthMode.login ? (
         <div
@@ -107,8 +108,22 @@ const AuthForm: React.FC = () => {
             ? "Забули пароль?"
             : "Забыли пароль?"}
         </div>
+      ) : authMode === AuthMode.register ? (
+        <div className={classes["auth-form__register-note"]}>
+          {language === Languages.en
+            ? "We guarantee that we will NOT share your phone number and email address with third parties."
+            : language === Languages.ua
+            ? "Заповнення полів з номером телефону та email адресою обов'язкові в зв'язку з законодавством. Ми гарантуємо, що НЕ будемо передавати їх третім особам."
+            : "Мы гарантируем, что НЕ будем передавать ваш номер телефона и email адрес третьим лицам."}
+        </div>
       ) : (
-        <div>TBD</div>
+        <div className={classes["auth-form__forgot-password-note"]}>
+          {language === Languages.en
+            ? "A new password will be sent to your email."
+            : language === Languages.ua
+            ? "Новий пароль буде надіслано вам на email."
+            : "Новый пароль будет отправлен вам на email."}
+        </div>
       )}
     </div>
   );

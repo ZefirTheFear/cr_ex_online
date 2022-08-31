@@ -94,6 +94,8 @@
 }
 
 .header__auth-btn-title {
+  font-weight: bold;
+
   @media (max-width: 767px) {
     display: none;
   }
