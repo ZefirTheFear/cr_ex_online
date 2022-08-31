@@ -1,2 +1,23 @@
 @import "../../utils/css/variables.scss";
 @import "../../utils/css/mixins.scss";
+
+.login {
+  margin: 2rem 0;
+}
+
+.login__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.login__submit-btn {
+  @include button;
+  font-size: 1.5rem;
+  font-weight: bold;
+  // height: 3rem;
+}

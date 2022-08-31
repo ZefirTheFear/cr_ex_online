@@ -34,3 +34,25 @@
 
   @include hover-over-secondary-color;
 }
+
+.auth-form__forgot-password {
+  display: inline-block;
+  margin-top: 1rem;
+  color: $bg-color-secondary;
+  font-weight: bold;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: $main-transition;
+
+  &::before {
+    content: "";
+    display: block;
+    height: 5px;
+    width: 100px;
+    margin-bottom: 0.5rem;
+    background: $bg-color-secondary;
+    border-radius: 2px;
+  }
+
+  @include hover-over-secondary-color;
+}

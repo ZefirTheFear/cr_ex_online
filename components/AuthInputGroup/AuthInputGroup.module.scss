@@ -1,0 +1,36 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.auth-input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.auth-input-group__label {
+  margin-bottom: 0.5rem;
+}
+
+.auth-input-group__input-container {
+  display: flex;
+  border-radius: $border-radius;
+  overflow: hidden;
+  background: $light-color;
+}
+
+.auth-input-group__input {
+  @include input;
+}
+
+.auth-input-group__toggler-password-visibility {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  color: $bg-color-main-shadow;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: $main-transition;
+
+  @include hover-over-main-shadow-color;
+}

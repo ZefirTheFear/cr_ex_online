@@ -29,7 +29,6 @@
   color: $bg-color-main-shadow;
   font-size: 2rem;
   font-weight: bold;
-  border-right: 2px solid $bg-color-main-shadow;
 
   &::placeholder {
     color: rgba($bg-color-main-shadow, 0.3);
@@ -103,6 +102,18 @@
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       color: darken($bg-color-secondary, 15);
+    }
+  }
+}
+
+@mixin hover-over-main-shadow-color {
+  &:active {
+    color: lighten($bg-color-main-shadow, 15);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: lighten($bg-color-main-shadow, 15);
     }
   }
 }
