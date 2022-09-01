@@ -129,6 +129,14 @@
   }
 }
 
+@mixin auth-form {
+  margin: 2rem 0 3rem 0;
+
+  @media (max-width: 767px) {
+    margin-bottom: 1rem;
+  }
+}
+
 @mixin before-line {
   content: "";
   display: block;

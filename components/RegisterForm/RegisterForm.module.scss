@@ -2,7 +2,7 @@
 @import "../../utils/css/mixins.scss";
 
 .register {
-  margin: 2rem 0 3rem 0;
+  @include auth-form;
 }
 
 .register__form-row {
@@ -25,7 +25,7 @@
   border-radius: 3px;
   cursor: pointer;
 
-  &::before {
+  &:checked::before {
     position: absolute;
     top: -1px;
     display: flex;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
 
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
@@ -11,7 +11,7 @@ import { Languages } from "../../models/language";
 import navItemsFn from "../../data/navItems";
 
 import { useAppDispatch, useAppSelector } from "../../utils/ts/hooks";
-import { toggleMobileMenu } from "../../store/reducers/mobileMenuSlice";
+import { toggleMobileMenu, closeMobileMenu } from "../../store/reducers/mobileMenuSlice";
 
 import classes from "./Header.module.scss";
 
@@ -31,6 +31,23 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
     dispatch(toggleMobileMenu());
   }, [dispatch]);
 
+  const clickMenuItem = useCallback(
+    (e: React.MouseEvent<HTMLElement>) => {
+      const itemId = e.currentTarget.dataset.id;
+      console.log("itemId", itemId);
+      dispatch(closeMobileMenu());
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+    }
+  }, [isMobileMenuOpen]);
+
   return (
     <header className={classes.header}>
       <div className={classes.header__inner}>
@@ -41,7 +58,15 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
         </Link>
         <nav className={classes.header__menu}>
           {navItems.map((item) => (
-            <div className={classes["header__menu-item"]} key={item.id}>
+            <div
+              className={
+                `${classes["header__menu-item"]}` +
+                (isMobileMenuOpen ? ` ${classes["header__menu-item_open"]}` : ``)
+              }
+              key={item.id}
+              data-id={item.id}
+              onClick={clickMenuItem}
+            >
               {item.title}
             </div>
           ))}

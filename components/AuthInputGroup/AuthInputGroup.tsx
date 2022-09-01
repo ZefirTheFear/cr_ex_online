@@ -40,6 +40,7 @@ const AuthInputGroup = React.forwardRef<HTMLInputElement, AuthInputGroupProps>(
             }
             placeholder={placeholder}
             ref={ref}
+            autoComplete="off"
           />
           {type === AuthInputGroupType.password && (
             <span

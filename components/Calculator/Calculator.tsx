@@ -178,7 +178,13 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
               </Link>
             </span>
           </div>
-          <button className={classes["calculator__exchange-btn"]}>exchange</button>
+          <button className={classes["calculator__exchange-btn"]}>
+            {language === Languages.en
+              ? "Exchange"
+              : language === Languages.ua
+              ? "Обміняти"
+              : "Обменять"}
+          </button>
         </div>
       </div>
     </>

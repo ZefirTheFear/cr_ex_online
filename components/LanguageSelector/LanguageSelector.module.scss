@@ -45,6 +45,7 @@
   overflow: hidden;
   transition: $main-transition;
   border-radius: $border-radius;
+  z-index: $lang-selector-z-i;
 }
 
 .language-selector__select-options-item {

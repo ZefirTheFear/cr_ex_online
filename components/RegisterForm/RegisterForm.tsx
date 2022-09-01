@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -16,6 +16,12 @@ const RegisterForm: React.FC = () => {
   const passwordInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const phoneInput = useRef<HTMLInputElement>(null);
+
+  const [isTermsAgreed, setIsTermsAgreed] = useState(false);
+
+  const toggleCheckbox = useCallback(() => {
+    setIsTermsAgreed((prevState) => !prevState);
+  }, []);
 
   const register = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -81,7 +87,16 @@ const RegisterForm: React.FC = () => {
         <div className={classes["register__form-row"]}>
           <div className={classes.register__terms}>
             <div>
-              <input type="checkbox" className={classes.register__checkbox} />
+              <input
+                type="checkbox"
+                className={classes.register__checkbox}
+                // className={
+                //   `${classes.register__checkbox}` +
+                //   (isTermsAgreed ? ` ${classes.register__checkbox_checked}` : ``)
+                // }
+                checked={isTermsAgreed}
+                onChange={toggleCheckbox}
+              />
             </div>
             <div className={classes["register__terms-text"]}>
               {language === Languages.en
