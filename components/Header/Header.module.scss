@@ -120,6 +120,12 @@
   }
 }
 
+.header__auth-btn-container {
+  a {
+    text-decoration: none;
+  }
+}
+
 .header__auth-btn {
   margin-left: 1rem;
   display: flex;

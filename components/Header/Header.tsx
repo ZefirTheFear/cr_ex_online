@@ -51,11 +51,13 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
   return (
     <header className={classes.header}>
       <div className={classes.header__inner}>
-        <Link href={`/${encodeURIComponent(lang)}/`}>
-          <div className={classes.header__logo}>
-            <Logo />
-          </div>
-        </Link>
+        <div className={classes.header__logo}>
+          <Link href={`/${encodeURIComponent(lang)}/`}>
+            <a>
+              <Logo />
+            </a>
+          </Link>
+        </div>
         <nav className={classes.header__menu}>
           {navItems.map((item) => (
             <div
@@ -72,16 +74,20 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           ))}
         </nav>
         <LanguageSelector />
-        <Link href={`/${encodeURIComponent(lang)}/auth`}>
-          <button className={classes["header__auth-btn"]} type="button">
-            <span className={classes["header__auth-btn-title"]}>
-              {lang === Languages.en ? "Login" : lang === Languages.ua ? "Увійти" : "Войти"}
-            </span>
-            <span className={classes["header__auth-icon"]}>
-              <FaSignInAlt />
-            </span>
-          </button>
-        </Link>
+        <div className={classes["header__auth-btn-container"]}>
+          <Link href={`/${encodeURIComponent(lang)}/auth`}>
+            <a>
+              <button className={classes["header__auth-btn"]} type="button">
+                <span className={classes["header__auth-btn-title"]}>
+                  {lang === Languages.en ? "Login" : lang === Languages.ua ? "Увійти" : "Войти"}
+                </span>
+                <span className={classes["header__auth-icon"]}>
+                  <FaSignInAlt />
+                </span>
+              </button>
+            </a>
+          </Link>
+        </div>
         <div
           className={
             `${classes["header__menu-btn"]}` +

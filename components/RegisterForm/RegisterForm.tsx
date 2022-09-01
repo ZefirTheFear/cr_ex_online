@@ -126,7 +126,11 @@ const RegisterForm: React.FC = () => {
             </div>
           </div>
           <button className={classes["register__submit-btn"]} type="submit">
-            {language === Languages.en ? "Login" : language === Languages.ua ? "Увійти" : "Войти"}
+            {language === Languages.en
+              ? "Register"
+              : language === Languages.ua
+              ? "Зареєструватися"
+              : "Зарегистрироваться"}
           </button>
         </div>
       </form>

@@ -117,10 +117,10 @@
 .calculator__exchange-btn {
   @include button;
   width: 100%;
-  height: 3rem;
+  font-size: 1.5rem;
   font-weight: bold;
 
   @media (max-width: 767px) {
-    height: auto;
+    font-size: 1.2rem;
   }
 }
