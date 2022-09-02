@@ -1,0 +1,46 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.nav-item-dropdown-list {
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.nav-item-dropdown-list__title {
+  transition: $main-transition;
+  @include hover-to-seconadry-color;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.nav-item-dropdown-list__options {
+  position: absolute;
+  height: 0;
+  border: 0px solid $light-color;
+  overflow: hidden;
+  transition: $main-transition;
+  border-radius: $border-radius;
+  z-index: $exchange-options-selector-z-i;
+
+  @media (max-width: 767px) {
+    top: 0;
+    left: 0;
+  }
+}
+
+.nav-item-dropdown-list__options_open {
+  height: auto;
+  margin-top: 0.75rem;
+
+  @media (max-width: 767px) {
+    margin-top: 0;
+  }
+}

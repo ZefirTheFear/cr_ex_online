@@ -73,7 +73,7 @@
   // }
   @media (max-width: 767px) {
     display: block;
-    position: fixed;
+    position: absolute;
     top: $header-height-sm;
     left: -100%;
     width: 100%;
@@ -133,23 +133,11 @@
   }
 }
 
-.header__menu-item {
-  transition: $main-transition;
-  @include hover-to-seconadry-color;
-}
-
-.header__exchange-options {
-  position: absolute;
-  height: 0;
-  border: 0px solid $light-color;
-  overflow: hidden;
-  transition: $main-transition;
-  border-radius: $border-radius;
-  z-index: $exchange-options-selector-z-i;
-}
-
-.header__exchange-options_open {
-  height: auto;
+.header__menu-item-link-container {
+  @media (max-width: 767px) {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .header__auth-btn-container {

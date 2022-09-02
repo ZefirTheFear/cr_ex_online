@@ -10,7 +10,59 @@ const navItems = (language: Languages) => [
     id: "1",
     role: navItemRole.list,
     title: language === Languages.ua ? "обмін" : language === Languages.ru ? "обмен" : "exchange",
-    url: ""
+    // url: "",
+    sublist: [
+      {
+        id: "1",
+        title:
+          language === Languages.ua
+            ? "Продати біткоин"
+            : language === Languages.ru
+            ? "Продать биткоин"
+            : "Sell bitcoin",
+        url: `/${encodeURIComponent(language)}/btc-to-uah`
+      },
+      {
+        id: "2",
+        title:
+          language === Languages.ua
+            ? "Продати ефіріум"
+            : language === Languages.ru
+            ? "Продать эфириум"
+            : "Sell ethereum",
+        url: `/${encodeURIComponent(language)}/eth-to-uah`
+      },
+      {
+        id: "3",
+        title:
+          language === Languages.ua
+            ? "Продати USDT"
+            : language === Languages.ru
+            ? "Продать USDT"
+            : "Sell USDT",
+        url: `/${encodeURIComponent(language)}/usdt-to-uah`
+      },
+      {
+        id: "4",
+        title:
+          language === Languages.ua
+            ? "Обміняти біткоин на ефіріум"
+            : language === Languages.ru
+            ? "Обменять биткоин на эфириум"
+            : "Exchange bitcoin to ethereum",
+        url: `/${encodeURIComponent(language)}/btc-to-eth`
+      },
+      {
+        id: "5",
+        title:
+          language === Languages.ua
+            ? "Обміняти біткоин на USDT"
+            : language === Languages.ru
+            ? "Обменять биткоин на USDT"
+            : "Exchange bitcoin to USDT",
+        url: `/${encodeURIComponent(language)}/btc-to-usdt`
+      }
+    ]
   },
   {
     id: "2",
@@ -30,59 +82,6 @@ const navItems = (language: Languages) => [
     title:
       language === Languages.ua ? "контакти" : language === Languages.ru ? "контакты" : "contacts",
     url: `/${encodeURIComponent(language)}/contacts`
-  }
-];
-
-export const exchangeOptions = (language: Languages) => [
-  {
-    id: "1",
-    title:
-      language === Languages.ua
-        ? "Продати біткоин"
-        : language === Languages.ru
-        ? "Продать биткоин"
-        : "Sell bitcoin",
-    url: `/${encodeURIComponent(language)}/btc-to-uah`
-  },
-  {
-    id: "2",
-    title:
-      language === Languages.ua
-        ? "Продати ефіріум"
-        : language === Languages.ru
-        ? "Продать эфириум"
-        : "Sell ethereum",
-    url: `/${encodeURIComponent(language)}/eth-to-uah`
-  },
-  {
-    id: "3",
-    title:
-      language === Languages.ua
-        ? "Продати USDT"
-        : language === Languages.ru
-        ? "Продать USDT"
-        : "Sell USDT",
-    url: `/${encodeURIComponent(language)}/usdt-to-uah`
-  },
-  {
-    id: "4",
-    title:
-      language === Languages.ua
-        ? "Обміняти біткоин на ефіріум"
-        : language === Languages.ru
-        ? "Обменять биткоин на эфириум"
-        : "Exchange bitcoin to ethereum",
-    url: `/${encodeURIComponent(language)}/btc-to-eth`
-  },
-  {
-    id: "5",
-    title:
-      language === Languages.ua
-        ? "Обміняти біткоин на USDT"
-        : language === Languages.ru
-        ? "Обменять биткоин на USDT"
-        : "Exchange bitcoin to USDT",
-    url: `/${encodeURIComponent(language)}/btc-to-usdt`
   }
 ];
 
