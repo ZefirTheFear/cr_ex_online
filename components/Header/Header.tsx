@@ -67,7 +67,11 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
                 <NavItemDropdownList title={item.title} list={item.sublist} />
               ) : (
                 <div className={classes["header__menu-item-link-container"]} onClick={closeMobMenu}>
-                  {item.url && <Link href={item.url}>{item.title}</Link>}
+                  {item.url && (
+                    <Link href={item.url}>
+                      <a>{item.title}</a>
+                    </Link>
+                  )}
                 </div>
               )}
             </div>

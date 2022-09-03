@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { TiArrowSortedDown } from "react-icons/ti";
 
 import classes from "./NavItemDropdownList.module.scss";
 
@@ -77,7 +79,16 @@ const NavItemDropdownList: React.FC<NavItemDropdownListProps> = ({ title, list }
         onClick={toggleIsOpenList}
         ref={titleElem}
       >
-        {title}
+        <span>{title}</span>
+        <span
+          // className={classes["nav-item-dropdown-list__arrow"]}
+          className={
+            `${classes["nav-item-dropdown-list__arrow"]}` +
+            (isOpenList ? ` ${classes["nav-item-dropdown-list__arrow_is-opened"]}` : ``)
+          }
+        >
+          <TiArrowSortedDown />
+        </span>
       </div>
       <ul
         className={
@@ -86,7 +97,13 @@ const NavItemDropdownList: React.FC<NavItemDropdownListProps> = ({ title, list }
         }
         ref={listElem}
       >
-        {list ? list.map((item) => <div key={item.id}>{item.title}</div>) : null}
+        {list
+          ? list.map((item) => (
+              <li className={classes["nav-item-dropdown-list__options-item"]} key={item.id}>
+                <Link href={item.url}>{item.title}</Link>
+              </li>
+            ))
+          : null}
       </ul>
     </div>
   );

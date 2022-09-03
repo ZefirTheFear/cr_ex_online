@@ -1,4 +1,5 @@
 import { Languages } from "../models/language";
+import { FaSignInAlt } from "react-icons/fa";
 
 export enum navItemRole {
   link = "link",
@@ -8,9 +9,9 @@ export enum navItemRole {
 const navItems = (language: Languages) => [
   {
     id: "1",
+    icon: FaSignInAlt,
     role: navItemRole.list,
     title: language === Languages.ua ? "обмін" : language === Languages.ru ? "обмен" : "exchange",
-    // url: "",
     sublist: [
       {
         id: "1",
@@ -66,18 +67,21 @@ const navItems = (language: Languages) => [
   },
   {
     id: "2",
+    icon: FaSignInAlt,
     role: navItemRole.link,
     title: language === Languages.ua ? "про нас" : language === Languages.ru ? "о нас" : "about us",
     url: `/${encodeURIComponent(language)}/about-us`
   },
   {
     id: "3",
+    icon: FaSignInAlt,
     role: navItemRole.link,
     title: language === Languages.ua ? "новини" : language === Languages.ru ? "новости" : "news",
     url: `/${encodeURIComponent(language)}/news`
   },
   {
     id: "4",
+    icon: FaSignInAlt,
     role: navItemRole.link,
     title:
       language === Languages.ua ? "контакти" : language === Languages.ru ? "контакты" : "contacts",
