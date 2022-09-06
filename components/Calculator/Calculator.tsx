@@ -56,11 +56,13 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
         method: "GET",
         signal: controller.signal
       });
+
       if (response.status !== 200) {
         setIsLoading(false);
         return setIsSomethingWentWrong(true);
       }
-      const responseData = await response.json();
+
+      const responseData = (await response.json()) as { rates: Rates };
       console.log(responseData);
       passRatesToCurrencies(responseData.rates);
       setIsLoading(false);

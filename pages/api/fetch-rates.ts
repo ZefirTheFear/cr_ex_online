@@ -2,10 +2,11 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { Rates } from "./../../models/currency";
 
-type Data = {
-  message?: string;
-  rates?: Rates;
-};
+type Data =
+  | {
+      message: string;
+    }
+  | { rates: Rates };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
   if (req.method === "GET") {
