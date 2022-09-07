@@ -22,6 +22,10 @@
   @include input;
 }
 
+.auth-input-group__input_invalid {
+  background: rgba($invalid-bg, 0.5);
+}
+
 .auth-input-group__toggler-password-visibility {
   display: flex;
   align-items: center;
@@ -30,7 +34,11 @@
   color: $bg-color-main-shadow;
   font-size: 1.5rem;
   cursor: pointer;
-  transition: $main-transition;
+  transition: color 0.15s linear;
 
   @include hover-over-main-shadow-color;
+}
+
+.auth-input-group__toggler-password-visibility_invalid-input {
+  background: rgba($invalid-bg, 0.5);
 }

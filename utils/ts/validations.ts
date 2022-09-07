@@ -7,6 +7,7 @@ export interface IRegisterData {
   email: string;
   password: string;
   phone: string;
+  isTermsAgreed: boolean;
   language: Languages;
 }
 
@@ -15,6 +16,7 @@ export interface IRegisterInputErrors {
   email?: string[];
   password?: string[];
   phone?: string[];
+  checkbox?: string;
 }
 
 export const registerValidation: (obj: IRegisterData) => IRegisterInputErrors | undefined = ({
@@ -22,9 +24,19 @@ export const registerValidation: (obj: IRegisterData) => IRegisterInputErrors | 
   email,
   phone,
   password,
+  isTermsAgreed,
   language
 }) => {
   const inputErrors: IRegisterInputErrors = {};
+  if (!isTermsAgreed) {
+    const errorMsg =
+      language === Languages.en
+        ? "required field"
+        : language === Languages.ua
+        ? "обов'язкове поле"
+        : "обязательное поле";
+    inputErrors.checkbox = errorMsg;
+  }
 
   if (name.trim().length < 1 || name.trim().length > 40) {
     const errorMsg =

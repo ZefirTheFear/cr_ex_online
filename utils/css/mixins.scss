@@ -22,9 +22,8 @@
 
 @mixin input {
   padding: 10px 15px;
-  height: 100%;
-  width: 100%;
-  flex: 1;
+  width: 0;
+  flex-grow: 1;
   background: $light-color;
   color: $bg-color-main-shadow;
   font-size: 2rem;

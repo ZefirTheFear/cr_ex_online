@@ -36,6 +36,10 @@
     content: "\2714";
     font-weight: bold;
     color: $bg-color-secondary;
+
+    @media (max-width: 767px) {
+      top: 0;
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import cloneDeep from "clone-deep";
 
 import { TiArrowRepeat } from "react-icons/ti";
@@ -17,8 +17,6 @@ import { currencies } from "../../data/currencyItems";
 
 import classes from "./Calculator.module.scss";
 
-const controller = new AbortController();
-
 interface CalculatorProps {
   startingCurrencies: {
     sendingCurrency: Currency;
@@ -27,6 +25,10 @@ interface CalculatorProps {
 }
 
 const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
+  const controller = useMemo(() => {
+    return new AbortController();
+  }, []);
+
   const router = useRouter();
   const language = router.query.lang as Languages;
 
@@ -70,7 +72,7 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
       setIsLoading(false);
       return setIsSomethingWentWrong(true);
     }
-  }, [passRatesToCurrencies]);
+  }, [controller.signal, passRatesToCurrencies]);
 
   const closeSWWModal = useCallback(() => {
     setIsSomethingWentWrong(false);
@@ -81,7 +83,7 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
     return () => {
       controller.abort();
     };
-  }, [fetchRates]);
+  }, [controller, fetchRates]);
 
   return (
     <>
@@ -91,10 +93,10 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
           closeModal={closeSWWModal}
           msg={
             language === Languages.en
-              ? "something went wrong. try again"
+              ? "Something went wrong. Try again later"
               : language === Languages.ua
-              ? "Щось пішло не так"
-              : "Что-то пошло не так"
+              ? "Щось пішло не так. Cпробуйте пізніше"
+              : "Что-то пошло не так. Попробуйте позже"
           }
         />
       )}

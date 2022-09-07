@@ -24,9 +24,10 @@ const AuthForm: React.FC = () => {
   // const setAuthModeToRegister = useCallback(() => {
   //   return setAuthMode(AuthMode.register);
   // }, []);
-  // const setAuthModeToLogin = useCallback(() => {
-  //   return setAuthMode(AuthMode.login);
-  // }, []);
+  const setAuthModeToLogin = useCallback(() => {
+    return setAuthMode(AuthMode.login);
+  }, []);
+
   const setAuthModeToForgotPassword = useCallback(() => {
     return setAuthMode(AuthMode.forgotPassword);
   }, []);
@@ -93,7 +94,7 @@ const AuthForm: React.FC = () => {
       {authMode === AuthMode.login ? (
         <LoginForm />
       ) : authMode === AuthMode.register ? (
-        <RegisterForm />
+        <RegisterForm goToLoginForm={setAuthModeToLogin} />
       ) : (
         <ForgotPasswordForm />
       )}

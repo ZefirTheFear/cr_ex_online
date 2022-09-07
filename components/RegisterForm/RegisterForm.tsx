@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import cloneDeep from "clone-deep";
 
 import Spinner from "../Spinner/Spinner";
 import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
+import InvalidFeedback from "../InvalidFeedback/InvalidFeedback";
 
 import { Languages } from "../../models/language";
 import {
@@ -15,8 +17,22 @@ import {
 
 import classes from "./RegisterForm.module.scss";
 
-const RegisterForm: React.FC = () => {
-  const controller = new AbortController();
+enum RegisterInputFields {
+  name = "name",
+  email = "email",
+  phone = "phone",
+  password = "password",
+  checkbox = "checkbox"
+}
+
+interface RegisterFormProps {
+  goToLoginForm: () => void;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
+  const controller = useMemo(() => {
+    return new AbortController();
+  }, []);
 
   const router = useRouter();
   const language = router.query.lang as Languages;
@@ -26,15 +42,28 @@ const RegisterForm: React.FC = () => {
   const nameInput = useRef<HTMLInputElement>(null);
   const phoneInput = useRef<HTMLInputElement>(null);
 
-  const [isTermsAgreed, setIsTermsAgreed] = useState(false);
-  const [inputErrors, setinputErrors] = useState<IRegisterInputErrors>();
+  const [isTermsAgreed, setIsTermsAgreed] = useState(true);
+  const [inputErrors, setInputErrors] = useState<IRegisterInputErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
   const toggleCheckbox = useCallback(() => {
     setIsTermsAgreed((prevState) => !prevState);
-  }, []);
+    const newErrors = cloneDeep(inputErrors);
+    delete newErrors["checkbox"];
+    setInputErrors(newErrors);
+  }, [inputErrors]);
+
+  const focusInput = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      const newErrors = cloneDeep(inputErrors);
+      const fieldName = e.target.name as RegisterInputFields;
+      delete newErrors[fieldName];
+      setInputErrors(newErrors);
+    },
+    [inputErrors]
+  );
 
   const registerUser = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
@@ -54,16 +83,15 @@ const RegisterForm: React.FC = () => {
         email: emailInput.current.value,
         phone: phoneInput.current.value,
         password: passwordInput.current.value,
+        isTermsAgreed: isTermsAgreed,
         language: language
       };
 
       const registerInputErrors = registerValidation(registerData);
       console.log("registerInputErrors: ", registerInputErrors);
       if (registerInputErrors) {
-        return setinputErrors(registerInputErrors);
+        return setInputErrors(registerInputErrors);
       }
-
-      // TODO checkbox
 
       setIsLoading(true);
       try {
@@ -79,7 +107,7 @@ const RegisterForm: React.FC = () => {
 
         if (response.status === 422) {
           const data = (await response.json()) as { inputErrors: IRegisterInputErrors };
-          setinputErrors(data.inputErrors);
+          setInputErrors(data.inputErrors);
           setIsLoading(false);
           return;
         }
@@ -109,7 +137,7 @@ const RegisterForm: React.FC = () => {
         return;
       }
     },
-    [language]
+    [controller.signal, isTermsAgreed, language]
   );
 
   const closeSWWModal = useCallback(() => {
@@ -117,15 +145,14 @@ const RegisterForm: React.FC = () => {
   }, []);
 
   const closeSuccessModal = useCallback(() => {
-    router.push(`/${language}`);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
+    goToLoginForm();
+  }, [goToLoginForm]);
 
   useEffect(() => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [controller]);
 
   return (
     <>
@@ -135,10 +162,10 @@ const RegisterForm: React.FC = () => {
           closeModal={closeSWWModal}
           msg={
             language === Languages.en
-              ? "something went wrong. try again"
+              ? "Something went wrong. Try again later"
               : language === Languages.ua
-              ? "Щось пішло не так"
-              : "Что-то пошло не так"
+              ? "Щось пішло не так. Cпробуйте пізніше"
+              : "Что-то пошло не так. Попробуйте позже"
           }
         />
       )}
@@ -147,10 +174,10 @@ const RegisterForm: React.FC = () => {
           closeModal={closeSuccessModal}
           msg={
             language === Languages.en
-              ? "you are registered"
+              ? "You are registered"
               : language === Languages.ua
-              ? "ви зараєстровані"
-              : "вы зарегистированны"
+              ? "Ви зараєстровані"
+              : "Вы зарегистированны"
           }
         />
       )}
@@ -169,7 +196,10 @@ const RegisterForm: React.FC = () => {
                   ? "Введіть ваше ім'я"
                   : "Введите ваше имя"
               }
+              name={RegisterInputFields.name}
+              errors={inputErrors.name ? inputErrors.name : null}
               ref={nameInput}
+              onFocus={focusInput}
             />
             <AuthInputGroup
               title="Email"
@@ -181,7 +211,10 @@ const RegisterForm: React.FC = () => {
                   ? "Введіть ваш email"
                   : "Введите ваш email"
               }
+              name={RegisterInputFields.email}
+              errors={inputErrors.email ? inputErrors.email : null}
               ref={emailInput}
+              onFocus={focusInput}
             />
           </div>
           <div className={classes["register__form-row"]}>
@@ -195,7 +228,10 @@ const RegisterForm: React.FC = () => {
                   ? "Введіть ваш телефон"
                   : "Введите ваш телефон"
               }
+              name={RegisterInputFields.phone}
+              errors={inputErrors.phone ? inputErrors.phone : null}
               ref={phoneInput}
+              onFocus={focusInput}
             />
             <AuthInputGroup
               title={language === Languages.en ? "Password" : "Пароль"}
@@ -207,45 +243,52 @@ const RegisterForm: React.FC = () => {
                   ? "Введіть ваш пароль"
                   : "Введите ваш пароль"
               }
+              name={RegisterInputFields.password}
+              errors={inputErrors.password ? inputErrors.password : null}
               ref={passwordInput}
+              onFocus={focusInput}
             />
           </div>
           <div className={classes["register__form-row"]}>
-            <div className={classes.register__terms}>
-              <div>
-                <input
-                  type="checkbox"
-                  className={classes.register__checkbox}
-                  checked={isTermsAgreed}
-                  onChange={toggleCheckbox}
-                />
+            <div>
+              <div className={classes.register__terms}>
+                <div>
+                  <input
+                    type="checkbox"
+                    className={classes.register__checkbox}
+                    checked={isTermsAgreed}
+                    name={RegisterInputFields.checkbox}
+                    onChange={toggleCheckbox}
+                  />
+                </div>
+                <div className={classes["register__terms-text"]}>
+                  {language === Languages.en
+                    ? "I have read and agree to "
+                    : language === Languages.ua
+                    ? "Я ознайомлений та згоден з "
+                    : "Я ознакомлен и согласен с "}
+                  <span className={classes["register__terms-link"]}>
+                    <Link href={`/${encodeURIComponent(language)}/terms-and-conditions`}>
+                      {language === Languages.en
+                        ? "Terms of use"
+                        : language === Languages.ua
+                        ? "Правилами використання сайту"
+                        : "Правилами использования сайта"}
+                    </Link>
+                  </span>
+                  {language === Languages.en ? " and " : language === Languages.ua ? " та " : " и "}
+                  <span className={classes["register__terms-link"]}>
+                    <Link href={`/${encodeURIComponent(language)}/privacy-policy`}>
+                      {language === Languages.en
+                        ? "Privacy policy"
+                        : language === Languages.ua
+                        ? "Політикою конфіденційності"
+                        : "Политикой конфиденциальности"}
+                    </Link>
+                  </span>
+                </div>
               </div>
-              <div className={classes["register__terms-text"]}>
-                {language === Languages.en
-                  ? "I have read and agree to "
-                  : language === Languages.ua
-                  ? "Я ознайомлений та згоден з "
-                  : "Я ознакомлен и согласен с "}
-                <span className={classes["register__terms-link"]}>
-                  <Link href={`/${encodeURIComponent(language)}/terms-and-conditions`}>
-                    {language === Languages.en
-                      ? "Terms of use"
-                      : language === Languages.ua
-                      ? "Правилами використання сайту"
-                      : "Правилами использования сайта"}
-                  </Link>
-                </span>
-                {language === Languages.en ? " and " : language === Languages.ua ? " та " : " и "}
-                <span className={classes["register__terms-link"]}>
-                  <Link href={`/${encodeURIComponent(language)}/privacy-policy`}>
-                    {language === Languages.en
-                      ? "Privacy policy"
-                      : language === Languages.ua
-                      ? "Політикою конфіденційності"
-                      : "Политикой конфиденциальности"}
-                  </Link>
-                </span>
-              </div>
+              {inputErrors.checkbox && <InvalidFeedback msg={inputErrors.checkbox} />}
             </div>
             <button className={classes["register__submit-btn"]} type="submit">
               {language === Languages.en
