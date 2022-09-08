@@ -79,10 +79,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
       }
 
       const registerData: IRegisterData = {
-        name: nameInput.current.value,
-        email: emailInput.current.value,
-        phone: phoneInput.current.value,
-        password: passwordInput.current.value,
+        name: nameInput.current.value.trim(),
+        email: emailInput.current.value.toLowerCase().trim(),
+        phone: phoneInput.current.value.trim(),
+        password: passwordInput.current.value.trim(),
         isTermsAgreed: isTermsAgreed,
         language: language
       };
@@ -126,7 +126,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
           return;
         }
 
-        const data = (await response.json()) as { message: string };
+        const data = await response.json();
         console.log(data);
         setIsLoading(false);
         return;
@@ -252,10 +252,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
           <div className={classes["register__form-row"]}>
             <div>
               <div className={classes.register__terms}>
-                <div>
+                <div className={classes["register__checkbox-container"]}>
                   <input
                     type="checkbox"
-                    className={classes.register__checkbox}
+                    className={
+                      `${classes.register__checkbox}` +
+                      (inputErrors.checkbox ? ` ${classes.register__checkbox_invalid}` : ``)
+                    }
                     checked={isTermsAgreed}
                     name={RegisterInputFields.checkbox}
                     onChange={toggleCheckbox}

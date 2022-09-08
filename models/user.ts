@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, Model } from "mongoose";
 
 export interface IUser {
   name: string;
@@ -28,4 +28,10 @@ const userSchema = new Schema<IUser>({
   }
 });
 
-export default models.User || model<IUser>("User", userSchema);
+// if (models.User) {
+//   delete models.User
+// }
+
+// const User = model<IUser>("User", userSchema);
+const User: Model<IUser> = models.User || model<IUser>("User", userSchema);
+export default User;
