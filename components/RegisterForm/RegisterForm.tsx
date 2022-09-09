@@ -95,7 +95,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
 
       setIsLoading(true);
       try {
-        const response = await fetch("/api/register-user", {
+        const response = await fetch("/api/auth/register-user", {
           method: "POST",
           body: JSON.stringify(registerData),
           headers: {

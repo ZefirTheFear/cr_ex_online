@@ -1,16 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { hash } from "bcryptjs";
 
-import { connectToDB } from "../../utils/ts/db";
-import User, { IUser } from "./../../models/user";
-import { Languages } from "./../../models/language";
+import { connectToDB } from "../../../utils/ts/db";
+import User, { IUser } from "../../../models/user";
+import { Languages } from "../../../models/language";
 // import sendEmail from "../../utils/ts/send-email";
 
 import {
   registerValidation,
   IRegisterData,
   IRegisterInputErrors
-} from "./../../utils/ts/validations";
+} from "../../../utils/ts/validations";
 
 type Data =
   | {
@@ -26,13 +26,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const registerData = req.body as IRegisterData;
 
   const registerInputErrors = registerValidation(registerData);
-
   if (registerInputErrors) {
     return res.status(422).json({ inputErrors: registerInputErrors });
   }
 
   const connection = await connectToDB();
-
   if (!connection) {
     return res.status(503).json({ message: "connecting db error" });
   }
