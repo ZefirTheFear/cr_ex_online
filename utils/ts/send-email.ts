@@ -1,37 +1,41 @@
 import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 
-const message: MailDataRequired = {
-  from: {
-    name: "Cryptoobmin",
-    email: "z4clr07.gaming@gmail.com"
-  },
-  to: {
-    name: "user",
-    email: "alexeyklimenkojs@gmail.com"
-  },
-  subject: "yurahh",
-  content: [
-    {
-      type: "text/html",
-      value: `<p>Hello, user!</p>`
-    }
-  ],
-  replyTo: {
-    email: "z4clr07.gaming@gmail.com"
-  }
-};
+import { IUser } from "./../../models/user";
 
-const sendEmail = async () => {
-  try {
-    if (process.env.SENDGRID_API_KEY) {
-      console.log(process.env.SENDGRID_API_KEY);
-      sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-    }
-    const response = await sendgrid.send(message);
-    console.log(response);
+const sendEmail = async (user: IUser, subject: string, htmlTemplate: string) => {
+  if (!process.env.SENDGRID_EMAIL || !process.env.SENDGRID_API_KEY) {
     return;
+  }
+
+  sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+  const mailData: MailDataRequired = {
+    from: {
+      name: "Cryptoobmin",
+      email: process.env.SENDGRID_EMAIL
+    },
+    to: {
+      name: user.name,
+      email: user.email
+    },
+    subject: subject,
+    content: [
+      {
+        type: "text/html",
+        value: htmlTemplate
+      }
+    ],
+    replyTo: {
+      email: process.env.SENDGRID_EMAIL
+    }
+  };
+
+  try {
+    const response = await sendgrid.send(mailData);
+    console.log("sendgrid response: ", response);
+    return response;
   } catch (error) {
-    console.log(error);
+    console.log("sendgrid error: ", error);
     return;
   }
 };

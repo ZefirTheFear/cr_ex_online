@@ -30,6 +30,15 @@ export interface ILoginInputErrors {
   password?: string[];
 }
 
+export interface IForgotPasswordData {
+  email: string;
+  language: Languages;
+}
+
+export interface IForgotPasswordInputErrors {
+  email?: string[];
+}
+
 export const registerValidation: (obj: IRegisterData) => IRegisterInputErrors | undefined = ({
   name,
   email,
@@ -140,6 +149,26 @@ export const loginValidation: (obj: ILoginData) => ILoginInputErrors | undefined
         ? "хоча б 1 заголовний символ"
         : "хотя бы 1 заглавный символ";
     inputErrors.password = inputErrors.password ? [...inputErrors.password, errorMsg] : [errorMsg];
+  }
+
+  if (Object.keys(inputErrors).length > 0) {
+    return inputErrors;
+  }
+};
+
+export const forgotPasswordValidation: (
+  obj: IForgotPasswordData
+) => IForgotPasswordInputErrors | undefined = ({ email, language }) => {
+  const inputErrors: IForgotPasswordInputErrors = {};
+
+  if (!validator.isEmail(email.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "enter valid email"
+        : language === Languages.ua
+        ? "введіть дійсний email"
+        : "введите действительный email";
+    inputErrors.email = inputErrors.email ? [...inputErrors.email, errorMsg] : [errorMsg];
   }
 
   if (Object.keys(inputErrors).length > 0) {

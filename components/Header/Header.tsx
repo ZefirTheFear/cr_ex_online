@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useMemo, useCallback, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
+import { useSession, signOut } from "next-auth/react";
 
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
@@ -21,6 +23,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ lang }) => {
+  const router = useRouter();
+
+  const { data: session, status } = useSession();
+
   const isMobileMenuOpen = useAppSelector((state) => state.mobileMenuState.isOpen);
   const dispatch = useAppDispatch();
 
@@ -35,6 +41,16 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
   const closeMobMenu = useCallback(() => {
     dispatch(closeMobileMenu());
   }, [dispatch]);
+
+  const logOut = useCallback(
+    async () => {
+      const data = await signOut({ redirect: false, callbackUrl: `/${lang}` });
+      router.push(data.url);
+    },
+    // disable the linting on the next line - This is the cleanest solution according to Nextjs.org
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -78,19 +94,22 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           ))}
         </nav>
         <LanguageSelector />
-        <div className={classes["header__auth-btn-container"]}>
-          <Link href={`/${encodeURIComponent(lang)}/auth`}>
-            <a>
-              <button className={classes["header__auth-btn"]} type="button">
-                <span className={classes["header__auth-btn-title"]}>
-                  {lang === Languages.en ? "Login" : lang === Languages.ua ? "Увійти" : "Войти"}
-                </span>
-                <span className={classes["header__auth-icon"]}>
-                  <FaSignInAlt />
-                </span>
-              </button>
-            </a>
-          </Link>
+        <div className={classes["header__auth-container"]}>
+          {!session && status !== "loading" && (
+            <Link href={`/${encodeURIComponent(lang)}/auth`}>
+              <a>
+                <button className={classes["header__auth-btn"]} type="button">
+                  <span className={classes["header__auth-btn-title"]}>
+                    {lang === Languages.en ? "Login" : lang === Languages.ua ? "Увійти" : "Войти"}
+                  </span>
+                  <span className={classes["header__auth-icon"]}>
+                    <FaSignInAlt />
+                  </span>
+                </button>
+              </a>
+            </Link>
+          )}
+          {session && <div onClick={logOut}>LogOut</div>}
         </div>
         <div
           className={

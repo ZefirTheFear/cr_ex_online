@@ -4,13 +4,12 @@ import { hash } from "bcryptjs";
 import { connectToDB } from "../../../utils/ts/db";
 import User, { IUser } from "../../../models/user";
 import { Languages } from "../../../models/language";
-// import sendEmail from "../../utils/ts/send-email";
-
 import {
   registerValidation,
   IRegisterData,
   IRegisterInputErrors
 } from "../../../utils/ts/validations";
+// import sendEmail from "../../utils/ts/send-email";
 
 type Data =
   | {
@@ -62,6 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     await newUser.save();
   } catch (error) {
+    console.log("error: ", error);
     connection.connection.close();
     return res.status(503).json({ message: "oops. user creating problem" });
   }

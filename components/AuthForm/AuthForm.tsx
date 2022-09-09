@@ -96,7 +96,7 @@ const AuthForm: React.FC = () => {
       ) : authMode === AuthMode.register ? (
         <RegisterForm goToLoginForm={setAuthModeToLogin} />
       ) : (
-        <ForgotPasswordForm />
+        <ForgotPasswordForm goToLoginForm={setAuthModeToLogin} />
       )}
       {authMode === AuthMode.login ? (
         <div

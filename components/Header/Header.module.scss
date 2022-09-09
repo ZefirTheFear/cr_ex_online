@@ -144,14 +144,15 @@
   }
 }
 
-.header__auth-btn-container {
+.header__auth-container {
+  margin-left: 1rem;
+
   a {
     text-decoration: none;
   }
 }
 
 .header__auth-btn {
-  margin-left: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
