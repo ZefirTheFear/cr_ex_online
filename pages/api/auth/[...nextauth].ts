@@ -5,6 +5,7 @@ import { compare } from "bcryptjs";
 import { loginValidation, ILoginData } from "../../../utils/ts/validations";
 import { connectToDB } from "../../../utils/ts/db";
 import User from "../../../models/user";
+import { LoginInputErrorType } from "../../../components/LoginForm/LoginForm";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -29,19 +30,19 @@ export const authOptions: NextAuthOptions = {
 
         const connection = await connectToDB();
         if (!connection) {
-          throw new Error("Connection to db failed");
+          throw new Error(LoginInputErrorType.db);
         }
 
         const user = await User.findOne({ email: loginData.email.toLocaleLowerCase() });
         if (!user) {
           connection.connection.close();
-          throw new Error("No user found!");
+          throw new Error(LoginInputErrorType.email);
         }
 
         const isValidPassword = await compare(loginData.password, user.password);
         if (!isValidPassword) {
           connection.connection.close();
-          throw new Error("Could not log you in!");
+          throw new Error(LoginInputErrorType.password);
         }
 
         connection.connection.close();

@@ -1,9 +1,10 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import cloneDeep from "clone-deep";
 import { signIn } from "next-auth/react";
 
 import Spinner from "../Spinner/Spinner";
+import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
 
 import { Languages } from "../../models/language";
@@ -16,11 +17,13 @@ enum LoginInputFields {
   password = "password"
 }
 
-const LoginForm: React.FC = () => {
-  const controller = useMemo(() => {
-    return new AbortController();
-  }, []);
+export enum LoginInputErrorType {
+  email = "email",
+  password = "password",
+  db = "db"
+}
 
+const LoginForm: React.FC = () => {
   const router = useRouter();
   const language = router.query.lang as Languages;
 
@@ -63,7 +66,6 @@ const LoginForm: React.FC = () => {
 
       setIsLoading(true);
       try {
-        // TODO
         const result = await signIn("credentials", {
           redirect: false,
           email: loginData.email,
@@ -71,18 +73,88 @@ const LoginForm: React.FC = () => {
           language: loginData.language
         });
         console.log("loginResult: ", result);
+
+        if (!result) {
+          setIsSomethingWentWrong(true);
+          setIsLoading(false);
+          return;
+        }
+
+        if (result.error) {
+          switch (result.error as LoginInputErrorType) {
+            case LoginInputErrorType.db: {
+              setIsSomethingWentWrong(true);
+              setIsLoading(false);
+              return;
+            }
+            case LoginInputErrorType.email: {
+              const error: ILoginInputErrors = {
+                email: [
+                  language === Languages.en
+                    ? "no such user exists"
+                    : language === Languages.ua
+                    ? "такого користувача не існує"
+                    : "такого пользователя не существует"
+                ]
+              };
+              setInputErrors(error);
+              setIsLoading(false);
+              return;
+            }
+            case LoginInputErrorType.password: {
+              const error: ILoginInputErrors = {
+                password: [
+                  language === Languages.en
+                    ? "wrong password"
+                    : language === Languages.ua
+                    ? "неправильний пароль"
+                    : "неправильный пароль"
+                ]
+              };
+              setInputErrors(error);
+              setIsLoading(false);
+              return;
+            }
+
+            default:
+              setIsSomethingWentWrong(true);
+              setIsLoading(false);
+              return;
+          }
+        }
+
         router.push(`/${language}`);
-        setIsLoading(false);
       } catch (error) {
-        // TODO
+        console.log("error: ", error);
+        setIsSomethingWentWrong(true);
+        setIsLoading(false);
+        return;
       }
     },
+    // disable the linting on the next line - This is the cleanest solution according to Nextjs.org
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [language]
   );
+
+  const closeSWWModal = useCallback(() => {
+    setIsSomethingWentWrong(false);
+  }, []);
 
   return (
     <>
       {isLoading && <Spinner />}
+      {isSomethingWentWrong && (
+        <Modal
+          closeModal={closeSWWModal}
+          msg={
+            language === Languages.en
+              ? "Something went wrong. Try again later"
+              : language === Languages.ua
+              ? "Щось пішло не так. Cпробуйте пізніше"
+              : "Что-то пошло не так. Попробуйте позже"
+          }
+        />
+      )}
       <div className={classes.login}>
         <form onSubmit={login} noValidate>
           <div className={classes["login__form-row"]}>

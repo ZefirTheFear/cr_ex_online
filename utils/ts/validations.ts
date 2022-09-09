@@ -110,7 +110,7 @@ export const loginValidation: (obj: ILoginData) => ILoginInputErrors | undefined
   password,
   language
 }) => {
-  const inputErrors: IRegisterInputErrors = {};
+  const inputErrors: ILoginInputErrors = {};
 
   if (!validator.isEmail(email.trim())) {
     const errorMsg =
