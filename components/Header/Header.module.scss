@@ -145,8 +145,6 @@
 }
 
 .header__auth-container {
-  margin-left: 1rem;
-
   a {
     text-decoration: none;
   }
@@ -180,6 +178,80 @@
   svg {
     display: flex;
   }
+}
+
+.header__user-container {
+  cursor: pointer;
+}
+
+.header__user {
+  transition: $main-transition;
+  @include hover-to-seconadry-color;
+  padding: 0.5rem;
+
+  display: flex;
+  align-items: center;
+
+  svg {
+    display: block;
+  }
+}
+
+.header__user-icon {
+  font-size: 1.5rem;
+}
+
+.header__user-options {
+  position: absolute;
+  height: 0;
+  border: 0px solid $light-color;
+  overflow: hidden;
+  transition: $main-transition;
+  border-radius: $border-radius;
+}
+
+.header__user-options_open {
+  margin-top: 0.25rem;
+}
+
+.header__user-arrow {
+  margin-left: 0.2rem;
+  transition: transform 0.15s linear;
+
+  svg {
+    display: block;
+  }
+}
+
+.header__user-arrow_open {
+  transform: rotate(-180deg);
+}
+
+.header__user-options-item {
+  background: $bg-color-main-shadow;
+  border-bottom: 1px solid $light-color;
+  font-weight: bold;
+  cursor: pointer;
+  transition: $main-transition;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  @include hover-bg-to-seconadry-color;
+
+  a {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: $light-color;
+  }
+}
+
+.header__user-options-item_with-padding {
+  padding: 0.5rem;
 }
 
 .header__menu-btn {

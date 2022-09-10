@@ -3,14 +3,14 @@
 
 .language-selector {
   margin-left: auto;
+  margin-right: 1rem;
 }
 
 .language-selector__selected {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 2rem;
-  padding: 0.25rem;
+  padding: 0.5rem;
   cursor: pointer;
   transition: $main-transition;
 
@@ -44,7 +44,6 @@
   overflow: hidden;
   transition: $main-transition;
   border-radius: $border-radius;
-  // z-index: $lang-selector-z-i;
 }
 
 .language-selector__select-options-item {

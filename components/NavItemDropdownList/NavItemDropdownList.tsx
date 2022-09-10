@@ -25,12 +25,10 @@ const NavItemDropdownList: React.FC<NavItemDropdownListProps> = ({ title, list }
     const elem = listElem.current as HTMLUListElement;
     if (isOpenList) {
       elem.style.borderWidth = "0";
-      // elem.style.marginTop = "";
       elem.style.height = "0";
     } else {
       const borderWidth = 1;
       elem.style.borderWidth = `${borderWidth}px`;
-      // elem.style.marginTop = "0.75rem";
       elem.style.height = elem.scrollHeight + borderWidth * 2 + "px";
     }
     setIsOpenList((prevState) => !prevState);
@@ -40,7 +38,6 @@ const NavItemDropdownList: React.FC<NavItemDropdownListProps> = ({ title, list }
     const elem = listElem.current as HTMLUListElement;
     elem.style.borderWidth = "0";
     elem.style.height = "0";
-    // elem.style.marginTop = "";
     setIsOpenList(false);
   }, []);
 
@@ -81,7 +78,6 @@ const NavItemDropdownList: React.FC<NavItemDropdownListProps> = ({ title, list }
       >
         <span>{title}</span>
         <span
-          // className={classes["nav-item-dropdown-list__arrow"]}
           className={
             `${classes["nav-item-dropdown-list__arrow"]}` +
             (isOpenList ? ` ${classes["nav-item-dropdown-list__arrow_is-opened"]}` : ``)
