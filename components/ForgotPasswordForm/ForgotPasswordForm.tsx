@@ -15,7 +15,7 @@ import {
 
 import classes from "./ForgotPasswordForm.module.scss";
 
-enum ForgotPasswordInputFields {
+enum ForgotPasswordInputFieldName {
   email = "email"
 }
 
@@ -41,7 +41,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ goToLoginForm }
   const focusInput = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       const newErrors = cloneDeep(inputErrors);
-      const fieldName = e.target.name as ForgotPasswordInputFields;
+      const fieldName = e.target.name as ForgotPasswordInputFieldName;
       delete newErrors[fieldName];
       setInputErrors(newErrors);
     },
@@ -168,7 +168,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ goToLoginForm }
                   ? "Введіть ваш email"
                   : "Введите ваш email"
               }
-              name={ForgotPasswordInputFields.email}
+              name={ForgotPasswordInputFieldName.email}
               errors={inputErrors.email ? inputErrors.email : null}
               onFocus={focusInput}
               ref={emailInput}

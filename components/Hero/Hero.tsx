@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import Calculator from "../Calculator/Calculator";
 
-import { Currency, Currencies } from "../../models/currency";
+import { Currency, CurrencyName } from "../../models/currency";
 import { currencies } from "../../data/currencyItems";
 
 import classes from "./Hero.module.scss";
@@ -11,10 +11,14 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ text }) => {
-  const startingCurrencies = useMemo(() => {
+  const initialCurrencies = useMemo(() => {
     return {
-      sendingCurrency: currencies.find((currency) => currency.name === Currencies.usdt) as Currency,
-      receivedCurrency: currencies.find((currency) => currency.name === Currencies.uah) as Currency
+      initialCurrencyFromCustomer: currencies.find(
+        (currency) => currency.name === CurrencyName.usdt
+      ) as Currency,
+      initialCurrencyToCustomer: currencies.find(
+        (currency) => currency.name === CurrencyName.uah
+      ) as Currency
     };
   }, []);
 
@@ -27,7 +31,7 @@ const Hero: React.FC<HeroProps> = ({ text }) => {
         </div>
         <div className={classes.hero__calculator}>
           <div className={classes["hero__calculator-inner"]}>
-            <Calculator startingCurrencies={startingCurrencies} />
+            <Calculator initialCurrencies={initialCurrencies} />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { StaticImageData } from "next/image";
 
-export enum Currencies {
+export enum CurrencyName {
   btc = "BTC",
   eth = "ETH",
   usdt = "USDT",
@@ -32,8 +32,14 @@ export type Rates = {
   UAH: number;
 };
 
+export enum CurrencyType {
+  crypto = "crypto",
+  fiat = "fiat"
+}
+
 export interface Currency {
-  name: Currencies;
-  img: StaticImageData;
+  name: CurrencyName;
+  type: CurrencyType;
   value: number;
+  img: StaticImageData;
 }

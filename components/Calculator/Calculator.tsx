@@ -1,30 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import cloneDeep from "clone-deep";
 
 import { TiArrowRepeat } from "react-icons/ti";
 import { ImCheckboxChecked } from "react-icons/im";
 
+import Test from "./Test";
 import Spinner from "../Spinner/Spinner";
 import Modal from "../Modal/Modal";
 import ExchangeData from "../ExchangeData/ExchangeData";
 
 import { Languages } from "../../models/language";
-import { Currencies, Currency, Rates } from "../../models/currency";
+import { CurrencyName, Currency, Rates } from "../../models/currency";
 import { currencies } from "../../data/currencyItems";
+
+import {
+  reducer,
+  initFn,
+  setCurrentCurrencyFromCustomer,
+  setCurrentCurrencyToCustomer
+} from "./reducer";
 
 import classes from "./Calculator.module.scss";
 
 interface CalculatorProps {
-  startingCurrencies: {
-    sendingCurrency: Currency;
-    receivedCurrency: Currency;
+  initialCurrencies: {
+    initialCurrencyFromCustomer: Currency;
+    initialCurrencyToCustomer: Currency;
   };
 }
 
-const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
+const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
   const controller = useMemo(() => {
     return new AbortController();
   }, []);
@@ -32,15 +40,41 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
   const router = useRouter();
   const language = router.query.lang as Languages;
 
-  const [currentSendingCurrency, setCurrentSendingCurrency] = useState(
-    startingCurrencies.sendingCurrency
-  );
-  const [currentReceivedCurrency, setCurrentReceivedCurrency] = useState(
-    startingCurrencies.receivedCurrency
-  );
+  const [calculatorState, dispatch] = useReducer(reducer, initialCurrencies, initFn);
+
   const [newCurrencies, setNewCurrencies] = useState(currencies);
   const [isLoading, setIsLoading] = useState(false);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
+
+  const onChangeCurrentCurrencyFromCustomer = useCallback(
+    (e: React.MouseEvent<HTMLLIElement>) => {
+      const currencyName = e.currentTarget.getAttribute("data-name");
+      if (!currencyName) {
+        return;
+      }
+      const newSelectedCurrency = newCurrencies.find((currency) => currency.name === currencyName);
+      if (!newSelectedCurrency) {
+        return;
+      }
+      dispatch(setCurrentCurrencyFromCustomer(newSelectedCurrency));
+    },
+    [newCurrencies]
+  );
+
+  const onChangeCurrentCurrencyToCustomer = useCallback(
+    (e: React.MouseEvent<HTMLLIElement>) => {
+      const currencyName = e.currentTarget.getAttribute("data-name");
+      if (!currencyName) {
+        return;
+      }
+      const newSelectedCurrency = newCurrencies.find((currency) => currency.name === currencyName);
+      if (!newSelectedCurrency) {
+        return;
+      }
+      dispatch(setCurrentCurrencyToCustomer(newSelectedCurrency));
+    },
+    [newCurrencies]
+  );
 
   const passRatesToCurrencies = useCallback((newRates: Rates) => {
     setNewCurrencies((prevState) => {
@@ -104,7 +138,7 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
         <div className={classes.calculator__rates__block}>
           <div className={classes.calculator__rates}>
             {newCurrencies.map((currency) => {
-              if (currency.name === Currencies.uah) {
+              if (currency.name === CurrencyName.uah) {
                 return;
               } else {
                 return (
@@ -120,7 +154,7 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
                     <span className={classes["calculator__rates-item-name"]}>{currency.name}</span>
                     <span className={classes["calculator__rates-item-rate"]}>
                       :{" "}
-                      {currency.name === Currencies.shib
+                      {currency.name === CurrencyName.shib
                         ? `${(currency.value * 1000).toFixed(2)}*`
                         : currency.value.toFixed(2)}
                     </span>
@@ -143,8 +177,9 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
                   ? "Відправляєте"
                   : "Отправляете"
               }
-              currentCurrency={currentSendingCurrency}
+              currentCurrency={calculatorState.currentCurrencyFromCustomer}
               currencyOptions={newCurrencies}
+              onChangeCurrency={onChangeCurrentCurrencyFromCustomer}
             />
             <div className={classes.calculator__swaper}>
               <TiArrowRepeat />
@@ -157,8 +192,9 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
                   ? "Отримуєте"
                   : "Получаете"
               }
-              currentCurrency={currentReceivedCurrency}
+              currentCurrency={calculatorState.currentCurrencyToCustomer}
               currencyOptions={newCurrencies}
+              onChangeCurrency={onChangeCurrentCurrencyToCustomer}
             />
           </div>
           <div className={classes.calculator__note}>
@@ -189,6 +225,7 @@ const Calculator: React.FC<CalculatorProps> = ({ startingCurrencies }) => {
               ? "Обміняти"
               : "Обменять"}
           </button>
+          <Test />
         </div>
       </div>
     </>

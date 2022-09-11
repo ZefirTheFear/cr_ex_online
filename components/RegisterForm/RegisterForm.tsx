@@ -17,7 +17,7 @@ import {
 
 import classes from "./RegisterForm.module.scss";
 
-enum RegisterInputFields {
+enum RegisterInputFieldName {
   name = "name",
   email = "email",
   phone = "phone",
@@ -58,7 +58,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
   const focusInput = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       const newErrors = cloneDeep(inputErrors);
-      const fieldName = e.target.name as RegisterInputFields;
+      const fieldName = e.target.name as RegisterInputFieldName;
       delete newErrors[fieldName];
       setInputErrors(newErrors);
     },
@@ -196,7 +196,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
                   ? "Введіть ваше ім'я"
                   : "Введите ваше имя"
               }
-              name={RegisterInputFields.name}
+              name={RegisterInputFieldName.name}
               errors={inputErrors.name ? inputErrors.name : null}
               ref={nameInput}
               onFocus={focusInput}
@@ -211,7 +211,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
                   ? "Введіть ваш email"
                   : "Введите ваш email"
               }
-              name={RegisterInputFields.email}
+              name={RegisterInputFieldName.email}
               errors={inputErrors.email ? inputErrors.email : null}
               ref={emailInput}
               onFocus={focusInput}
@@ -228,7 +228,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
                   ? "Введіть ваш телефон"
                   : "Введите ваш телефон"
               }
-              name={RegisterInputFields.phone}
+              name={RegisterInputFieldName.phone}
               errors={inputErrors.phone ? inputErrors.phone : null}
               ref={phoneInput}
               onFocus={focusInput}
@@ -243,7 +243,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
                   ? "Введіть ваш пароль"
                   : "Введите ваш пароль"
               }
-              name={RegisterInputFields.password}
+              name={RegisterInputFieldName.password}
               errors={inputErrors.password ? inputErrors.password : null}
               ref={passwordInput}
               onFocus={focusInput}
@@ -260,7 +260,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
                       (inputErrors.checkbox ? ` ${classes.register__checkbox_invalid}` : ``)
                     }
                     checked={isTermsAgreed}
-                    name={RegisterInputFields.checkbox}
+                    name={RegisterInputFieldName.checkbox}
                     onChange={toggleCheckbox}
                   />
                 </div>

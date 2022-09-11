@@ -12,7 +12,7 @@ import { ILoginData, ILoginInputErrors, loginValidation } from "../../utils/ts/v
 
 import classes from "./LoginForm.module.scss";
 
-enum LoginInputFields {
+enum LoginInputFieldName {
   email = "email",
   password = "password"
 }
@@ -37,7 +37,7 @@ const LoginForm: React.FC = () => {
   const focusInput = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       const newErrors = cloneDeep(inputErrors);
-      const fieldName = e.target.name as LoginInputFields;
+      const fieldName = e.target.name as LoginInputFieldName;
       delete newErrors[fieldName];
       setInputErrors(newErrors);
     },
@@ -168,7 +168,7 @@ const LoginForm: React.FC = () => {
                   ? "Введіть ваш email"
                   : "Введите ваш email"
               }
-              name={LoginInputFields.email}
+              name={LoginInputFieldName.email}
               errors={inputErrors.email ? inputErrors.email : null}
               ref={emailInput}
               onFocus={focusInput}
@@ -185,7 +185,7 @@ const LoginForm: React.FC = () => {
                   ? "Введіть ваш пароль"
                   : "Введите ваш пароль"
               }
-              name={LoginInputFields.password}
+              name={LoginInputFieldName.password}
               errors={inputErrors.password ? inputErrors.password : null}
               ref={passwordInput}
               onFocus={focusInput}

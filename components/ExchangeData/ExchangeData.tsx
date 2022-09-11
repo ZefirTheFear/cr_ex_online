@@ -10,9 +10,15 @@ interface ExchangeDataProps {
   title: string;
   currentCurrency: Currency;
   currencyOptions: Currency[];
+  onChangeCurrency: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, currencyOptions }) => {
+const ExchangeData: React.FC<ExchangeDataProps> = ({
+  title,
+  currentCurrency,
+  currencyOptions,
+  onChangeCurrency
+}) => {
   const selectedElem = useRef<HTMLDivElement>(null);
   const optionsListElem = useRef<HTMLUListElement>(null);
 
@@ -115,7 +121,7 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({ title, currentCurrency, cur
                 className={classes["exchange-data__select-options-item"]}
                 key={currency.name}
                 data-name={currency.name}
-                // onClick={onChangeCurrency}
+                onClick={onChangeCurrency}
               >
                 <span className={classes["exchange-data__currency-img"]}>
                   <Image
