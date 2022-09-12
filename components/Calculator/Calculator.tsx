@@ -20,7 +20,9 @@ import {
   reducer,
   initFn,
   setCurrentCurrencyFromCustomer,
-  setCurrentCurrencyToCustomer
+  setCurrentCurrencyToCustomer,
+  setAmoutCurrencyFromCustomer,
+  setAmoutCurrencyToCustomer
 } from "./reducer";
 
 import classes from "./Calculator.module.scss";
@@ -75,6 +77,14 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     },
     [newCurrencies]
   );
+
+  const changeAmountCurrencyFromCustomer = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setAmoutCurrencyFromCustomer(e.currentTarget.value));
+  }, []);
+
+  const changeAmountCurrencyToCustomer = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setAmoutCurrencyToCustomer(e.currentTarget.value));
+  }, []);
 
   const passRatesToCurrencies = useCallback((newRates: Rates) => {
     setNewCurrencies((prevState) => {
@@ -180,6 +190,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               currentCurrency={calculatorState.currentCurrencyFromCustomer}
               currencyOptions={newCurrencies}
               onChangeCurrency={onChangeCurrentCurrencyFromCustomer}
+              value={calculatorState.amountCurrencyFromCustomer}
+              onChangeInputAmount={changeAmountCurrencyFromCustomer}
             />
             <div className={classes.calculator__swaper}>
               <TiArrowRepeat />
@@ -195,6 +207,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               currentCurrency={calculatorState.currentCurrencyToCustomer}
               currencyOptions={newCurrencies}
               onChangeCurrency={onChangeCurrentCurrencyToCustomer}
+              value={calculatorState.amountCurrencyToCustomer}
+              onChangeInputAmount={changeAmountCurrencyToCustomer}
             />
           </div>
           <div className={classes.calculator__note}>

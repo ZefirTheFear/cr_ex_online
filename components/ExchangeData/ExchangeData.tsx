@@ -11,13 +11,17 @@ interface ExchangeDataProps {
   currentCurrency: Currency;
   currencyOptions: Currency[];
   onChangeCurrency: (e: React.MouseEvent<HTMLLIElement>) => void;
+  value: string;
+  onChangeInputAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const ExchangeData: React.FC<ExchangeDataProps> = ({
   title,
   currentCurrency,
   currencyOptions,
-  onChangeCurrency
+  onChangeCurrency,
+  value,
+  onChangeInputAmount
 }) => {
   const selectedElem = useRef<HTMLDivElement>(null);
   const optionsListElem = useRef<HTMLUListElement>(null);
@@ -72,6 +76,28 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
     [closeCurrenciesOptions, isOpenedOptions]
   );
 
+  const onKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    // console.log(event);
+    if (event.key === "-" || event.key === "+") {
+      return event.preventDefault();
+    }
+  }, []);
+
+  const onPaste = useCallback((event: React.ClipboardEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    // const textData = event.clipboardData.getData("text");
+    // console.log(textData);
+    // // event.clipboardData.setData("text", "555888999");
+    // const selection = window.getSelection();
+    // console.log("selection: ", selection);
+    // if (!selection || !selection.rangeCount) {
+    //   return;
+    // }
+    // document.createRange;
+    // selection.deleteFromDocument();
+    // selection.getRangeAt(0).insertNode(document.createTextNode("555888999"));
+  }, []);
+
   useEffect(() => {
     window.addEventListener("click", closeOpenedOptions);
     return () => {
@@ -88,6 +114,10 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
           type="number"
           placeholder="0.00"
           autoComplete="off"
+          value={value}
+          onChange={onChangeInputAmount}
+          onKeyDown={onKeyDown}
+          onPaste={onPaste}
         />
         <div className={classes["exchange-data__currency-selector"]}>
           <div

@@ -39,15 +39,10 @@ export interface IForgotPasswordInputErrors {
   email?: string[];
 }
 
-export const registerValidation: (obj: IRegisterData) => IRegisterInputErrors | undefined = ({
-  name,
-  email,
-  phone,
-  password,
-  isTermsAgreed,
-  language
-}) => {
+export const registerValidation = (inputData: IRegisterData): IRegisterInputErrors | undefined => {
   const inputErrors: IRegisterInputErrors = {};
+
+  const { name, email, phone, password, isTermsAgreed, language } = inputData;
 
   if (!isTermsAgreed) {
     const errorMsg =
@@ -114,12 +109,10 @@ export const registerValidation: (obj: IRegisterData) => IRegisterInputErrors | 
   }
 };
 
-export const loginValidation: (obj: ILoginData) => ILoginInputErrors | undefined = ({
-  email,
-  password,
-  language
-}) => {
+export const loginValidation = (inputData: ILoginData): ILoginInputErrors | undefined => {
   const inputErrors: ILoginInputErrors = {};
+
+  const { email, password, language } = inputData;
 
   if (!validator.isEmail(email.trim())) {
     const errorMsg =
@@ -156,10 +149,12 @@ export const loginValidation: (obj: ILoginData) => ILoginInputErrors | undefined
   }
 };
 
-export const forgotPasswordValidation: (
-  obj: IForgotPasswordData
-) => IForgotPasswordInputErrors | undefined = ({ email, language }) => {
+export const forgotPasswordValidation = (
+  inputData: IForgotPasswordData
+): IForgotPasswordInputErrors | undefined => {
   const inputErrors: IForgotPasswordInputErrors = {};
+
+  const { email, language } = inputData;
 
   if (!validator.isEmail(email.trim())) {
     const errorMsg =

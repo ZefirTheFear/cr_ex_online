@@ -1,19 +1,4 @@
-// import { Currency } from "../../models/currency";
-
-// type Percentage = {
-//   amountFrom: number;
-//   amountTo: number;
-//   percentBuyCrypto: number;
-//   percentSaleCrypto: number;
-// };
-
 interface CalculatorState {
-  // currentCurrencyFromCustomer: Currency,
-  // currentCurrencyToCustomer: Currency;
-  // amountCurrencyFromCustomer: number;
-  // amountCurrencyToCustomer: number;
-  // percentageTable: Percentage[];
-  // lastModifiedField: "FROM" | "TO";
   count: number;
 }
 

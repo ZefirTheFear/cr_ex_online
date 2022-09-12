@@ -89,8 +89,8 @@ export const currencies: Currency[] = [
   },
   {
     name: CurrencyName.uah,
-    type: CurrencyType.crypto,
+    type: CurrencyType.fiat,
     img: uaFlag,
-    value: 40
+    value: 1
   }
 ];
