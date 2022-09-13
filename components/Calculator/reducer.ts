@@ -6,10 +6,10 @@ enum ActionType {
   SET_AMOUNT_CURRENCY_FROM_CUSTOMER = "SET_AMOUNT_CURRENCY_FROM_CUSTOMER",
   SET_AMOUNT_CURRENCY_TO_CUSTOMER = "SET_AMOUNT_CURRENCY_TO_CUSTOMER",
   SWAP_CURRENCIES = "SWAP_CURRENCIES",
-  SET_PERCANTAGES = "SET_PERCANTAGES"
+  SET_PERCANTAGE_CONDITIONS = "SET_PERCANTAGE_CONDITIONS"
 }
 
-type Percentage = {
+type PercentageConditions = {
   amountFrom: number;
   amountTo: number;
   percentBuyCrypto: number;
@@ -49,10 +49,10 @@ interface SetAmountCurrencyToCustomerAction {
   };
 }
 
-interface SetPercentagesAction {
-  type: ActionType.SET_PERCANTAGES;
+interface SetPercentageConditionsAction {
+  type: ActionType.SET_PERCANTAGE_CONDITIONS;
   payload: {
-    percentages: Percentage[];
+    percentageConditions: PercentageConditions[];
   };
 }
 
@@ -62,7 +62,7 @@ type Actions =
   | SwapCurrenciesAction
   | SetAmountCurrencyFromCustomerAction
   | SetAmountCurrencyToCustomerAction
-  | SetPercentagesAction;
+  | SetPercentageConditionsAction;
 
 export const setCurrentCurrencyFromCustomer = (
   currency: Currency
@@ -98,17 +98,24 @@ export const setAmoutCurrencyToCustomer = (amount: string): SetAmountCurrencyToC
   }
 });
 
+export const swapCurrencies = (): SwapCurrenciesAction => ({
+  type: ActionType.SWAP_CURRENCIES
+});
+
 const convert = (convertData: {
   amount: string;
   currencyFromCustomer: Currency;
   currencyToCustomer: Currency;
   changedField: "FROM_CUSTOMER" | "TO_CUSTOMER";
-  percentages: Percentage[];
+  percentageConditionsArray: PercentageConditions[];
 }): string => {
-  const { amount, currencyFromCustomer, currencyToCustomer, changedField, percentages } =
-    convertData;
-
-  // console.log(convertData);
+  const {
+    amount,
+    currencyFromCustomer,
+    currencyToCustomer,
+    changedField,
+    percentageConditionsArray
+  } = convertData;
 
   if (amount === "" || +amount < 0) {
     return "";
@@ -134,57 +141,69 @@ const convert = (convertData: {
     return "";
   }
 
-  const usdValue =
+  const usdValueOfChangedField =
     changedField === "FROM_CUSTOMER"
-      ? +amount * currencyFromCustomer.value
-      : +amount * currencyToCustomer.value;
-  const percentage =
-    percentages.find((percent) => usdValue >= percent.amountFrom && usdValue < percent.amountTo) ||
-    percentages[percentages.length - 1];
+      ? +amount * currencyFromCustomer.usdValue
+      : +amount * currencyToCustomer.usdValue;
+  const tempPercentageConditions =
+    percentageConditionsArray.find(
+      (percent) =>
+        usdValueOfChangedField >= percent.amountFrom && usdValueOfChangedField < percent.amountTo
+    ) || percentageConditionsArray[percentageConditionsArray.length - 1];
 
   let convertedValue = "";
-  // console.log("operationType: ", operationType);
-  // console.log("changedField: ", changedField);
 
-  if (operationType === "sale" && changedField === "FROM_CUSTOMER") {
-    convertedValue = (
-      +amount *
-      currencyFromCustomer.value *
-      ((100 - percentage.percentSaleCrypto) / 100)
-    )
+  if (changedField === "FROM_CUSTOMER") {
+    const percentageConditions = tempPercentageConditions;
+    const usdValue = usdValueOfChangedField;
+
+    const commissionPercent =
+      operationType === "sale"
+        ? percentageConditions.percentSaleCrypto
+        : operationType === "buy"
+        ? percentageConditions.percentBuyCrypto
+        : percentageConditions.percentExchangeCrypto;
+
+    convertedValue = ((usdValue / currencyToCustomer.usdValue) * ((100 - commissionPercent) / 100))
       .toFixed(4)
       .toString();
   }
 
-  if (operationType === "sale" && changedField === "TO_CUSTOMER") {
-    const tempConvertedValue =
-      (+amount * currencyToCustomer.value) / ((100 - percentage.percentSaleCrypto) / 100);
-    // console.log("tempConvertedValue: ", tempConvertedValue);
-    // console.log("percentage.amountTo: ", percentage.amountTo);
-    if (tempConvertedValue >= percentage.amountTo) {
-      const newPercentage =
-        percentages.find(
-          (percent) =>
-            tempConvertedValue >= percent.amountFrom && tempConvertedValue < percent.amountTo
-        ) || percentages[percentages.length - 1];
+  if (changedField === "TO_CUSTOMER") {
+    const tempCommissionPercent =
+      operationType === "sale"
+        ? tempPercentageConditions.percentSaleCrypto
+        : operationType === "buy"
+        ? tempPercentageConditions.percentBuyCrypto
+        : tempPercentageConditions.percentExchangeCrypto;
 
-      const newTempConvertedValue =
-        (+amount * currencyToCustomer.value) / ((100 - newPercentage.percentSaleCrypto) / 100);
+    const tempUsdValue = usdValueOfChangedField / ((100 - tempCommissionPercent) / 100);
+    if (tempUsdValue >= tempPercentageConditions.amountTo) {
+      const realPercentageConditions =
+        percentageConditionsArray.find(
+          (percent) => tempUsdValue >= percent.amountFrom && tempUsdValue < percent.amountTo
+        ) || percentageConditionsArray[percentageConditionsArray.length - 1];
 
-      convertedValue = (
-        newTempConvertedValue >= newPercentage.amountFrom
-          ? newTempConvertedValue
-          : newPercentage.amountFrom
-      )
-        .toFixed(4)
-        .toString();
-      // if (newTempConvertedValue< newPercentage.amountFrom) {
-      //   convertedValue =newPercentage.amountFrom
-      // } else {}
+      const realCommissionPercent =
+        operationType === "sale"
+          ? realPercentageConditions.percentSaleCrypto
+          : operationType === "buy"
+          ? realPercentageConditions.percentBuyCrypto
+          : realPercentageConditions.percentExchangeCrypto;
+
+      const newTempUsdValue = usdValueOfChangedField / ((100 - realCommissionPercent) / 100);
+
+      const convertedUsdValue =
+        newTempUsdValue >= realPercentageConditions.amountFrom
+          ? newTempUsdValue
+          : realPercentageConditions.amountFrom;
+
+      convertedValue = (convertedUsdValue / currencyFromCustomer.usdValue).toFixed(4).toString();
     } else {
-      convertedValue = tempConvertedValue.toFixed(4).toString();
+      convertedValue = (tempUsdValue / currencyFromCustomer.usdValue).toFixed(4).toString();
     }
   }
+
   return convertedValue;
 };
 
@@ -193,7 +212,7 @@ interface CalculatorState {
   currentCurrencyToCustomer: Currency;
   amountCurrencyFromCustomer: string;
   amountCurrencyToCustomer: string;
-  percentageTable: Percentage[];
+  percentageConditionsArray: PercentageConditions[];
   lastModifiedField: "FROM_CUSTOMER" | "TO_CUSTOMER";
 }
 
@@ -206,7 +225,7 @@ export const initFn = (initialCurrencies: {
     currentCurrencyToCustomer: initialCurrencies.initialCurrencyToCustomer,
     amountCurrencyFromCustomer: "",
     amountCurrencyToCustomer: "",
-    percentageTable: [
+    percentageConditionsArray: [
       {
         amountFrom: 0,
         amountTo: 1000,
@@ -236,16 +255,58 @@ export const initFn = (initialCurrencies: {
 export const reducer = (state: CalculatorState, action: Actions): CalculatorState => {
   switch (action.type) {
     case ActionType.SET_CURRENT_CURRENCY_FROM_CUSTOMER:
-      return {
-        ...state,
-        currentCurrencyFromCustomer: action.payload.currency
-      };
+      if (state.lastModifiedField === "FROM_CUSTOMER") {
+        return {
+          ...state,
+          currentCurrencyFromCustomer: action.payload.currency,
+          amountCurrencyToCustomer: convert({
+            amount: state.amountCurrencyFromCustomer,
+            currencyFromCustomer: action.payload.currency,
+            currencyToCustomer: state.currentCurrencyToCustomer,
+            changedField: "FROM_CUSTOMER",
+            percentageConditionsArray: state.percentageConditionsArray
+          })
+        };
+      } else {
+        return {
+          ...state,
+          currentCurrencyFromCustomer: action.payload.currency,
+          amountCurrencyFromCustomer: convert({
+            amount: state.amountCurrencyToCustomer,
+            currencyFromCustomer: action.payload.currency,
+            currencyToCustomer: state.currentCurrencyToCustomer,
+            changedField: "TO_CUSTOMER",
+            percentageConditionsArray: state.percentageConditionsArray
+          })
+        };
+      }
 
     case ActionType.SET_CURRENT_CURRENCY_TO_CUSTOMER:
-      return {
-        ...state,
-        currentCurrencyToCustomer: action.payload.currency
-      };
+      if (state.lastModifiedField === "FROM_CUSTOMER") {
+        return {
+          ...state,
+          currentCurrencyToCustomer: action.payload.currency,
+          amountCurrencyToCustomer: convert({
+            amount: state.amountCurrencyFromCustomer,
+            currencyFromCustomer: state.currentCurrencyFromCustomer,
+            currencyToCustomer: action.payload.currency,
+            changedField: "FROM_CUSTOMER",
+            percentageConditionsArray: state.percentageConditionsArray
+          })
+        };
+      } else {
+        return {
+          ...state,
+          currentCurrencyToCustomer: action.payload.currency,
+          amountCurrencyFromCustomer: convert({
+            amount: state.amountCurrencyToCustomer,
+            currencyFromCustomer: state.currentCurrencyFromCustomer,
+            currencyToCustomer: action.payload.currency,
+            changedField: "TO_CUSTOMER",
+            percentageConditionsArray: state.percentageConditionsArray
+          })
+        };
+      }
 
     case ActionType.SET_AMOUNT_CURRENCY_FROM_CUSTOMER:
       return {
@@ -256,7 +317,7 @@ export const reducer = (state: CalculatorState, action: Actions): CalculatorStat
           currencyFromCustomer: state.currentCurrencyFromCustomer,
           currencyToCustomer: state.currentCurrencyToCustomer,
           changedField: "FROM_CUSTOMER",
-          percentages: state.percentageTable
+          percentageConditionsArray: state.percentageConditionsArray
         }),
         lastModifiedField: "FROM_CUSTOMER"
       };
@@ -269,10 +330,39 @@ export const reducer = (state: CalculatorState, action: Actions): CalculatorStat
           currencyFromCustomer: state.currentCurrencyFromCustomer,
           currencyToCustomer: state.currentCurrencyToCustomer,
           changedField: "TO_CUSTOMER",
-          percentages: state.percentageTable
+          percentageConditionsArray: state.percentageConditionsArray
         }),
         amountCurrencyToCustomer: action.payload.amount,
         lastModifiedField: "TO_CUSTOMER"
+      };
+
+    case ActionType.SWAP_CURRENCIES:
+      return {
+        ...state,
+        currentCurrencyFromCustomer: state.currentCurrencyToCustomer,
+        currentCurrencyToCustomer: state.currentCurrencyFromCustomer,
+        amountCurrencyFromCustomer:
+          state.lastModifiedField === "FROM_CUSTOMER"
+            ? convert({
+                amount: state.amountCurrencyFromCustomer,
+                currencyFromCustomer: state.currentCurrencyToCustomer,
+                currencyToCustomer: state.currentCurrencyFromCustomer,
+                changedField: "TO_CUSTOMER",
+                percentageConditionsArray: state.percentageConditionsArray
+              })
+            : state.amountCurrencyToCustomer,
+        amountCurrencyToCustomer:
+          state.lastModifiedField === "FROM_CUSTOMER"
+            ? state.amountCurrencyFromCustomer
+            : convert({
+                amount: state.amountCurrencyToCustomer,
+                currencyFromCustomer: state.currentCurrencyToCustomer,
+                currencyToCustomer: state.currentCurrencyFromCustomer,
+                changedField: "FROM_CUSTOMER",
+                percentageConditionsArray: state.percentageConditionsArray
+              }),
+        lastModifiedField:
+          state.lastModifiedField === "FROM_CUSTOMER" ? "TO_CUSTOMER" : "FROM_CUSTOMER"
       };
 
     default:

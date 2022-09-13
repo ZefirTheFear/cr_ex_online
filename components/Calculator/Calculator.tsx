@@ -7,7 +7,6 @@ import cloneDeep from "clone-deep";
 import { TiArrowRepeat } from "react-icons/ti";
 import { ImCheckboxChecked } from "react-icons/im";
 
-import Test from "./Test";
 import Spinner from "../Spinner/Spinner";
 import Modal from "../Modal/Modal";
 import ExchangeData from "../ExchangeData/ExchangeData";
@@ -22,7 +21,8 @@ import {
   setCurrentCurrencyFromCustomer,
   setCurrentCurrencyToCustomer,
   setAmoutCurrencyFromCustomer,
-  setAmoutCurrencyToCustomer
+  setAmoutCurrencyToCustomer,
+  swapCurrencies
 } from "./reducer";
 
 import classes from "./Calculator.module.scss";
@@ -63,7 +63,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     [newCurrencies]
   );
 
-  const onChangeCurrentCurrencyToCustomer = useCallback(
+  const changeCurrentCurrencyToCustomer = useCallback(
     (e: React.MouseEvent<HTMLLIElement>) => {
       const currencyName = e.currentTarget.getAttribute("data-name");
       if (!currencyName) {
@@ -86,11 +86,15 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     dispatch(setAmoutCurrencyToCustomer(e.currentTarget.value));
   }, []);
 
+  const swap = useCallback(() => {
+    dispatch(swapCurrencies());
+  }, []);
+
   const passRatesToCurrencies = useCallback((newRates: Rates) => {
     setNewCurrencies((prevState) => {
       const newCurrencies = cloneDeep(prevState);
       for (const currency of newCurrencies) {
-        currency.value = newRates[`${currency.name}`];
+        currency.usdValue = newRates[`${currency.name}`];
       }
       return newCurrencies;
     });
@@ -165,8 +169,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
                     <span className={classes["calculator__rates-item-rate"]}>
                       :{" "}
                       {currency.name === CurrencyName.shib
-                        ? `${(currency.value * 1000).toFixed(2)}*`
-                        : currency.value.toFixed(2)}
+                        ? `${(currency.usdValue * 1000).toFixed(2)}*`
+                        : currency.usdValue.toFixed(2)}
                     </span>
                   </div>
                 );
@@ -193,7 +197,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               value={calculatorState.amountCurrencyFromCustomer}
               onChangeInputAmount={changeAmountCurrencyFromCustomer}
             />
-            <div className={classes.calculator__swaper}>
+            <div className={classes.calculator__swaper} onClick={swap}>
               <TiArrowRepeat />
             </div>
             <ExchangeData
@@ -206,7 +210,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               }
               currentCurrency={calculatorState.currentCurrencyToCustomer}
               currencyOptions={newCurrencies}
-              onChangeCurrency={onChangeCurrentCurrencyToCustomer}
+              onChangeCurrency={changeCurrentCurrencyToCustomer}
               value={calculatorState.amountCurrencyToCustomer}
               onChangeInputAmount={changeAmountCurrencyToCustomer}
             />
@@ -239,7 +243,6 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               ? "Обміняти"
               : "Обменять"}
           </button>
-          <Test />
         </div>
       </div>
     </>

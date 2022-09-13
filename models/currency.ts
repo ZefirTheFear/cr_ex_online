@@ -40,6 +40,6 @@ export enum CurrencyType {
 export interface Currency {
   name: CurrencyName;
   type: CurrencyType;
-  value: number;
+  usdValue: number;
   img: StaticImageData;
 }

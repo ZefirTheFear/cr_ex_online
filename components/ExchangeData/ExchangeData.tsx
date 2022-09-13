@@ -114,6 +114,7 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
           type="number"
           placeholder="0.00"
           autoComplete="off"
+          min="0"
           value={value}
           onChange={onChangeInputAmount}
           onKeyDown={onKeyDown}
