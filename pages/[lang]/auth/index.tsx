@@ -48,27 +48,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: { session, lang }
+    props: { lang }
   };
 };
-
-// export const getStaticProps: GetStaticProps = async (context) => {
-//   const lang = context.params?.lang;
-//   return {
-//     props: {
-//       lang: lang
-//     }
-//   };
-// };
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const langs: Languages[] = [Languages.ua, Languages.en, Languages.ru];
-//   const paths = langs.map((lang) => {
-//     return {
-//       params: { lang }
-//     };
-//   });
-//   return { paths, fallback: false };
-// };
 
 export default AuthPage;

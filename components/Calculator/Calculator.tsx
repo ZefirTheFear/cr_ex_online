@@ -12,7 +12,7 @@ import Modal from "../Modal/Modal";
 import ExchangeData from "../ExchangeData/ExchangeData";
 
 import { Languages } from "../../models/language";
-import { CurrencyName, Currency, Rates } from "../../models/currency";
+import { CurrencyName, Currency, Rates, CurrencyType } from "../../models/currency";
 import { currencies } from "../../data/currencyItems";
 
 import {
@@ -54,6 +54,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       if (!currencyName) {
         return;
       }
+
       const newSelectedCurrency = newCurrencies.find((currency) => currency.name === currencyName);
       if (!newSelectedCurrency) {
         return;
@@ -62,9 +63,29 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
         dispatch(swapCurrencies());
         return;
       }
+
+      if (
+        newSelectedCurrency.type === CurrencyType.fiat &&
+        calculatorState.currentCurrencyToCustomer.type === CurrencyType.fiat
+      ) {
+        const newCurrencyToCustomer = newCurrencies.find(
+          (currency) => currency.name === CurrencyName.usdt
+        );
+        if (!newCurrencyToCustomer) {
+          return;
+        }
+        dispatch(setCurrentCurrencyFromCustomer(newSelectedCurrency));
+        dispatch(setCurrentCurrencyToCustomer(newCurrencyToCustomer));
+        return;
+      }
+
       dispatch(setCurrentCurrencyFromCustomer(newSelectedCurrency));
     },
-    [calculatorState.currentCurrencyToCustomer.name, newCurrencies]
+    [
+      calculatorState.currentCurrencyToCustomer.name,
+      calculatorState.currentCurrencyToCustomer.type,
+      newCurrencies
+    ]
   );
 
   const changeCurrentCurrencyToCustomer = useCallback(
@@ -73,6 +94,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       if (!currencyName) {
         return;
       }
+
       const newSelectedCurrency = newCurrencies.find((currency) => currency.name === currencyName);
       if (!newSelectedCurrency) {
         return;
@@ -81,9 +103,29 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
         dispatch(swapCurrencies());
         return;
       }
+
+      if (
+        newSelectedCurrency.type === CurrencyType.fiat &&
+        calculatorState.currentCurrencyFromCustomer.type === CurrencyType.fiat
+      ) {
+        const newCurrencyFromCustomer = newCurrencies.find(
+          (currency) => currency.name === CurrencyName.usdt
+        );
+        if (!newCurrencyFromCustomer) {
+          return;
+        }
+        dispatch(setCurrentCurrencyFromCustomer(newCurrencyFromCustomer));
+        dispatch(setCurrentCurrencyToCustomer(newSelectedCurrency));
+        return;
+      }
+
       dispatch(setCurrentCurrencyToCustomer(newSelectedCurrency));
     },
-    [calculatorState.currentCurrencyFromCustomer.name, newCurrencies]
+    [
+      calculatorState.currentCurrencyFromCustomer.name,
+      calculatorState.currentCurrencyFromCustomer.type,
+      newCurrencies
+    ]
   );
 
   const changeAmountCurrencyFromCustomer = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

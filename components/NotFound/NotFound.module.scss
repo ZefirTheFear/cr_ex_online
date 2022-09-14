@@ -1,0 +1,123 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.not-found {
+  width: 100vw;
+  height: 100vh;
+  background-color: $bg-color-main;
+}
+
+.not-found__inner {
+  @include app-inner-width;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  background-image: url(../../assets/404/404.svg);
+  background-position-x: right;
+  background-position-y: 50px;
+  background-repeat: repeat-y;
+
+  // background-repeat: no-repeat space;
+  // background-repeat: no-repeat round;
+
+  @media (max-width: 767px) {
+    background-size: 100%;
+    background-position-x: left;
+  }
+}
+
+.not-found__header {
+  height: $header-height;
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    height: $header-height-sm;
+  }
+}
+
+.not-found__logo {
+  height: 40%;
+  cursor: pointer;
+
+  @media (max-width: 1200px) {
+    height: 40%;
+  }
+  @media (max-width: 992px) {
+    height: 30%;
+  }
+  @media (max-width: 767px) {
+    // margin: 0;
+  }
+
+  svg {
+    height: 100%;
+    fill: $bg-color-secondary;
+    transition: $main-transition;
+
+    @mixin hover {
+      fill: $light-color;
+    }
+    &:active {
+      @include hover;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        @include hover;
+      }
+    }
+  }
+}
+
+.not-found__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  margin-bottom: 5rem;
+  margin-left: 5rem;
+  width: 300px;
+
+  @media (max-width: 767px) {
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 5rem;
+  }
+}
+
+.not-found__img-container {
+  margin-bottom: 2rem;
+
+  svg {
+    display: flex;
+    width: 100%;
+  }
+
+  @media (max-width: 767px) {
+    width: 200px;
+  }
+}
+
+.not-found__heading {
+  margin-bottom: 2rem;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.not-found__link-container {
+  width: 100%;
+}
+
+.not-found__home-btn {
+  @include button;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  width: 100%;
+}
