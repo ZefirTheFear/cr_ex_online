@@ -1,9 +1,10 @@
 import type { NextPage } from "next";
 
-import NotFound from "../components/NotFound/NotFound";
+import NotFound from "../../../components/NotFound/NotFound";
 
 const NotFoundPage: NextPage = () => {
-  console.log("not found");
+  console.log("slug");
+
   return <NotFound />;
 };
 
