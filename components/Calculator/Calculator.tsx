@@ -7,7 +7,7 @@ import cloneDeep from "clone-deep";
 import { TiArrowRepeat } from "react-icons/ti";
 import { ImCheckboxChecked } from "react-icons/im";
 
-import Spinner from "../Spinner/Spinner";
+import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import Modal from "../Modal/Modal";
 import ExchangeData from "../ExchangeData/ExchangeData";
 
@@ -45,7 +45,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
   const [calculatorState, dispatch] = useReducer(reducer, initialCurrencies, initFn);
 
   const [newCurrencies, setNewCurrencies] = useState(currencies);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
 
   const onChangeCurrentCurrencyFromCustomer = useCallback(
@@ -58,9 +58,13 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       if (!newSelectedCurrency) {
         return;
       }
+      if (newSelectedCurrency.name === calculatorState.currentCurrencyToCustomer.name) {
+        dispatch(swapCurrencies());
+        return;
+      }
       dispatch(setCurrentCurrencyFromCustomer(newSelectedCurrency));
     },
-    [newCurrencies]
+    [calculatorState.currentCurrencyToCustomer.name, newCurrencies]
   );
 
   const changeCurrentCurrencyToCustomer = useCallback(
@@ -73,9 +77,13 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       if (!newSelectedCurrency) {
         return;
       }
+      if (newSelectedCurrency.name === calculatorState.currentCurrencyFromCustomer.name) {
+        dispatch(swapCurrencies());
+        return;
+      }
       dispatch(setCurrentCurrencyToCustomer(newSelectedCurrency));
     },
-    [newCurrencies]
+    [calculatorState.currentCurrencyFromCustomer.name, newCurrencies]
   );
 
   const changeAmountCurrencyFromCustomer = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,15 +98,27 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     dispatch(swapCurrencies());
   }, []);
 
-  const passRatesToCurrencies = useCallback((newRates: Rates) => {
-    setNewCurrencies((prevState) => {
-      const newCurrencies = cloneDeep(prevState);
-      for (const currency of newCurrencies) {
-        currency.usdValue = newRates[`${currency.name}`];
-      }
-      return newCurrencies;
-    });
-  }, []);
+  const passRatesToCurrencies = useCallback(
+    (newRates: Rates) => {
+      const newCurrentCurrencyFromCustomer = cloneDeep(
+        initialCurrencies.initialCurrencyFromCustomer
+      );
+      const newCurrentCurrencyToCustomer = cloneDeep(initialCurrencies.initialCurrencyToCustomer);
+      newCurrentCurrencyFromCustomer.usdValue = newRates[`${newCurrentCurrencyFromCustomer.name}`];
+      newCurrentCurrencyToCustomer.usdValue = newRates[`${newCurrentCurrencyToCustomer.name}`];
+      dispatch(setCurrentCurrencyFromCustomer(newCurrentCurrencyFromCustomer));
+      dispatch(setCurrentCurrencyToCustomer(newCurrentCurrencyToCustomer));
+
+      setNewCurrencies((prevState) => {
+        const newCurrencies = cloneDeep(prevState);
+        for (const currency of newCurrencies) {
+          currency.usdValue = newRates[`${currency.name}`];
+        }
+        return newCurrencies;
+      });
+    },
+    [initialCurrencies.initialCurrencyFromCustomer, initialCurrencies.initialCurrencyToCustomer]
+  );
 
   const fetchRates = useCallback(async () => {
     try {
@@ -128,6 +148,10 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
 
   useEffect(() => {
     // fetchRates();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
     return () => {
       controller.abort();
     };
@@ -135,7 +159,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
 
   return (
     <>
-      {isLoading && <Spinner />}
+      {isLoading && <BlockSpinner />}
       {isSomethingWentWrong && (
         <Modal
           closeModal={closeSWWModal}
@@ -152,7 +176,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
         <div className={classes.calculator__rates__block}>
           <div className={classes.calculator__rates}>
             {newCurrencies.map((currency) => {
-              if (currency.name === CurrencyName.uah) {
+              if (currency.name === CurrencyName.uah || currency.name === CurrencyName.usd) {
                 return;
               } else {
                 return (

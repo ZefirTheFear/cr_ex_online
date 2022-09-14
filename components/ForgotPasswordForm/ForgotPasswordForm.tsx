@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import cloneDeep from "clone-deep";
 
-import Spinner from "../Spinner/Spinner";
+import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
 
@@ -130,7 +130,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ goToLoginForm }
 
   return (
     <>
-      {isLoading && <Spinner />}
+      {isLoading && <PageSpinner />}
       {isSomethingWentWrong && (
         <Modal
           closeModal={closeSWWModal}

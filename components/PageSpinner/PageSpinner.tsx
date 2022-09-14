@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import SVGSpinner from "../../assets/spinner/spinner.svg";
 
-import classes from "./Spinner.module.scss";
+import classes from "./PageSpinner.module.scss";
 
 const Spinner: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -25,6 +25,19 @@ const Spinner: React.FC = () => {
         document.body
       )
     : null;
+
+  // return createPortal(
+  //   <div className="spinner">
+  //     <SVGSpinner />
+  //   </div>,
+  //   document.body
+  // );
+
+  // return (
+  //   <div className={classes.spinner}>
+  //     <SVGSpinner />
+  //   </div>
+  // );
 };
 
 export default Spinner;

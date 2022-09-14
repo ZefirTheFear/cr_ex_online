@@ -13,6 +13,7 @@ import shibaIcon from "../assets/currencyIcons/SHIBA.png";
 import adaIcon from "../assets/currencyIcons/ADA.png";
 import solIcon from "../assets/currencyIcons/SOL.png";
 import uaFlag from "../assets/flags/ua-flag.png";
+import usaFlag from "../assets/flags/usa-flag.png";
 
 export const currencies: Currency[] = [
   {
@@ -92,5 +93,11 @@ export const currencies: Currency[] = [
     type: CurrencyType.fiat,
     img: uaFlag,
     usdValue: 0.1
+  },
+  {
+    name: CurrencyName.usd,
+    type: CurrencyType.fiat,
+    img: usaFlag,
+    usdValue: 1
   }
 ];

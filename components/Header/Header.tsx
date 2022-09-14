@@ -39,6 +39,10 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
     return navigatationItems(lang);
   }, [lang]);
 
+  const onClickLogo = useCallback(() => {
+    dispatch(closeMobileMenu());
+  }, [dispatch]);
+
   const toggleMenu = useCallback(() => {
     dispatch(toggleMobileMenu());
   }, [dispatch]);
@@ -116,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
   return (
     <header className={classes.header}>
       <div className={classes.header__inner}>
-        <div className={classes.header__logo} onClick={closeMobMenu}>
+        <div className={classes.header__logo} onClick={onClickLogo}>
           <Link href={`/${encodeURIComponent(lang)}/`}>
             <a>
               <Logo />

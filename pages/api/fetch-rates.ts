@@ -22,19 +22,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       const responseData = await response.json();
       return res.status(200).json({
         rates: {
-          BTC: responseData.symbols.BTCUSDT.bid * responseData.symbols.USDTUAH.bid,
-          ETH: responseData.symbols.ETHUSDT.bid * responseData.symbols.USDTUAH.bid,
-          LTC: responseData.symbols.LTCUSDT.bid * responseData.symbols.USDTUAH.bid,
-          XMR: responseData.symbols.XMRUSDT.bid * responseData.symbols.USDTUAH.bid,
-          XRP: responseData.symbols.XRPUSDT.bid * responseData.symbols.USDTUAH.bid,
-          DOGE: responseData.symbols.DOGEUSDT.bid * responseData.symbols.USDTUAH.bid,
-          SHIB: responseData.symbols.SHIBUSDT.bid * responseData.symbols.USDTUAH.bid,
-          TRX: responseData.symbols.TRXUSDT.bid * responseData.symbols.USDTUAH.bid,
-          DASH: responseData.symbols.DASHUSDT.bid * responseData.symbols.USDTUAH.bid,
-          SOL: responseData.symbols.SOLUSDT.bid * responseData.symbols.USDTUAH.bid,
-          ADA: responseData.symbols.ADAUSDT.bid * responseData.symbols.USDTUAH.bid,
-          USDT: responseData.symbols.USDTUAH.bid,
-          UAH: 1
+          BTC: responseData.symbols.BTCUSDT.bid,
+          ETH: responseData.symbols.ETHUSDT.bid,
+          LTC: responseData.symbols.LTCUSDT.bid,
+          XMR: responseData.symbols.XMRUSDT.bid,
+          XRP: responseData.symbols.XRPUSDT.bid,
+          DOGE: responseData.symbols.DOGEUSDT.bid,
+          SHIB: responseData.symbols.SHIBUSDT.bid,
+          TRX: responseData.symbols.TRXUSDT.bid,
+          DASH: responseData.symbols.DASHUSDT.bid,
+          SOL: responseData.symbols.SOLUSDT.bid,
+          ADA: responseData.symbols.ADAUSDT.bid,
+          USDT: 1,
+          UAH: 1 / responseData.symbols.USDTUAH.bid,
+          USD: 1
         }
       });
     } catch (error) {

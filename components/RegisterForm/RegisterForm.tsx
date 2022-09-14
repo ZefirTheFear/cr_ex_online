@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import cloneDeep from "clone-deep";
 
-import Spinner from "../Spinner/Spinner";
+import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
 import InvalidFeedback from "../InvalidFeedback/InvalidFeedback";
@@ -156,7 +156,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
 
   return (
     <>
-      {isLoading && <Spinner />}
+      {isLoading && <PageSpinner />}
       {isSomethingWentWrong && (
         <Modal
           closeModal={closeSWWModal}

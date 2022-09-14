@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import cloneDeep from "clone-deep";
 import { signIn } from "next-auth/react";
 
-import Spinner from "../Spinner/Spinner";
+import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
 
@@ -142,7 +142,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <>
-      {isLoading && <Spinner />}
+      {isLoading && <PageSpinner />}
       {isSomethingWentWrong && (
         <Modal
           closeModal={closeSWWModal}

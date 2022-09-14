@@ -13,7 +13,8 @@ export enum CurrencyName {
   shib = "SHIB",
   sol = "SOL",
   ada = "ADA",
-  uah = "UAH"
+  uah = "UAH",
+  usd = "USD"
 }
 
 export type Rates = {
@@ -30,6 +31,7 @@ export type Rates = {
   SOL: number;
   ADA: number;
   UAH: number;
+  USD: number;
 };
 
 export enum CurrencyType {
