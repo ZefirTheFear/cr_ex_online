@@ -3,8 +3,10 @@ import { useRouter } from "next/router";
 import { useMemo, useCallback, useEffect, useState, useRef } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { FaAngleDown, FaSignInAlt, FaUserCircle } from "react-icons/fa";
+import { ImUserPlus } from "react-icons/im";
 
-import LanguageSelector from "../LanguageSelector/LanguageSelector";
+// import LanguageSelector from "../LanguageSelector/LanguageSelector";
+import LgSelector from "../LgSelector/LgSelector";
 
 import Logo from "../../assets/logo/logo_full.svg";
 
@@ -150,7 +152,8 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
             </div>
           ))}
         </nav>
-        <LanguageSelector />
+        {/* <LanguageSelector /> */}
+        <LgSelector />
         {!session && status !== "loading" && (
           <div className={classes["header__auth-container"]}>
             <Link href={`/${encodeURIComponent(lang)}/auth`}>
@@ -161,6 +164,22 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
                   </span>
                   <span className={classes["header__auth-icon"]}>
                     <FaSignInAlt />
+                  </span>
+                </button>
+              </a>
+            </Link>
+            <Link href={`/${encodeURIComponent(lang)}/auth`}>
+              <a>
+                <button className={classes["header__auth-btn"]} type="button">
+                  <span className={classes["header__auth-btn-title"]}>
+                    {lang === Languages.en
+                      ? "Register"
+                      : lang === Languages.ua
+                      ? "Реєстрація"
+                      : "Регистрация"}
+                  </span>
+                  <span className={classes["header__auth-icon"]}>
+                    <ImUserPlus />
                   </span>
                 </button>
               </a>

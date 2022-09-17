@@ -1,0 +1,17 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+// .dropdown-list__toggler {
+// display: block;
+// }
+
+.dropdown-list__options {
+  position: absolute;
+  height: 0;
+  overflow: hidden;
+  transition: $main-transition;
+}
+
+.dropdown-list__options_open {
+  margin-top: 0.5rem;
+}

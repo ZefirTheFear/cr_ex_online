@@ -39,7 +39,9 @@ const NotFound: React.FC = () => {
           <div className={classes["not-found__img-container"]}>
             <Wtf />
           </div>
-          <h1 className={classes["not-found__heading"]}>oops...</h1>
+          <h1 className={classes["not-found__heading"]}>
+            {language === Languages.en ? "oops..." : "упс..."}
+          </h1>
           <div className={classes["not-found__link-container"]}>
             <Link href={`/${encodeURIComponent(language)}/`}>
               <a>

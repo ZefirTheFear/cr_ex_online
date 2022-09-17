@@ -145,35 +145,50 @@
 }
 
 .header__auth-container {
+  display: flex;
+
   a {
+    display: block;
     text-decoration: none;
+
+    &:first-child {
+      margin-right: 0.25rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    display: block;
+
+    a {
+      &:first-child {
+        margin-bottom: 0.25rem;
+        margin-right: 0;
+      }
+    }
   }
 }
 
 .header__auth-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
   @include button;
+  width: 100%;
 }
 
 .header__auth-btn-title {
+  font-size: 0.75rem;
   font-weight: bold;
 
-  @media (max-width: 767px) {
-    display: none;
-  }
+  // @media (max-width: 767px) {
+  //   display: none;
+  // }
 }
 
 .header__auth-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 0.25rem;
-
-  @media (max-width: 767px) {
-    margin-left: 0;
-  }
+  margin-left: 0.5rem;
 
   svg {
     display: flex;
@@ -181,15 +196,19 @@
 }
 
 .header__user-container {
+  position: relative;
   cursor: pointer;
 }
 
 .header__user {
-  transition: $main-transition;
-  @include hover-to-seconadry-color;
-  padding: 0.5rem;
-
   display: flex;
+  padding: 0.5rem;
+  background: $bg-color-secondary;
+  border-radius: $border-radius;
+  transition: $main-transition;
+  // @include hover-to-seconadry-color;
+  @include hover-bg-over-seconadry-color;
+
   align-items: center;
 
   svg {
@@ -202,7 +221,10 @@
 }
 
 .header__user-options {
+  // display: flex;
+  // flex-direction: column;
   position: absolute;
+  right: 0;
   height: 0;
   border: 0px solid $light-color;
   overflow: hidden;
@@ -228,6 +250,7 @@
 }
 
 .header__user-options-item {
+  white-space: nowrap;
   background: $bg-color-main-shadow;
   border-bottom: 1px solid $light-color;
   font-weight: bold;

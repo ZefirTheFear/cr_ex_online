@@ -82,6 +82,17 @@
   }
 }
 
+@mixin hover-bg-over-seconadry-color {
+  &:active {
+    background: darken($bg-color-secondary, 15);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      background: darken($bg-color-secondary, 15);
+    }
+  }
+}
+
 @mixin hover-to-seconadry-color {
   &:active {
     color: $bg-color-secondary;
