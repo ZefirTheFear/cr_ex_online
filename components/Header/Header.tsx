@@ -5,8 +5,7 @@ import { useSession, signOut } from "next-auth/react";
 import { FaAngleDown, FaSignInAlt, FaUserCircle } from "react-icons/fa";
 import { ImUserPlus } from "react-icons/im";
 
-// import LanguageSelector from "../LanguageSelector/LanguageSelector";
-import LgSelector from "../LgSelector/LgSelector";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
 import Logo from "../../assets/logo/logo_full.svg";
 
@@ -152,8 +151,7 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
             </div>
           ))}
         </nav>
-        {/* <LanguageSelector /> */}
-        <LgSelector />
+        <LanguageSelector />
         {!session && status !== "loading" && (
           <div className={classes["header__auth-container"]}>
             <Link href={`/${encodeURIComponent(lang)}/auth`}>

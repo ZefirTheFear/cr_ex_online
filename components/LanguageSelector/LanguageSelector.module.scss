@@ -8,8 +8,6 @@
 
 .language-selector__selected {
   display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 0.5rem;
   cursor: pointer;
   transition: $main-transition;
@@ -18,9 +16,6 @@
 }
 
 .language-selector__selected-name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -28,25 +23,23 @@
 .language-selector__select-arrow {
   margin-left: 0.25rem;
   transition: transform 0.15s linear;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  svg {
+    display: block;
+  }
 }
 
 .language-selector__select-arrow_is-opened {
   transform: rotate(-180deg);
 }
 
-.language-selector__select-options {
-  position: absolute;
-  height: 0;
-  border: 0px solid $light-color;
-  overflow: hidden;
-  transition: $main-transition;
+.language-selector__options {
   border-radius: $border-radius;
+  border: 1px solid $light-color;
+  overflow: hidden;
 }
 
-.language-selector__select-options-item {
+.language-selector__options-item {
   padding: 0.5rem;
   background: $bg-color-main-shadow;
   border-bottom: 1px solid $light-color;

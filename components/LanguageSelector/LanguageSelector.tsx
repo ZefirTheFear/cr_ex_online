@@ -1,44 +1,21 @@
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { FaAngleDown } from "react-icons/fa";
+
+import DropdownList from "../DropdownList/DropdownList";
 
 import { languages } from "../../data/languageItems";
 
 import classes from "./LanguageSelector.module.scss";
 
-const LanguageSelector: React.FC = () => {
+const LgSelector: React.FC = () => {
   const router = useRouter();
-  const selectedElem = useRef<HTMLDivElement>(null);
-  const optionsListElem = useRef<HTMLUListElement>(null);
 
-  const [isOpenedOptions, setIsOpenedOptions] = useState(false);
+  const [isOpenedLangOptions, setIsOpenedLangOptions] = useState(false);
 
   const currentLang = router.query.lang;
   const languagesOpts = languages.map((lang) => lang.name).filter((lang) => lang !== currentLang);
-
-  const toggleIsOpenedOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLUListElement;
-    if (isOpenedOptions) {
-      elem.style.borderWidth = "0";
-      elem.style.marginTop = "";
-      elem.style.height = "0";
-    } else {
-      const borderWidth = 1;
-      elem.style.borderWidth = `${borderWidth}px`;
-      elem.style.marginTop = "0.25rem";
-      elem.style.height = elem.scrollHeight + borderWidth * 2 + "px";
-    }
-    setIsOpenedOptions((prevState) => !prevState);
-  }, [isOpenedOptions]);
-
-  const closeLangsOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLUListElement;
-    elem.style.borderWidth = "0";
-    elem.style.height = "0";
-    elem.style.marginTop = "";
-    setIsOpenedOptions(false);
-  }, []);
 
   const changeLanguage = useCallback((e: React.MouseEvent<HTMLElement>) => {
     const languageName = e.currentTarget.getAttribute("data-name");
@@ -50,65 +27,49 @@ const LanguageSelector: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const closeOpenedOptions = useCallback(
-    (e: MouseEvent) => {
-      let element = e.target as HTMLElement;
-      while (element !== document.body) {
-        if (element === selectedElem.current) {
-          return;
-        }
-        const parentElement = element.parentElement;
-        if (parentElement) {
-          element = parentElement;
-        } else {
-          return;
-        }
-      }
-      if (isOpenedOptions) {
-        closeLangsOptions();
-      }
-    },
-    [closeLangsOptions, isOpenedOptions]
-  );
-
-  useEffect(() => {
-    window.addEventListener("click", closeOpenedOptions);
-    return () => {
-      window.removeEventListener("click", closeOpenedOptions);
-    };
-  }, [closeOpenedOptions]);
-
   return (
-    <div className={classes["language-selector"]}>
-      <div
-        className={classes["language-selector__selected"]}
-        onClick={toggleIsOpenedOptions}
-        ref={selectedElem}
-      >
-        <span className={classes["language-selector__selected-name"]}>{currentLang}</span>
-        <span
-          className={
-            `${classes["language-selector__select-arrow"]}` +
-            (isOpenedOptions ? ` ${classes["language-selector__select-arrow_is-opened"]}` : ``)
+    <>
+      <div className={classes["language-selector"]}>
+        <DropdownList
+          toggler={
+            <>
+              <div className={classes["language-selector__selected"]}>
+                <span className={classes["language-selector__selected-name"]}>{currentLang}</span>
+                <span
+                  className={
+                    `${classes["language-selector__select-arrow"]}` +
+                    (isOpenedLangOptions
+                      ? ` ${classes["language-selector__select-arrow_is-opened"]}`
+                      : ``)
+                  }
+                >
+                  <FaAngleDown />
+                </span>
+              </div>
+            </>
           }
-        >
-          <FaAngleDown />
-        </span>
+          options={
+            <>
+              <ul className={classes["language-selector__options"]}>
+                {languagesOpts.map((lang) => (
+                  <li
+                    className={classes["language-selector__options-item"]}
+                    data-name={lang}
+                    onClick={changeLanguage}
+                    key={lang}
+                  >
+                    {lang}
+                  </li>
+                ))}
+              </ul>
+            </>
+          }
+          isOpenOptions={isOpenedLangOptions}
+          setIsOpenOptions={setIsOpenedLangOptions}
+        />
       </div>
-      <ul className={classes["language-selector__select-options"]} ref={optionsListElem}>
-        {languagesOpts.map((lang) => (
-          <li
-            className={classes["language-selector__select-options-item"]}
-            data-name={lang}
-            onClick={changeLanguage}
-            key={lang}
-          >
-            {lang}
-          </li>
-        ))}
-      </ul>
-    </div>
+    </>
   );
 };
 
-export default LanguageSelector;
+export default LgSelector;

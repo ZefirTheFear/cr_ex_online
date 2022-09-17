@@ -61,7 +61,7 @@ const DropdownList: React.FC<DropdownListProps> = ({
   return (
     <>
       <div
-        // className={classes["dropdown-list__toggler"]}
+        className={classes["dropdown-list__toggler"]}
         onClick={toggleIsOpenedOptions}
         ref={togglerElem}
       >

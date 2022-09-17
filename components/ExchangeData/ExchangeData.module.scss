@@ -27,8 +27,6 @@
 }
 
 .exchange-data__currency-selector {
-  // flex-shrink: 0;
-  padding: 0.5rem;
   width: 10rem;
   background: $light-color;
   color: $bg-color-main-shadow;
@@ -40,6 +38,7 @@
 
 .exchange-data__selected {
   height: 100%;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -89,15 +88,12 @@
   transform: rotate(-180deg);
 }
 
-.exchange-data__select-options {
-  position: absolute;
+.exchange-data__options {
+  position: relative;
   z-index: 1;
-  height: 0;
-  margin-top: 0.5rem;
-  margin-left: -0.5rem;
-  border: 0px solid $bg-color-main;
+  height: 200px;
+  border: 1px solid $bg-color-main;
   border-radius: $border-radius;
-  overflow: hidden;
   transition: $main-transition;
   overflow-y: scroll;
 }

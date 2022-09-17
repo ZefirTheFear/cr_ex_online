@@ -4,6 +4,8 @@ import { Currency } from "../../models/currency";
 
 import { FaAngleDown } from "react-icons/fa";
 
+import DropdownList from "../DropdownList/DropdownList";
+
 import classes from "./ExchangeData.module.scss";
 
 interface ExchangeDataProps {
@@ -23,61 +25,11 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
   value,
   onChangeInputAmount
 }) => {
-  const selectedElem = useRef<HTMLDivElement>(null);
   const optionsListElem = useRef<HTMLUListElement>(null);
 
-  const [isOpenedOptions, setIsOpenedOptions] = useState(false);
-
-  const toggleIsOpenedOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLUListElement;
-    if (isOpenedOptions) {
-      elem.style.borderWidth = "0";
-      elem.style.marginTop = "";
-      elem.style.height = "0";
-      elem.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const borderWidth = 1;
-      elem.style.borderWidth = `${borderWidth}px`;
-      elem.style.marginTop = "0.75rem";
-      // elem.style.height = elem.scrollHeight + borderWidth * 2 + "px";
-      elem.style.height = "200px";
-    }
-
-    setIsOpenedOptions((prevState) => !prevState);
-  }, [isOpenedOptions]);
-
-  const closeCurrenciesOptions = useCallback(() => {
-    const elem = optionsListElem.current as HTMLUListElement;
-    elem.style.borderWidth = "0";
-    elem.style.height = "0";
-    elem.style.marginTop = "";
-    elem.scrollTo({ top: 0, behavior: "smooth" });
-    setIsOpenedOptions(false);
-  }, []);
-
-  const closeOpenedOptions = useCallback(
-    (e: MouseEvent) => {
-      let element = e.target as HTMLElement;
-      while (element !== document.body) {
-        if (element === selectedElem.current) {
-          return;
-        }
-        const parentElement = element.parentElement;
-        if (parentElement) {
-          element = parentElement;
-        } else {
-          return;
-        }
-      }
-      if (isOpenedOptions) {
-        closeCurrenciesOptions();
-      }
-    },
-    [closeCurrenciesOptions, isOpenedOptions]
-  );
+  const [isOpenedCurrencyOptions, setIsOpenedCurrencyOptions] = useState(false);
 
   const onKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log(event);
     if (event.key === "-" || event.key === "+") {
       return event.preventDefault();
     }
@@ -99,11 +51,13 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
   }, []);
 
   useEffect(() => {
-    window.addEventListener("click", closeOpenedOptions);
-    return () => {
-      window.removeEventListener("click", closeOpenedOptions);
-    };
-  }, [closeOpenedOptions]);
+    if (isOpenedCurrencyOptions) {
+      const ulElem = optionsListElem.current;
+      if (ulElem) {
+        ulElem.scrollTo({ top: 0 });
+      }
+    }
+  }, [isOpenedCurrencyOptions]);
 
   return (
     <div className={classes["exchange-data"]}>
@@ -121,53 +75,67 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
           onPaste={onPaste}
         />
         <div className={classes["exchange-data__currency-selector"]}>
-          <div
-            className={classes["exchange-data__selected"]}
-            onClick={toggleIsOpenedOptions}
-            ref={selectedElem}
-          >
-            <span className={classes["exchange-data__currency-img"]}>
-              <Image
-                src={currentCurrency.img}
-                alt={currentCurrency.name + "-logo"}
-                width={30}
-                height={30}
-                layout="fixed"
-                quality={100}
-              />
-            </span>
-            <span className={classes["exchange-data__currency-name"]}>{currentCurrency.name}</span>
-            <span
-              className={
-                `${classes["exchange-data__select-arrow"]}` +
-                (isOpenedOptions ? ` ${classes["exchange-data__select-arrow_is-opened"]}` : ``)
-              }
-            >
-              <FaAngleDown />
-            </span>
-          </div>
-          <ul className={classes["exchange-data__select-options"]} ref={optionsListElem}>
-            {currencyOptions.map((currency) => (
-              <li
-                className={classes["exchange-data__select-options-item"]}
-                key={currency.name}
-                data-name={currency.name}
-                onClick={onChangeCurrency}
-              >
-                <span className={classes["exchange-data__currency-img"]}>
-                  <Image
-                    src={currency.img}
-                    alt={currency.name + "-logo"}
-                    width={30}
-                    height={30}
-                    layout="fixed"
-                    quality={100}
-                  />
-                </span>
-                <span className={classes["exchange-data__currency-name"]}>{currency.name}</span>
-              </li>
-            ))}
-          </ul>
+          <DropdownList
+            isOpenOptions={isOpenedCurrencyOptions}
+            setIsOpenOptions={setIsOpenedCurrencyOptions}
+            toggler={
+              <>
+                <div className={classes["exchange-data__selected"]}>
+                  <span className={classes["exchange-data__currency-img"]}>
+                    <Image
+                      src={currentCurrency.img}
+                      alt={currentCurrency.name + "-logo"}
+                      width={30}
+                      height={30}
+                      layout="fixed"
+                      quality={100}
+                    />
+                  </span>
+                  <span className={classes["exchange-data__currency-name"]}>
+                    {currentCurrency.name}
+                  </span>
+                  <span
+                    className={
+                      `${classes["exchange-data__select-arrow"]}` +
+                      (isOpenedCurrencyOptions
+                        ? ` ${classes["exchange-data__select-arrow_is-opened"]}`
+                        : ``)
+                    }
+                  >
+                    <FaAngleDown />
+                  </span>
+                </div>
+              </>
+            }
+            options={
+              <>
+                <ul className={classes["exchange-data__options"]} ref={optionsListElem}>
+                  {currencyOptions.map((currency) => (
+                    <li
+                      className={classes["exchange-data__select-options-item"]}
+                      key={currency.name}
+                      data-name={currency.name}
+                      onClick={onChangeCurrency}
+                    >
+                      <span className={classes["exchange-data__currency-img"]}>
+                        <Image
+                          src={currency.img}
+                          alt={currency.name + "-logo"}
+                          width={30}
+                          height={30}
+                          layout="fixed"
+                          quality={100}
+                        />
+                      </span>
+                      <span className={classes["exchange-data__currency-name"]}>
+                        {currency.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            }
+          />
         </div>
       </div>
     </div>

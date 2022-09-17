@@ -1,9 +1,9 @@
 @import "../../utils/css/variables.scss";
 @import "../../utils/css/mixins.scss";
 
-// .dropdown-list__toggler {
-// display: block;
-// }
+.dropdown-list__toggler {
+  height: 100%;
+}
 
 .dropdown-list__options {
   position: absolute;
