@@ -7,13 +7,15 @@ interface DropdownListProps {
   options: React.ReactNode;
   isOpenOptions: boolean;
   setIsOpenOptions: Dispatch<SetStateAction<boolean>>;
+  rightSided?: boolean;
 }
 
 const DropdownList: React.FC<DropdownListProps> = ({
   toggler,
   options,
   isOpenOptions,
-  setIsOpenOptions
+  setIsOpenOptions,
+  rightSided
 }) => {
   const togglerElem = useRef<HTMLDivElement>(null);
   const optionsElem = useRef<HTMLDivElement>(null);
@@ -70,7 +72,8 @@ const DropdownList: React.FC<DropdownListProps> = ({
       <div
         className={
           `${classes["dropdown-list__options"]}` +
-          (isOpenOptions ? ` ${classes["dropdown-list__options_open"]}` : ``)
+          (isOpenOptions ? ` ${classes["dropdown-list__options_open"]}` : ``) +
+          (rightSided ? ` ${classes["dropdown-list__options_right"]}` : ``)
         }
         ref={optionsElem}
       >

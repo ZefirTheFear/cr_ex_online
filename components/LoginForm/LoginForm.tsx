@@ -131,9 +131,7 @@ const LoginForm: React.FC = () => {
         return;
       }
     },
-    // disable the linting on the next line - This is the cleanest solution according to Nextjs.org
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [language]
+    [language, router]
   );
 
   const closeSWWModal = useCallback(() => {

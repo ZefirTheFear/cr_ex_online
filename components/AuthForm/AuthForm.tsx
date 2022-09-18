@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import LoginForm from "../LoginForm/LoginForm";
@@ -9,7 +9,7 @@ import { Languages } from "../../models/language";
 
 import classes from "./AuthForm.module.scss";
 
-enum AuthMode {
+export enum AuthMode {
   login = "login",
   register = "register",
   forgotPassword = "forgotPassword"
@@ -17,30 +17,8 @@ enum AuthMode {
 
 const AuthForm: React.FC = () => {
   const router = useRouter();
+  const authMode = router.query.authMode as AuthMode;
   const language = router.query.lang as Languages;
-
-  const [authMode, setAuthMode] = useState<AuthMode>(AuthMode.login);
-
-  // const setAuthModeToRegister = useCallback(() => {
-  //   return setAuthMode(AuthMode.register);
-  // }, []);
-  const setAuthModeToLogin = useCallback(() => {
-    return setAuthMode(AuthMode.login);
-  }, []);
-
-  const setAuthModeToForgotPassword = useCallback(() => {
-    return setAuthMode(AuthMode.forgotPassword);
-  }, []);
-
-  const changeAuthMode = useCallback(() => {
-    return setAuthMode((prev) => {
-      if (prev === AuthMode.login) {
-        return AuthMode.register;
-      } else {
-        return AuthMode.login;
-      }
-    });
-  }, []);
 
   return (
     <div className={classes["auth-form"]}>
@@ -77,38 +55,49 @@ const AuthForm: React.FC = () => {
             ? "Є акаунт?"
             : "Есть аккаунт?"}
         </span>
-        <span className={classes["auth-form__toggler"]} onClick={changeAuthMode}>
-          {authMode === AuthMode.login
-            ? language === Languages.en
-              ? "Register"
+        <Link
+          href={
+            authMode === AuthMode.login
+              ? `/${encodeURIComponent(language)}/auth/${encodeURIComponent(AuthMode.register)}`
+              : `/${encodeURIComponent(language)}/auth/${encodeURIComponent(AuthMode.login)}`
+          }
+        >
+          <span className={classes["auth-form__toggler"]}>
+            {authMode === AuthMode.login
+              ? language === Languages.en
+                ? "Register"
+                : language === Languages.ua
+                ? "Зареєструйтеся"
+                : "Зарегистрируйтесь"
+              : language === Languages.en
+              ? "Login"
               : language === Languages.ua
-              ? "Зареєструйтеся"
-              : "Зарегистрируйтесь"
-            : language === Languages.en
-            ? "Login"
-            : language === Languages.ua
-            ? "Увійти"
-            : "Войти"}
-        </span>
+              ? "Увійти"
+              : "Войти"}
+          </span>
+        </Link>
       </p>
       {authMode === AuthMode.login ? (
         <LoginForm />
       ) : authMode === AuthMode.register ? (
-        <RegisterForm goToLoginForm={setAuthModeToLogin} />
+        <RegisterForm />
       ) : (
-        <ForgotPasswordForm goToLoginForm={setAuthModeToLogin} />
+        <ForgotPasswordForm />
       )}
       {authMode === AuthMode.login ? (
-        <div
-          className={classes["auth-form__forgot-password"]}
-          onClick={setAuthModeToForgotPassword}
+        <Link
+          href={`/${encodeURIComponent(language)}/auth/${encodeURIComponent(
+            AuthMode.forgotPassword
+          )}`}
         >
-          {language === Languages.en
-            ? "Forgot your password?"
-            : language === Languages.ua
-            ? "Забули пароль?"
-            : "Забыли пароль?"}
-        </div>
+          <div className={classes["auth-form__forgot-password"]}>
+            {language === Languages.en
+              ? "Forgot your password?"
+              : language === Languages.ua
+              ? "Забули пароль?"
+              : "Забыли пароль?"}
+          </div>
+        </Link>
       ) : authMode === AuthMode.register ? (
         <div className={classes["auth-form__register-note"]}>
           {language === Languages.en

@@ -19,11 +19,7 @@ enum ForgotPasswordInputFieldName {
   email = "email"
 }
 
-interface ForgotPasswordFormProps {
-  goToLoginForm: () => void;
-}
-
-const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ goToLoginForm }) => {
+const ForgotPasswordForm: React.FC = () => {
   const controller = useMemo(() => {
     return new AbortController();
   }, []);
@@ -119,8 +115,8 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ goToLoginForm }
   }, []);
 
   const closeSuccessModal = useCallback(() => {
-    goToLoginForm();
-  }, [goToLoginForm]);
+    router.push(`/${encodeURIComponent(language)}/auth/login`);
+  }, [language, router]);
 
   useEffect(() => {
     return () => {

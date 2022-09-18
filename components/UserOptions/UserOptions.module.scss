@@ -1,0 +1,105 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.user-options {
+  position: relative;
+}
+
+.user-options__toggler {
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  // border: 1px solid $light-color;
+
+  border-radius: $border-radius;
+  transition: $main-transition;
+  cursor: pointer;
+
+  &:not(.user-options__toggler_authenticated) {
+    @include hover-to-seconadry-color;
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.user-options__toggler_authenticated {
+  // border-width: 0;
+  background: $bg-color-secondary;
+  @include hover-bg-over-seconadry-color;
+}
+
+.user-options__toggler-icon {
+  font-size: 1.5rem;
+}
+
+.user-options__toggler-arrow {
+  margin-left: 0.2rem;
+  transition: transform 0.15s linear;
+
+  svg {
+    display: block;
+  }
+}
+
+.user-options__toggler-arrow_open {
+  transform: rotate(-180deg);
+}
+
+.user-options__list {
+  border: 1px solid $light-color;
+  border-radius: $border-radius;
+  overflow: hidden;
+}
+
+.user-options__list-item {
+  white-space: nowrap;
+  background: $bg-color-main-shadow;
+  border-bottom: 1px solid $light-color;
+  cursor: pointer;
+  transition: $main-transition;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  @include hover-bg-to-seconadry-color;
+
+  a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: $light-color;
+  }
+}
+
+.user-options__list-item_with-padding {
+  padding: 0.5rem;
+}
+
+.user-options__list-item-icon {
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+
+  svg {
+    display: flex;
+  }
+}
+
+.user-options__list-item-title {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  height: 100%;
+}
+
+.user-options__logout-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+}

@@ -1,9 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMemo, useCallback, useEffect, useState, useRef } from "react";
-import { useSession, signOut } from "next-auth/react";
-import { FaAngleDown, FaSignInAlt, FaUserCircle } from "react-icons/fa";
-import { ImUserPlus } from "react-icons/im";
+import { useMemo, useCallback, useEffect } from "react";
 
 import LanguageSelector from "../LanguageSelector/LanguageSelector";
 
@@ -18,23 +14,15 @@ import { toggleMobileMenu, closeMobileMenu } from "../../store/reducers/mobileMe
 
 import classes from "./Header.module.scss";
 import NavItemDropdownList from "../NavItemDropdownList/NavItemDropdownList";
+import UserOptions from "../UserOptions/UserOptions";
 
 interface HeaderProps {
   lang: Languages;
 }
 
 const Header: React.FC<HeaderProps> = ({ lang }) => {
-  const router = useRouter();
-
-  const { data: session, status } = useSession();
-
   const isMobileMenuOpen = useAppSelector((state) => state.mobileMenuState.isOpen);
   const dispatch = useAppDispatch();
-
-  const userElem = useRef<HTMLDivElement>(null);
-  const userOptionsListElem = useRef<HTMLUListElement>(null);
-
-  const [isOpenUserOptions, setIsOpenUserOptions] = useState(false);
 
   const navItems = useMemo(() => {
     return navigatationItems(lang);
@@ -51,64 +39,6 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
   const closeMobMenu = useCallback(() => {
     dispatch(closeMobileMenu());
   }, [dispatch]);
-
-  const logOut = useCallback(
-    async () => {
-      const data = await signOut({ redirect: false, callbackUrl: `/${lang}` });
-      router.push(data.url);
-    },
-    // disable the linting on the next line - This is the cleanest solution according to Nextjs.org
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
-  const toggleUserOptions = useCallback(() => {
-    const elem = userOptionsListElem.current as HTMLUListElement;
-    if (isOpenUserOptions) {
-      elem.style.borderWidth = "0";
-      elem.style.height = "0";
-    } else {
-      const borderWidth = 1;
-      elem.style.borderWidth = `${borderWidth}px`;
-      elem.style.height = elem.scrollHeight + borderWidth * 2 + "px";
-    }
-    setIsOpenUserOptions((prevState) => !prevState);
-  }, [isOpenUserOptions]);
-
-  const closeUserOptions = useCallback(() => {
-    const elem = userOptionsListElem.current as HTMLUListElement;
-    elem.style.borderWidth = "0";
-    elem.style.height = "0";
-    setIsOpenUserOptions(false);
-  }, []);
-
-  const closeOpenedUserOptions = useCallback(
-    (e: MouseEvent) => {
-      let element = e.target as HTMLElement;
-      while (element !== document.body) {
-        if (element === userElem.current) {
-          return;
-        }
-        const parentElement = element.parentElement;
-        if (parentElement) {
-          element = parentElement;
-        } else {
-          return;
-        }
-      }
-      if (isOpenUserOptions) {
-        closeUserOptions();
-      }
-    },
-    [closeUserOptions, isOpenUserOptions]
-  );
-
-  useEffect(() => {
-    window.addEventListener("click", closeOpenedUserOptions);
-    return () => {
-      window.removeEventListener("click", closeOpenedUserOptions);
-    };
-  }, [closeOpenedUserOptions]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -152,81 +82,7 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
           ))}
         </nav>
         <LanguageSelector />
-        {!session && status !== "loading" && (
-          <div className={classes["header__auth-container"]}>
-            <Link href={`/${encodeURIComponent(lang)}/auth`}>
-              <a>
-                <button className={classes["header__auth-btn"]} type="button">
-                  <span className={classes["header__auth-btn-title"]}>
-                    {lang === Languages.en ? "Login" : lang === Languages.ua ? "Увійти" : "Войти"}
-                  </span>
-                  <span className={classes["header__auth-icon"]}>
-                    <FaSignInAlt />
-                  </span>
-                </button>
-              </a>
-            </Link>
-            <Link href={`/${encodeURIComponent(lang)}/auth`}>
-              <a>
-                <button className={classes["header__auth-btn"]} type="button">
-                  <span className={classes["header__auth-btn-title"]}>
-                    {lang === Languages.en
-                      ? "Register"
-                      : lang === Languages.ua
-                      ? "Реєстрація"
-                      : "Регистрация"}
-                  </span>
-                  <span className={classes["header__auth-icon"]}>
-                    <ImUserPlus />
-                  </span>
-                </button>
-              </a>
-            </Link>
-          </div>
-        )}
-        {session && (
-          <div className={classes["header__user-container"]}>
-            <div className={classes.header__user} onClick={toggleUserOptions} ref={userElem}>
-              <span className={classes["header__user-icon"]}>
-                <FaUserCircle />
-              </span>
-              <span
-                className={
-                  `${classes["header__user-arrow"]}` +
-                  (isOpenUserOptions ? ` ${classes["header__user-arrow_open"]}` : ``)
-                }
-              >
-                <FaAngleDown />
-              </span>
-            </div>
-            <ul
-              className={
-                `${classes["header__user-options"]}` +
-                (isOpenUserOptions ? ` ${classes["header__user-options_open"]}` : ``)
-              }
-              ref={userOptionsListElem}
-            >
-              <li className={classes["header__user-options-item"]}>
-                <Link href={`/${encodeURIComponent(lang)}/profile`}>
-                  {lang === Languages.en
-                    ? "My profile"
-                    : lang === Languages.ua
-                    ? "Мій профіль"
-                    : "Мой профиль"}
-                </Link>
-              </li>
-              <li
-                className={
-                  `${classes["header__user-options-item"]}` +
-                  ` ${classes["header__user-options-item_with-padding"]}`
-                }
-                onClick={logOut}
-              >
-                {lang === Languages.en ? "Logout" : lang === Languages.ua ? "Вийти" : "Выйти"}
-              </li>
-            </ul>
-          </div>
-        )}
+        <UserOptions lang={lang} />
         <div
           className={
             `${classes["header__menu-btn"]}` +

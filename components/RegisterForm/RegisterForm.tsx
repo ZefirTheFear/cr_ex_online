@@ -25,11 +25,7 @@ enum RegisterInputFieldName {
   checkbox = "checkbox"
 }
 
-interface RegisterFormProps {
-  goToLoginForm: () => void;
-}
-
-const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
+const RegisterForm: React.FC = () => {
   const controller = useMemo(() => {
     return new AbortController();
   }, []);
@@ -145,8 +141,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ goToLoginForm }) => {
   }, []);
 
   const closeSuccessModal = useCallback(() => {
-    goToLoginForm();
-  }, [goToLoginForm]);
+    router.push(`/${encodeURIComponent(language)}/auth/login`);
+    // disable the linting on the next line - This is the cleanest solution according to Nextjs.org
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language]);
 
   useEffect(() => {
     return () => {
