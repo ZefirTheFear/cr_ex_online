@@ -58,7 +58,11 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
             </a>
           </Link>
         </div>
-        <nav className={classes.header__menu}>
+        <nav
+          className={
+            `${classes.header__menu}` + (isMobileMenuOpen ? ` ${classes.header__menu_open}` : ``)
+          }
+        >
           {navItems.map((item) => (
             <div
               className={
@@ -67,17 +71,19 @@ const Header: React.FC<HeaderProps> = ({ lang }) => {
               }
               key={item.id}
             >
-              {item.role === navItemRole.list ? (
-                <NavItemDropdownList title={item.title} list={item.sublist} />
-              ) : (
-                <div className={classes["header__menu-item-link-container"]} onClick={closeMobMenu}>
-                  {item.url && (
-                    <Link href={item.url}>
-                      <a>{item.title}</a>
-                    </Link>
-                  )}
-                </div>
-              )}
+              <>
+                {/* {<item.icon />} */}
+                {item.role === navItemRole.list ? (
+                  <NavItemDropdownList title={item.title} list={item.sublist} />
+                ) : (
+                  <div
+                    className={classes["header__menu-item-link-container"]}
+                    onClick={closeMobMenu}
+                  >
+                    {item.url && <Link href={item.url}>{item.title}</Link>}
+                  </div>
+                )}
+              </>
             </div>
           ))}
         </nav>

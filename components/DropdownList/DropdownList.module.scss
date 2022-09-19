@@ -20,3 +20,10 @@
   position: absolute;
   right: 0;
 }
+
+.dropdown-list__options_sublist {
+  @media (max-width: 767px) {
+    position: static;
+    margin: 0;
+  }
+}

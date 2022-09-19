@@ -47,20 +47,20 @@ input[type="number"] {
   width: 0;
 }
 /* Track */
-::-webkit-scrollbar-track {
-  position: absolute;
-  background: $light-color;
-  padding: 15px;
-  border-top-right-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
-}
+// ::-webkit-scrollbar-track {
+//   position: absolute;
+//   background: $light-color;
+//   padding: 15px;
+//   border-top-right-radius: $border-radius;
+//   border-bottom-right-radius: $border-radius;
+// }
 /* Handle */
-::-webkit-scrollbar-thumb {
-  background: $bg-color-secondary;
-  border-top-right-radius: $border-radius;
-  border-bottom-right-radius: $border-radius;
-}
+// ::-webkit-scrollbar-thumb {
+//   background: $bg-color-secondary;
+//   border-top-right-radius: $border-radius;
+//   border-bottom-right-radius: $border-radius;
+// }
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: darken($bg-color-secondary, 10);
-}
+// ::-webkit-scrollbar-thumb:hover {
+//   background: darken($bg-color-secondary, 10);
+// }
