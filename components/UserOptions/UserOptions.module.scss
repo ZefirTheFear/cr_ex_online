@@ -36,14 +36,17 @@
 
 .user-options__user-name {
   padding: 0.1rem;
-  max-width: 100px;
+  max-width: 150px;
   height: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: bold;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  word-break: break-word;
+  // word-break: break-all;
   margin-left: 0.5rem;
 
-  @media (max-width: 767px) {
+  @media (max-width: 992px) {
     display: none;
   }
 }

@@ -23,5 +23,119 @@
 }
 
 .profile__user-data {
-  display: grid;
+  display: block;
+}
+
+.profile__user-data-card {
+  display: flex;
+  width: 600px;
+  margin-bottom: 1rem;
+  background: $bg-color-main-shadow;
+  border-radius: $border-radius;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+}
+
+.profile__user-data-item {
+  padding: 0.5rem;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.profile__user-data-item-title {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile__user-data-item-content {
+  padding: 0.25rem;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  word-break: break-word;
+  // word-break: break-all;
+  font-weight: bold;
+  font-size: 1.25rem;
+
+  @media (max-width: 767px) {
+    font-size: 1rem;
+  }
+}
+
+.profile__user-data-edit {
+  background: $bg-color-main-dark;
+  flex-shrink: 0;
+  padding: 0.5rem;
+  width: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: $main-transition;
+
+  @include hover-to-seconadry-color;
+
+  svg {
+    display: block;
+  }
+}
+
+.profile__edit-form {
+  width: 700px;
+
+  @media (max-width: 992px) {
+    width: 100%;
+  }
+}
+
+.profile__input-with-mb {
+  margin-bottom: 1rem;
+}
+
+.profile__save-btn {
+  @include button;
+  width: 200px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.profile__cancel-edit-state {
+  display: inline-block;
+  color: $bg-color-secondary;
+  font-weight: bold;
+  font-size: 1.5rem;
+  cursor: pointer;
+
+  @include hover-over-secondary-color;
+
+  &:active {
+    transition: $main-transition;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transition: $main-transition;
+    }
+  }
+
+  &::before {
+    @include before-line;
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+  }
 }

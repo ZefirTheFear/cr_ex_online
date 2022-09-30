@@ -39,6 +39,23 @@ export interface IForgotPasswordInputErrors {
   email?: string[];
 }
 
+export interface IEditUserData {
+  name?: string;
+  email?: string;
+  phone?: string;
+  oldPassword?: string;
+  newPassword?: string;
+  language: Languages;
+}
+
+export interface IEditUserInputErrors {
+  name?: string[];
+  email?: string[];
+  phone?: string[];
+  currentPassword?: string[];
+  newPassword?: string[];
+}
+
 export const registerValidation = (inputData: IRegisterData): IRegisterInputErrors | undefined => {
   const inputErrors: IRegisterInputErrors = {};
 
@@ -169,4 +186,12 @@ export const forgotPasswordValidation = (
   if (Object.keys(inputErrors).length > 0) {
     return inputErrors;
   }
+};
+
+export const editUserDataValidation = (
+  inputData: IEditUserData
+): IEditUserInputErrors | undefined => {
+  const inputErrors: IEditUserInputErrors = {};
+
+  return;
 };
