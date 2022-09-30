@@ -3,31 +3,31 @@ import { unstable_getServerSession } from "next-auth/next";
 import Head from "next/head";
 
 import Header from "../../../components/Header/Header";
-import AuthSection from "../../../components/AuthSection/AuthSection";
 import Footer from "../../../components/Footer/Footer";
+import Profile from "../../../components/Profile/Profile";
 
 import { Languages } from "../../../models/language";
 import { authOptions } from "../../api/auth/[...nextauth]";
 
-interface HomePageProps {
+interface ProfileProps {
   lang: Languages;
 }
 
-const AuthPage: NextPage<HomePageProps> = ({ lang }) => {
+const ProfilePage: NextPage<ProfileProps> = ({ lang }) => {
   return (
     <>
       <Head>
         <title>
           {lang === Languages.en
-            ? "Authentication"
+            ? "My profile"
             : lang === Languages.ua
-            ? "Аутентифікація"
-            : "Аутентификация"}
+            ? "Мій профіль"
+            : "Мой профиль"}
         </title>
         {/* <meta name="description" content="Крипто обмен" /> */}
       </Head>
       <Header lang={lang} />
-      <AuthSection />
+      <Profile />
       <Footer />
     </>
   );
@@ -38,10 +38,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const lang = context.params?.lang;
 
-  if (session) {
+  if (!session) {
     return {
       redirect: {
-        destination: `/${lang}`,
+        destination: `/${lang}/auth/login`,
         permanent: false
       }
     };
@@ -52,4 +52,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default AuthPage;
+export default ProfilePage;

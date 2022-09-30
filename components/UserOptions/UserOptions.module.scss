@@ -34,6 +34,20 @@
   font-size: 1.5rem;
 }
 
+.user-options__user-name {
+  padding: 0.1rem;
+  max-width: 100px;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 0.5rem;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
 .user-options__toggler-arrow {
   margin-left: 0.2rem;
   transition: transform 0.15s linear;

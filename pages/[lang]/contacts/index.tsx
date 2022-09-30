@@ -19,8 +19,8 @@ const ContactsPage: NextPage<ContactsProps> = ({ lang }) => {
         </title>
         {/* <meta name="description" content="Крипто обмен" /> */}
       </Head>
-      <div>Contacts</div>
       <Header lang={lang} />
+      <div>Contacts</div>
       <Footer />
     </>
   );

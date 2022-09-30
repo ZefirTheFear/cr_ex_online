@@ -5,15 +5,18 @@
   max-width: 1200px;
 }
 
+@mixin padding-header {
+  padding-top: $header-height;
+
+  @media (max-width: 767px) {
+    padding-top: $header-height-sm;
+  }
+}
+
 @mixin section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
   @include app-inner-width;
   padding: 2rem 0;
   margin: 0 auto;
-  z-index: 1;
 
   @media (max-width: 767px) {
     padding: 1rem 0;

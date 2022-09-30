@@ -3,7 +3,14 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useCallback, useState } from "react";
 
-import { FaAngleDown, FaSignInAlt, FaSignOutAlt, FaUserCircle, FaUser } from "react-icons/fa";
+import {
+  FaAngleDown,
+  FaSignInAlt,
+  FaSignOutAlt,
+  FaUserCircle,
+  FaUser,
+  FaHistory
+} from "react-icons/fa";
 import { ImUserPlus } from "react-icons/im";
 
 import DropdownList from "../DropdownList/DropdownList";
@@ -25,6 +32,7 @@ const UserOptions: React.FC<UserOptionsProps> = ({ lang }) => {
   const [isOpenUserOptions, setisOpenUserOptions] = useState(false);
 
   const logOut = useCallback(async () => {
+    console.log("log out");
     const data = await signOut({ redirect: false, callbackUrl: `/${lang}` });
     router.push(data.url);
   }, [lang, router]);
@@ -45,6 +53,9 @@ const UserOptions: React.FC<UserOptionsProps> = ({ lang }) => {
               <span className={classes["user-options__toggler-icon"]}>
                 <FaUserCircle />
               </span>
+              {session?.user.name && (
+                <span className={classes["user-options__user-name"]}>{session.user.name}</span>
+              )}
               <span
                 className={
                   `${classes["user-options__toggler-arrow"]}` +
@@ -117,6 +128,22 @@ const UserOptions: React.FC<UserOptionsProps> = ({ lang }) => {
                             : lang === Languages.ua
                             ? "Мій профіль"
                             : "Мой профиль"}
+                        </span>
+                      </a>
+                    </Link>
+                  </li>
+                  <li className={classes["user-options__list-item"]}>
+                    <Link href={`/${encodeURIComponent(lang)}/profile/history`}>
+                      <a>
+                        <span className={classes["user-options__list-item-icon"]}>
+                          <FaHistory />
+                        </span>
+                        <span className={classes["user-options__list-item-title"]}>
+                          {lang === Languages.en
+                            ? "History"
+                            : lang === Languages.ua
+                            ? "Історія"
+                            : "История"}
                         </span>
                       </a>
                     </Link>

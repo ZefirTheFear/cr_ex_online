@@ -19,8 +19,8 @@ const AboutUsPage: NextPage<AboutUsProps> = ({ lang }) => {
         </title>
         {/* <meta name="description" content="Крипто обмен" /> */}
       </Head>
-      <div>AboutUs</div>
       <Header lang={lang} />
+      <div>AboutUs</div>
       <Footer />
     </>
   );

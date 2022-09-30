@@ -1,0 +1,27 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.profile {
+  @include padding-header;
+  background: $bg-color-main;
+}
+
+.profile__inner {
+  @include section;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.profile__heading {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+
+  @media (max-width: 767px) {
+    margin-bottom: 1rem;
+  }
+}
+
+.profile__user-data {
+  display: grid;
+}

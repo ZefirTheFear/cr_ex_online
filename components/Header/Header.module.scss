@@ -78,7 +78,9 @@
 }
 
 .header__menu_open {
-  height: calc(100vh - #{$header-height-sm});
+  @media (max-width: 767px) {
+    height: calc(100vh - #{$header-height-sm});
+  }
 }
 
 .header__menu-item-container {

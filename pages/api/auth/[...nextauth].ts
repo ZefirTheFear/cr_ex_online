@@ -46,10 +46,25 @@ export const authOptions: NextAuthOptions = {
         }
 
         connection.connection.close();
-        return { email: user.email };
+        return {
+          email: user.email,
+          name: user.name,
+          phone: user.phone
+        };
       }
     })
-  ]
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: { name: token.name, email: token.email, phone: token.phone }
+      };
+    }
+  }
 };
 
 export default NextAuth(authOptions);
