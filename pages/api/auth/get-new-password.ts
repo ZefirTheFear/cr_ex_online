@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(503).json({ message: "connecting db error" });
   }
 
-  const existingUser = await User.findOne({ email: forgotPasswordData.email.toLowerCase() });
+  const existingUser = await User.findOne({ email: forgotPasswordData.email });
   if (!existingUser) {
     connection.connection.close();
     return res.status(422).json({
@@ -59,7 +59,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     await existingUser.save();
   } catch (error) {
     connection.connection.close();
-    return res.status(503).json({ message: "oops. user creating problem" });
+    return res.status(503).json({ message: "oops. user updating problem" });
   }
 
   connection.connection.close();

@@ -4,10 +4,16 @@ import { useRouter } from "next/router";
 import { FaEdit } from "react-icons/fa";
 
 import BlockSpinner from "../BlockSpinner/BlockSpinner";
+import PageSpinner from "../PageSpinner/PageSpinner";
+import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
 
 import { Languages } from "../../models/language";
-import { IEditUserInputErrors } from "../../utils/ts/validations";
+import {
+  editUserDataValidation,
+  IEditUserData,
+  IEditUserInputErrors
+} from "../../utils/ts/validations";
 
 import classes from "./Profile.module.scss";
 import cloneDeep from "clone-deep";
@@ -28,9 +34,9 @@ enum Field {
 }
 
 enum EditUserInputFieldName {
-  name = "name",
-  email = "email",
-  phone = "phone",
+  newName = "newName",
+  newEmail = "newEmail",
+  newPhone = "newPhone",
   currentPassword = "currentPassword",
   newPassword = "newPassword"
 }
@@ -41,6 +47,7 @@ const Profile: React.FC = () => {
   }, []);
 
   const { data: session } = useSession();
+  // console.log("session: ", session);
 
   const router = useRouter();
   const language = router.query.lang as Languages;
@@ -119,26 +126,126 @@ const Profile: React.FC = () => {
 
   const cleanEditState = useCallback(() => {
     setEditState(EditState.none);
+    setInputErrors({});
   }, []);
 
-  const changeUserName = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // TODO
+  const changeUserData = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (!session) {
+        return;
+      }
+
+      let changeUserData: IEditUserData;
+      let editUrl: string;
+
+      if (editState === EditState.editName && nameInput.current) {
+        changeUserData = {
+          currentEmail: session.user.email,
+          newName: nameInput.current.value.trim(),
+          language: language
+        };
+        editUrl = "/api/profile/edit-user-name";
+      } else if (editState === EditState.editPhone && phoneInput.current) {
+        changeUserData = {
+          currentEmail: session.user.email,
+          newPhone: phoneInput.current.value.trim(),
+          language: language
+        };
+        editUrl = "/api/profile/edit-user-phone";
+      } else if (editState === EditState.editEmail && emailInput.current) {
+        changeUserData = {
+          currentEmail: session.user.email,
+          newEmail: emailInput.current.value.toLowerCase().trim(),
+          language: language
+        };
+        editUrl = "/api/profile/edit-user-email";
+      } else if (
+        editState === EditState.editPassword &&
+        currentPasswordInput.current &&
+        newPasswordInput.current
+      ) {
+        changeUserData = {
+          currentEmail: session.user.email,
+          currentPassword: currentPasswordInput.current.value.trim(),
+          newPassword: newPasswordInput.current.value.trim(),
+          language: language
+        };
+        editUrl = "/api/profile/edit-user-password";
+      } else {
+        return;
+      }
+
+      const changeUserDataInputErrors = editUserDataValidation(changeUserData);
+      console.log("changeUserDataInputErrors: ", changeUserDataInputErrors);
+      if (changeUserDataInputErrors) {
+        return setInputErrors(changeUserDataInputErrors);
+      }
+
+      setIsLoading(true);
+      try {
+        const response = await fetch(editUrl, {
+          method: "PATCH",
+          body: JSON.stringify(changeUserData),
+          headers: {
+            "Content-Type": "application/json"
+          },
+          signal: controller.signal
+        });
+        console.log(response);
+
+        if (response.status === 422) {
+          const data = (await response.json()) as { inputErrors: IEditUserInputErrors };
+          setInputErrors(data.inputErrors);
+          setIsLoading(false);
+          return;
+        }
+
+        if (response.status === 503) {
+          const data = (await response.json()) as { message: string };
+          console.log(data);
+          setIsSomethingWentWrong(true);
+          setIsLoading(false);
+          return;
+        }
+
+        if (response.status === 200) {
+          // console.log("new ses");
+          // if (changeUserData.newName) {
+          //   session.user.name = changeUserData.newName;
+          // }
+
+          setIsSuccess(true);
+          setIsLoading(false);
+          return;
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setIsLoading(false);
+        return;
+      } catch (error) {
+        console.log("error: ", error);
+        setIsSomethingWentWrong(true);
+        setIsLoading(false);
+        return;
+      }
+    },
+    [controller.signal, editState, language, session]
+  );
+
+  const closeSWWModal = useCallback(() => {
+    setIsSomethingWentWrong(false);
   }, []);
 
-  const changeUserEmail = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // TODO
-  }, []);
-
-  const changeUserPhone = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // TODO
-  }, []);
-
-  const changeUserPassword = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // TODO
+  const closeSuccessModal = useCallback(() => {
+    setEditState(EditState.none);
+    setIsSuccess(false);
+    // if (session) {
+    //   console.log("new ses");
+    //   session.user.name = "qwe";
+    // }
   }, []);
 
   useEffect(() => {
@@ -164,8 +271,39 @@ const Profile: React.FC = () => {
     }
   }, [editState, session]);
 
+  useEffect(() => {
+    return () => {
+      controller.abort();
+    };
+  }, [controller]);
+
   return (
     <>
+      {isLoading && <PageSpinner />}
+      {isSomethingWentWrong && (
+        <Modal
+          closeModal={closeSWWModal}
+          msg={
+            language === Languages.en
+              ? "Something went wrong. Try again later"
+              : language === Languages.ua
+              ? "Щось пішло не так. Cпробуйте пізніше"
+              : "Что-то пошло не так. Попробуйте позже"
+          }
+        />
+      )}
+      {isSuccess && (
+        <Modal
+          closeModal={closeSuccessModal}
+          msg={
+            language === Languages.en
+              ? "The data has been successfully changed"
+              : language === Languages.ua
+              ? "Дані успішно змінено"
+              : "Данные успешно изменены"
+          }
+        />
+      )}
       {!userData && <BlockSpinner />}
       <div className={classes.profile}>
         <div className={classes.profile__inner}>
@@ -200,153 +338,131 @@ const Profile: React.FC = () => {
                 ))}
             </div>
           )}
-          {editState === EditState.editName && (
-            <form className={classes["profile__edit-form"]} onSubmit={changeUserName} noValidate>
-              <AuthInputGroup
-                title={
-                  language === Languages.en ? "Name" : language === Languages.ua ? "Ім'я" : "Имя "
-                }
-                type={AuthInputGroupType.text}
-                placeholder={
-                  language === Languages.en
-                    ? "Enter your new name"
-                    : language === Languages.ua
-                    ? "Введіть ваше нове ім'я"
-                    : "Введите ваше новое имя"
-                }
-                name={EditUserInputFieldName.name}
-                errors={inputErrors.name ? inputErrors.name : null}
-                ref={nameInput}
-                onFocus={focusInput}
-              />
-              <button type="submit" className={classes["profile__save-btn"]}>
-                {language === Languages.en
-                  ? "Save"
-                  : language === Languages.ua
-                  ? "Зберегти"
-                  : "Сохранить"}
-              </button>
-            </form>
-          )}
-          {editState === EditState.editEmail && (
-            <form className={classes["profile__edit-form"]} onSubmit={changeUserEmail} noValidate>
-              <AuthInputGroup
-                title="Email"
-                type={AuthInputGroupType.email}
-                placeholder={
-                  language === Languages.en
-                    ? "Enter your new email"
-                    : language === Languages.ua
-                    ? "Введіть ваш новий email"
-                    : "Введите ваш новый email"
-                }
-                name={EditUserInputFieldName.email}
-                errors={inputErrors.email ? inputErrors.email : null}
-                onFocus={focusInput}
-                ref={emailInput}
-              />
-              <button type="submit" className={classes["profile__save-btn"]}>
-                {language === Languages.en
-                  ? "Save"
-                  : language === Languages.ua
-                  ? "Зберегти"
-                  : "Сохранить"}
-              </button>
-            </form>
-          )}
-          {editState === EditState.editPhone && (
-            <form className={classes["profile__edit-form"]} onSubmit={changeUserPhone} noValidate>
-              <AuthInputGroup
-                title={language === Languages.en ? "Phone number" : "Телефон"}
-                type={AuthInputGroupType.tel}
-                placeholder={
-                  language === Languages.en
-                    ? "Enter your new phone number"
-                    : language === Languages.ua
-                    ? "Введіть ваш новий телефон"
-                    : "Введите ваш новый телефон"
-                }
-                name={EditUserInputFieldName.phone}
-                errors={inputErrors.phone ? inputErrors.phone : null}
-                ref={phoneInput}
-                onFocus={focusInput}
-              />
-              <button type="submit" className={classes["profile__save-btn"]}>
-                {language === Languages.en
-                  ? "Save"
-                  : language === Languages.ua
-                  ? "Зберегти"
-                  : "Сохранить"}
-              </button>
-            </form>
-          )}
-          {editState === EditState.editPassword && (
-            <form
-              className={classes["profile__edit-form"]}
-              onSubmit={changeUserPassword}
-              noValidate
-            >
-              <div className={classes["profile__input-with-mb"]}>
-                <AuthInputGroup
-                  title={
-                    language === Languages.en
-                      ? "Current Password"
-                      : language === Languages.ua
-                      ? "Поточний пароль"
-                      : "Текущий пароль"
-                  }
-                  type={AuthInputGroupType.password}
-                  placeholder={
-                    language === Languages.en
-                      ? "Enter your current password"
-                      : language === Languages.ua
-                      ? "Введіть ваш поточний пароль"
-                      : "Введите ваш текущий пароль"
-                  }
-                  name={EditUserInputFieldName.currentPassword}
-                  errors={inputErrors.currentPassword ? inputErrors.currentPassword : null}
-                  ref={currentPasswordInput}
-                  onFocus={focusInput}
-                />
-              </div>
-              <AuthInputGroup
-                title={
-                  language === Languages.en
-                    ? "New Password"
-                    : language === Languages.ua
-                    ? "Новий пароль"
-                    : "Новый пароль"
-                }
-                type={AuthInputGroupType.password}
-                placeholder={
-                  language === Languages.en
-                    ? "Enter your new password"
-                    : language === Languages.ua
-                    ? "Введіть ваш новий пароль"
-                    : "Введите ваш новый пароль"
-                }
-                name={EditUserInputFieldName.newPassword}
-                errors={inputErrors.newPassword ? inputErrors.newPassword : null}
-                ref={newPasswordInput}
-                onFocus={focusInput}
-              />
-              <button type="submit" className={classes["profile__save-btn"]}>
-                {language === Languages.en
-                  ? "Save"
-                  : language === Languages.ua
-                  ? "Зберегти"
-                  : "Сохранить"}
-              </button>
-            </form>
-          )}
+
           {editState !== EditState.none && (
-            <div className={classes["profile__cancel-edit-state"]} onClick={cleanEditState}>
-              {language === Languages.en
-                ? "Cancel"
-                : language === Languages.ua
-                ? "Відмінити"
-                : "Отменить"}
-            </div>
+            <>
+              <form className={classes["profile__edit-form"]} onSubmit={changeUserData} noValidate>
+                {editState === EditState.editName && (
+                  <AuthInputGroup
+                    title={
+                      language === Languages.en
+                        ? "Name"
+                        : language === Languages.ua
+                        ? "Ім'я"
+                        : "Имя "
+                    }
+                    type={AuthInputGroupType.text}
+                    placeholder={
+                      language === Languages.en
+                        ? "Enter your new name"
+                        : language === Languages.ua
+                        ? "Введіть ваше нове ім'я"
+                        : "Введите ваше новое имя"
+                    }
+                    name={EditUserInputFieldName.newName}
+                    errors={inputErrors.newName ? inputErrors.newName : null}
+                    ref={nameInput}
+                    onFocus={focusInput}
+                  />
+                )}
+                {editState === EditState.editEmail && (
+                  <AuthInputGroup
+                    title="Email"
+                    type={AuthInputGroupType.email}
+                    placeholder={
+                      language === Languages.en
+                        ? "Enter your new email"
+                        : language === Languages.ua
+                        ? "Введіть ваш новий email"
+                        : "Введите ваш новый email"
+                    }
+                    name={EditUserInputFieldName.newEmail}
+                    errors={inputErrors.newEmail ? inputErrors.newEmail : null}
+                    onFocus={focusInput}
+                    ref={emailInput}
+                  />
+                )}
+                {editState === EditState.editPhone && (
+                  <AuthInputGroup
+                    title={language === Languages.en ? "Phone number" : "Телефон"}
+                    type={AuthInputGroupType.tel}
+                    placeholder={
+                      language === Languages.en
+                        ? "Enter your new phone number"
+                        : language === Languages.ua
+                        ? "Введіть ваш новий телефон"
+                        : "Введите ваш новый телефон"
+                    }
+                    name={EditUserInputFieldName.newPhone}
+                    errors={inputErrors.newPhone ? inputErrors.newPhone : null}
+                    ref={phoneInput}
+                    onFocus={focusInput}
+                  />
+                )}
+                {editState === EditState.editPassword && (
+                  <>
+                    <div className={classes["profile__input-with-mb"]}>
+                      <AuthInputGroup
+                        title={
+                          language === Languages.en
+                            ? "Current Password"
+                            : language === Languages.ua
+                            ? "Поточний пароль"
+                            : "Текущий пароль"
+                        }
+                        type={AuthInputGroupType.password}
+                        placeholder={
+                          language === Languages.en
+                            ? "Enter your current password"
+                            : language === Languages.ua
+                            ? "Введіть ваш поточний пароль"
+                            : "Введите ваш текущий пароль"
+                        }
+                        name={EditUserInputFieldName.currentPassword}
+                        errors={inputErrors.currentPassword ? inputErrors.currentPassword : null}
+                        ref={currentPasswordInput}
+                        onFocus={focusInput}
+                      />
+                    </div>
+                    <AuthInputGroup
+                      title={
+                        language === Languages.en
+                          ? "New Password"
+                          : language === Languages.ua
+                          ? "Новий пароль"
+                          : "Новый пароль"
+                      }
+                      type={AuthInputGroupType.password}
+                      placeholder={
+                        language === Languages.en
+                          ? "Enter your new password"
+                          : language === Languages.ua
+                          ? "Введіть ваш новий пароль"
+                          : "Введите ваш новый пароль"
+                      }
+                      name={EditUserInputFieldName.newPassword}
+                      errors={inputErrors.newPassword ? inputErrors.newPassword : null}
+                      ref={newPasswordInput}
+                      onFocus={focusInput}
+                    />
+                  </>
+                )}
+                <button type="submit" className={classes["profile__save-btn"]}>
+                  {language === Languages.en
+                    ? "Save"
+                    : language === Languages.ua
+                    ? "Зберегти"
+                    : "Сохранить"}
+                </button>
+              </form>
+              <div className={classes["profile__cancel-edit-state"]} onClick={cleanEditState}>
+                {language === Languages.en
+                  ? "Cancel"
+                  : language === Languages.ua
+                  ? "Відмінити"
+                  : "Отменить"}
+              </div>
+            </>
           )}
         </div>
       </div>

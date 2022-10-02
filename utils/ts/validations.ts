@@ -40,18 +40,19 @@ export interface IForgotPasswordInputErrors {
 }
 
 export interface IEditUserData {
-  name?: string;
-  email?: string;
-  phone?: string;
-  oldPassword?: string;
+  newName?: string;
+  newEmail?: string;
+  newPhone?: string;
+  currentPassword?: string;
   newPassword?: string;
   language: Languages;
+  currentEmail: string;
 }
 
 export interface IEditUserInputErrors {
-  name?: string[];
-  email?: string[];
-  phone?: string[];
+  newName?: string[];
+  newEmail?: string[];
+  newPhone?: string[];
   currentPassword?: string[];
   newPassword?: string[];
 }
@@ -74,10 +75,10 @@ export const registerValidation = (inputData: IRegisterData): IRegisterInputErro
   if (name.trim().length < 1 || name.trim().length > 40) {
     const errorMsg =
       language === Languages.en
-        ? "from 1 to 50 characters"
+        ? "from 1 to 40 characters"
         : language === Languages.ua
-        ? "від 1 до 50 символів"
-        : "от 1 до 50 символов";
+        ? "від 1 до 40 символів"
+        : "от 1 до 40 символов";
     inputErrors.name = inputErrors.name ? [...inputErrors.name, errorMsg] : [errorMsg];
   }
 
@@ -193,5 +194,93 @@ export const editUserDataValidation = (
 ): IEditUserInputErrors | undefined => {
   const inputErrors: IEditUserInputErrors = {};
 
-  return;
+  const { newName, newEmail, newPhone, currentPassword, newPassword, language } = inputData;
+
+  if (newName !== undefined && (newName.trim().length < 1 || newName.trim().length > 40)) {
+    const errorMsg =
+      language === Languages.en
+        ? "from 1 to 40 characters"
+        : language === Languages.ua
+        ? "від 1 до 40 символів"
+        : "от 1 до 40 символов";
+    inputErrors.newName = inputErrors.newName ? [...inputErrors.newName, errorMsg] : [errorMsg];
+  }
+
+  if (newEmail !== undefined && !validator.isEmail(newEmail.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "enter valid email"
+        : language === Languages.ua
+        ? "введіть дійсний email"
+        : "введите действительный email";
+    inputErrors.newEmail = inputErrors.newEmail ? [...inputErrors.newEmail, errorMsg] : [errorMsg];
+  }
+
+  if (newPhone !== undefined && !validator.isMobilePhone(newPhone.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "enter valid phone number"
+        : language === Languages.ua
+        ? "введіть дійсний номер телефону"
+        : "введите действительный номер телефона";
+    inputErrors.newPhone = inputErrors.newPhone ? [...inputErrors.newPhone, errorMsg] : [errorMsg];
+  }
+
+  if (
+    currentPassword !== undefined &&
+    (currentPassword.trim().length < 5 || currentPassword.trim().length > 40)
+  ) {
+    const errorMsg =
+      language === Languages.en
+        ? "from 1 to 40 characters"
+        : language === Languages.ua
+        ? "від 1 до 40 символів"
+        : "от 1 до 40 символов";
+    inputErrors.currentPassword = inputErrors.currentPassword
+      ? [...inputErrors.currentPassword, errorMsg]
+      : [errorMsg];
+  }
+
+  if (currentPassword !== undefined && validator.isLowercase(currentPassword.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "at least 1 capital character"
+        : language === Languages.ua
+        ? "хоча б 1 заголовний символ"
+        : "хотя бы 1 заглавный символ";
+    inputErrors.currentPassword = inputErrors.currentPassword
+      ? [...inputErrors.currentPassword, errorMsg]
+      : [errorMsg];
+  }
+
+  if (
+    newPassword !== undefined &&
+    (newPassword.trim().length < 5 || newPassword.trim().length > 40)
+  ) {
+    const errorMsg =
+      language === Languages.en
+        ? "from 1 to 40 characters"
+        : language === Languages.ua
+        ? "від 1 до 40 символів"
+        : "от 1 до 40 символов";
+    inputErrors.newPassword = inputErrors.newPassword
+      ? [...inputErrors.newPassword, errorMsg]
+      : [errorMsg];
+  }
+
+  if (newPassword !== undefined && validator.isLowercase(newPassword.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "at least 1 capital character"
+        : language === Languages.ua
+        ? "хоча б 1 заголовний символ"
+        : "хотя бы 1 заглавный символ";
+    inputErrors.newPassword = inputErrors.newPassword
+      ? [...inputErrors.newPassword, errorMsg]
+      : [errorMsg];
+  }
+
+  if (Object.keys(inputErrors).length > 0) {
+    return inputErrors;
+  }
 };

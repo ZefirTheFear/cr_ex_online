@@ -56,15 +56,29 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      // console.log("jwt_token: ", token);
+      // console.log("jwt_user: ", user);
+      // console.log("jwt_account: ", account);
+      // console.log("jwt_profile: ", profile);
+      // console.log("jwt_isNewUser: ", isNewUser);
       return { ...token, ...user };
     },
     async session({ session, token }) {
+      // console.log("ses_session: ", session);
+      // console.log("ses_token: ", token);
+      // console.log("ses_user: ", user);
       return {
         ...session,
         user: { name: token.name, email: token.email, phone: token.phone }
       };
     }
   }
+  // events: {
+  //   async session({ session, token }) {
+  //     console.log("ev_ses_session: ", session);
+  //     console.log("ev_ses_token: ", token);
+  //   }
+  // }
 };
 
 export default NextAuth(authOptions);

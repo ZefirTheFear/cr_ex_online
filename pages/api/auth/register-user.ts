@@ -54,7 +54,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const newUser = new User<IUser>({
     name: registerData.name.trim(),
-    email: registerData.email.toLocaleLowerCase().trim(),
+    email: registerData.email.toLowerCase().trim(),
     phone: registerData.phone.trim(),
     password: hashedPassword
   });
