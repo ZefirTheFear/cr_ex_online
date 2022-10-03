@@ -192,7 +192,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     // fetchRates();
     setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 500);
 
     return () => {
       controller.abort();

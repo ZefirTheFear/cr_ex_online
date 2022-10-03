@@ -1,20 +1,20 @@
 import mongoose from "mongoose";
 
-mongoose.connection.on("connected", () => {
-  console.log("DB Connection Established");
-});
+// mongoose.connection.on("connected", () => {
+//   console.log("DB Connection Established");
+// });
 
-mongoose.connection.on("reconnected", () => {
-  console.log("DB Connection Reestablished");
-});
+// mongoose.connection.on("reconnected", () => {
+//   console.log("DB Connection Reestablished");
+// });
 
-mongoose.connection.on("disconnected", () => {
-  console.log("DB Connection Disconnected");
-});
+// mongoose.connection.on("disconnected", () => {
+//   console.log("DB Connection Disconnected");
+// });
 
-mongoose.connection.on("error", (error) => {
-  console.log("DB Connection ERROR: " + error);
-});
+// mongoose.connection.on("error", (error) => {
+//   console.log("DB Connection ERROR: " + error);
+// });
 
 export const connectToDB = async () => {
   if (!process.env.MONGODB_URI) {

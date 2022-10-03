@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FaEdit } from "react-icons/fa";
 
-import BlockSpinner from "../BlockSpinner/BlockSpinner";
+// import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
 import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
@@ -129,6 +129,11 @@ const Profile: React.FC = () => {
     setInputErrors({});
   }, []);
 
+  const reloadSession = useCallback(() => {
+    const event = new Event("visibilitychange");
+    document.dispatchEvent(event);
+  }, []);
+
   const changeUserData = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -141,22 +146,31 @@ const Profile: React.FC = () => {
       let editUrl: string;
 
       if (editState === EditState.editName && nameInput.current) {
+        if (nameInput.current.value.trim() === session.user.name) {
+          setEditState(EditState.none);
+          return;
+        }
         changeUserData = {
-          currentEmail: session.user.email,
           newName: nameInput.current.value.trim(),
           language: language
         };
         editUrl = "/api/profile/edit-user-name";
       } else if (editState === EditState.editPhone && phoneInput.current) {
+        if (phoneInput.current.value.trim() === session.user.phone) {
+          setEditState(EditState.none);
+          return;
+        }
         changeUserData = {
-          currentEmail: session.user.email,
           newPhone: phoneInput.current.value.trim(),
           language: language
         };
         editUrl = "/api/profile/edit-user-phone";
       } else if (editState === EditState.editEmail && emailInput.current) {
+        if (emailInput.current.value.trim() === session.user.email) {
+          setEditState(EditState.none);
+          return;
+        }
         changeUserData = {
-          currentEmail: session.user.email,
           newEmail: emailInput.current.value.toLowerCase().trim(),
           language: language
         };
@@ -167,7 +181,6 @@ const Profile: React.FC = () => {
         newPasswordInput.current
       ) {
         changeUserData = {
-          currentEmail: session.user.email,
           currentPassword: currentPasswordInput.current.value.trim(),
           newPassword: newPasswordInput.current.value.trim(),
           language: language
@@ -211,11 +224,7 @@ const Profile: React.FC = () => {
         }
 
         if (response.status === 200) {
-          // console.log("new ses");
-          // if (changeUserData.newName) {
-          //   session.user.name = changeUserData.newName;
-          // }
-
+          reloadSession();
           setIsSuccess(true);
           setIsLoading(false);
           return;
@@ -232,7 +241,7 @@ const Profile: React.FC = () => {
         return;
       }
     },
-    [controller.signal, editState, language, session]
+    [controller.signal, editState, language, reloadSession, session]
   );
 
   const closeSWWModal = useCallback(() => {
@@ -242,10 +251,6 @@ const Profile: React.FC = () => {
   const closeSuccessModal = useCallback(() => {
     setEditState(EditState.none);
     setIsSuccess(false);
-    // if (session) {
-    //   console.log("new ses");
-    //   session.user.name = "qwe";
-    // }
   }, []);
 
   useEffect(() => {
@@ -304,7 +309,6 @@ const Profile: React.FC = () => {
           }
         />
       )}
-      {!userData && <BlockSpinner />}
       <div className={classes.profile}>
         <div className={classes.profile__inner}>
           <h2 className={classes.profile__heading}>
@@ -316,6 +320,7 @@ const Profile: React.FC = () => {
           </h2>
           {editState === EditState.none && (
             <div className={classes["profile__user-data"]}>
+              {/* {!userData && <BlockSpinner />} */}
               {userData &&
                 userData.map((userDataItem) => (
                   <div className={classes["profile__user-data-card"]} key={userDataItem.title}>

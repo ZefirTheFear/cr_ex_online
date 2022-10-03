@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { unstable_getServerSession } from "next-auth/next";
+import { compare, hash } from "bcryptjs";
 
 import { authOptions } from "../auth/[...nextauth]";
 import {
@@ -9,6 +10,7 @@ import {
 } from "../../../utils/ts/validations";
 import { connectToDB } from "../../../utils/ts/db";
 import User from "../../../models/user";
+import { Languages } from "../../../models/language";
 
 type Data =
   | {
@@ -32,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const editUserData = req.body as IEditUserData;
 
-  if (!userId || !editUserData.newName) {
+  if (!userId || !editUserData.currentPassword || !editUserData.newPassword) {
     res.status(401).json({ message: "No data!" });
     return;
   }
@@ -53,7 +55,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(503).json({ message: "cant find user" });
   }
 
-  existingUser.name = editUserData.newName;
+  const isValidPassword = await compare(editUserData.currentPassword, existingUser.password);
+  if (!isValidPassword) {
+    connection.connection.close();
+    return res.status(422).json({
+      inputErrors: {
+        currentPassword: [
+          editUserData.language === Languages.en
+            ? "wrong password"
+            : editUserData.language === Languages.ua
+            ? "неправильний пароль"
+            : "неправильный пароль"
+        ]
+      }
+    });
+  }
+
+  const hashedNewPassword = await hash(editUserData.newPassword, 12);
+
+  existingUser.password = hashedNewPassword;
 
   try {
     await existingUser.save();

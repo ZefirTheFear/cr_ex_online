@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
 
         connection.connection.close();
         return {
+          id: user._id,
           email: user.email,
           name: user.name,
           phone: user.phone
@@ -61,6 +62,23 @@ export const authOptions: NextAuthOptions = {
       // console.log("jwt_account: ", account);
       // console.log("jwt_profile: ", profile);
       // console.log("jwt_isNewUser: ", isNewUser);
+
+      // -----------
+      if (!user) {
+        const connection = await connectToDB();
+        if (!connection) {
+          throw new Error(LoginInputErrorType.db);
+        }
+        const user = await User.findById(token.id);
+        if (!user) {
+          connection.connection.close();
+          throw new Error("cant find user");
+        }
+        connection.connection.close();
+        return { ...token, email: user.email, name: user.name, phone: user.phone };
+      }
+      // -----------
+
       return { ...token, ...user };
     },
     async session({ session, token }) {
@@ -69,7 +87,7 @@ export const authOptions: NextAuthOptions = {
       // console.log("ses_user: ", user);
       return {
         ...session,
-        user: { name: token.name, email: token.email, phone: token.phone }
+        user: { id: token.id, name: token.name, email: token.email, phone: token.phone }
       };
     }
   }

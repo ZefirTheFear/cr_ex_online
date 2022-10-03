@@ -32,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const editUserData = req.body as IEditUserData;
 
-  if (!userId || !editUserData.newName) {
+  if (!userId || !editUserData.newEmail) {
     res.status(401).json({ message: "No data!" });
     return;
   }
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(503).json({ message: "cant find user" });
   }
 
-  existingUser.name = editUserData.newName;
+  existingUser.email = editUserData.newEmail;
 
   try {
     await existingUser.save();

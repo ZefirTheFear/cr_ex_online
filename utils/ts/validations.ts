@@ -46,7 +46,6 @@ export interface IEditUserData {
   currentPassword?: string;
   newPassword?: string;
   language: Languages;
-  currentEmail: string;
 }
 
 export interface IEditUserInputErrors {
@@ -275,6 +274,18 @@ export const editUserDataValidation = (
         : language === Languages.ua
         ? "хоча б 1 заголовний символ"
         : "хотя бы 1 заглавный символ";
+    inputErrors.newPassword = inputErrors.newPassword
+      ? [...inputErrors.newPassword, errorMsg]
+      : [errorMsg];
+  }
+
+  if (newPassword !== undefined && newPassword === currentPassword) {
+    const errorMsg =
+      language === Languages.en
+        ? "new password must be different"
+        : language === Languages.ua
+        ? "новий пароль повинен відрізнятися"
+        : "новый пароль должен отличаться";
     inputErrors.newPassword = inputErrors.newPassword
       ? [...inputErrors.newPassword, errorMsg]
       : [errorMsg];
