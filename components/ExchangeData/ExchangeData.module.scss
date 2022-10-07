@@ -27,12 +27,12 @@
 }
 
 .exchange-data__currency-selector {
-  width: 10rem;
+  width: 12rem;
   background: $light-color;
   color: $bg-color-main-shadow;
 
   @media (max-width: 767px) {
-    width: 8rem;
+    width: 9rem;
   }
 }
 
@@ -62,12 +62,27 @@
   margin-right: 0.25rem;
 }
 
+.exchange-data__currency-name-container {
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .exchange-data__currency-name {
   font-weight: bold;
   font-size: 1.5rem;
+}
+
+.exchange-data__currency-protocol {
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
 
   @media (max-width: 767px) {
-    font-size: 1.25rem;
+    margin-left: 0;
   }
 }
 
@@ -96,6 +111,29 @@
   border-radius: $border-radius;
   transition: $main-transition;
   overflow-y: scroll;
+
+  // Custom scrollbar
+  /* width */
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: $bg-color-main-dark;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: $bg-color-secondary;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+    background: darken($bg-color-secondary, 10);
+  }
 }
 
 .exchange-data__select-options-item {

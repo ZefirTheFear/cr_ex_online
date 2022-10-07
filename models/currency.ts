@@ -39,9 +39,16 @@ export enum CurrencyType {
   fiat = "fiat"
 }
 
+export enum CurrencyProtocol {
+  trc20 = "trc20",
+  erc20 = "erc20"
+}
+
 export interface Currency {
+  id: string;
   name: CurrencyName;
   type: CurrencyType;
   usdValue: number;
   img: StaticImageData;
+  protocol?: CurrencyProtocol;
 }

@@ -12,7 +12,13 @@ import Modal from "../Modal/Modal";
 import ExchangeData from "../ExchangeData/ExchangeData";
 
 import { Languages } from "../../models/language";
-import { CurrencyName, Currency, Rates, CurrencyType } from "../../models/currency";
+import {
+  CurrencyName,
+  Currency,
+  Rates,
+  CurrencyType,
+  CurrencyProtocol
+} from "../../models/currency";
 import { currencies } from "../../data/currencyItems";
 
 import {
@@ -50,12 +56,12 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
 
   const onChangeCurrentCurrencyFromCustomer = useCallback(
     (e: React.MouseEvent<HTMLLIElement>) => {
-      const currencyName = e.currentTarget.getAttribute("data-name");
-      if (!currencyName) {
+      const currencyId = e.currentTarget.getAttribute("data-id");
+      if (!currencyId) {
         return;
       }
 
-      const newSelectedCurrency = newCurrencies.find((currency) => currency.name === currencyName);
+      const newSelectedCurrency = newCurrencies.find((currency) => currency.id === currencyId);
       if (!newSelectedCurrency) {
         return;
       }
@@ -90,12 +96,12 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
 
   const changeCurrentCurrencyToCustomer = useCallback(
     (e: React.MouseEvent<HTMLLIElement>) => {
-      const currencyName = e.currentTarget.getAttribute("data-name");
-      if (!currencyName) {
+      const currencyId = e.currentTarget.getAttribute("data-id");
+      if (!currencyId) {
         return;
       }
 
-      const newSelectedCurrency = newCurrencies.find((currency) => currency.name === currencyName);
+      const newSelectedCurrency = newCurrencies.find((currency) => currency.id === currencyId);
       if (!newSelectedCurrency) {
         return;
       }
@@ -184,6 +190,20 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     }
   }, [controller.signal, passRatesToCurrencies]);
 
+  const createNewOrder = useCallback(async () => {
+    // TODO Validation
+    // setIsLoading(true);
+    // try {
+    //   const response = await fetch("/api/orders/init-new-order", {
+    //     method: 'POST',
+    //     signal: controller.signal
+    //   });
+    // } catch (error) {
+    //   setIsLoading(false);
+    // return setIsSomethingWentWrong(true);
+    // }
+  }, []);
+
   const closeSWWModal = useCallback(() => {
     setIsSomethingWentWrong(false);
   }, []);
@@ -218,11 +238,16 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
         <div className={classes.calculator__rates__block}>
           <div className={classes.calculator__rates}>
             {newCurrencies.map((currency) => {
-              if (currency.name === CurrencyName.uah || currency.name === CurrencyName.usd) {
+              if (
+                currency.name === CurrencyName.uah ||
+                currency.name === CurrencyName.usd ||
+                (currency.name === CurrencyName.usdt &&
+                  currency.protocol === CurrencyProtocol.erc20)
+              ) {
                 return;
               } else {
                 return (
-                  <div className={classes["calculator__rates-item"]} key={currency.name}>
+                  <div className={classes["calculator__rates-item"]} key={currency.id}>
                     <Image
                       src={currency.img}
                       width={20}
@@ -302,7 +327,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               </Link>
             </span>
           </div>
-          <button className={classes["calculator__exchange-btn"]}>
+          <button className={classes["calculator__exchange-btn"]} onClick={createNewOrder}>
             {language === Languages.en
               ? "Exchange"
               : language === Languages.ua

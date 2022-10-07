@@ -12,8 +12,8 @@ enum ActionType {
 type PercentageConditions = {
   amountFrom: number;
   amountTo: number;
-  percentBuyCrypto: number;
-  percentSaleCrypto: number;
+  percentFiatToCrypto: number;
+  percentCryptoToFiat: number;
   percentExchangeCrypto: number;
 };
 
@@ -121,22 +121,22 @@ const convert = (convertData: {
     return "";
   }
 
-  let operationType: "sale" | "buy" | "exchange";
+  let operationType: "cryptoToFiat" | "fiatToCrypto" | "cryptoToCrypto";
   if (
     currencyFromCustomer.type === CurrencyType.crypto &&
     currencyToCustomer.type === CurrencyType.crypto
   ) {
-    operationType = "exchange";
+    operationType = "cryptoToCrypto";
   } else if (
     currencyFromCustomer.type === CurrencyType.crypto &&
     currencyToCustomer.type === CurrencyType.fiat
   ) {
-    operationType = "sale";
+    operationType = "cryptoToFiat";
   } else if (
     currencyFromCustomer.type === CurrencyType.fiat &&
     currencyToCustomer.type === CurrencyType.crypto
   ) {
-    operationType = "buy";
+    operationType = "fiatToCrypto";
   } else {
     return "";
   }
@@ -158,10 +158,10 @@ const convert = (convertData: {
     const usdValue = usdValueOfChangedField;
 
     const commissionPercent =
-      operationType === "sale"
-        ? percentageConditions.percentSaleCrypto
-        : operationType === "buy"
-        ? percentageConditions.percentBuyCrypto
+      operationType === "cryptoToFiat"
+        ? percentageConditions.percentCryptoToFiat
+        : operationType === "fiatToCrypto"
+        ? percentageConditions.percentFiatToCrypto
         : percentageConditions.percentExchangeCrypto;
 
     convertedValue = ((usdValue / currencyToCustomer.usdValue) * ((100 - commissionPercent) / 100))
@@ -171,10 +171,10 @@ const convert = (convertData: {
 
   if (changedField === "TO_CUSTOMER") {
     const tempCommissionPercent =
-      operationType === "sale"
-        ? tempPercentageConditions.percentSaleCrypto
-        : operationType === "buy"
-        ? tempPercentageConditions.percentBuyCrypto
+      operationType === "cryptoToFiat"
+        ? tempPercentageConditions.percentCryptoToFiat
+        : operationType === "fiatToCrypto"
+        ? tempPercentageConditions.percentFiatToCrypto
         : tempPercentageConditions.percentExchangeCrypto;
 
     const tempUsdValue = usdValueOfChangedField / ((100 - tempCommissionPercent) / 100);
@@ -185,10 +185,10 @@ const convert = (convertData: {
         ) || percentageConditionsArray[percentageConditionsArray.length - 1];
 
       const realCommissionPercent =
-        operationType === "sale"
-          ? realPercentageConditions.percentSaleCrypto
-          : operationType === "buy"
-          ? realPercentageConditions.percentBuyCrypto
+        operationType === "cryptoToFiat"
+          ? realPercentageConditions.percentCryptoToFiat
+          : operationType === "fiatToCrypto"
+          ? realPercentageConditions.percentFiatToCrypto
           : realPercentageConditions.percentExchangeCrypto;
 
       const newTempUsdValue = usdValueOfChangedField / ((100 - realCommissionPercent) / 100);
@@ -229,22 +229,22 @@ export const initFn = (initialCurrencies: {
       {
         amountFrom: 0,
         amountTo: 1000,
-        percentBuyCrypto: 5,
-        percentSaleCrypto: 5,
+        percentFiatToCrypto: 7,
+        percentCryptoToFiat: 5,
         percentExchangeCrypto: 2
       },
       {
         amountFrom: 1000,
         amountTo: 10000,
-        percentBuyCrypto: 3,
-        percentSaleCrypto: 3,
+        percentFiatToCrypto: 5,
+        percentCryptoToFiat: 3,
         percentExchangeCrypto: 1
       },
       {
         amountFrom: 10000,
         amountTo: 50000,
-        percentBuyCrypto: 1,
-        percentSaleCrypto: 1,
+        percentFiatToCrypto: 3,
+        percentCryptoToFiat: 1,
         percentExchangeCrypto: 1
       }
     ],

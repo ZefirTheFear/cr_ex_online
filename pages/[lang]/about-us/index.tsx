@@ -3,6 +3,7 @@ import Head from "next/head";
 
 import Header from "../../../components/Header/Header";
 import Footer from "../../../components/Footer/Footer";
+import AboutUs from "../../../components/AboutUs/AboutUs";
 
 import { Languages } from "../../../models/language";
 
@@ -20,7 +21,7 @@ const AboutUsPage: NextPage<AboutUsProps> = ({ lang }) => {
         {/* <meta name="description" content="Крипто обмен" /> */}
       </Head>
       <Header lang={lang} />
-      <div>AboutUs</div>
+      <AboutUs />
       <Footer />
     </>
   );

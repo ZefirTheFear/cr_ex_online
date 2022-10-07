@@ -91,9 +91,16 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
                       quality={100}
                     />
                   </span>
-                  <span className={classes["exchange-data__currency-name"]}>
-                    {currentCurrency.name}
-                  </span>
+                  <div className={classes["exchange-data__currency-name-container"]}>
+                    <span className={classes["exchange-data__currency-name"]}>
+                      {currentCurrency.name}
+                    </span>
+                    {currentCurrency.protocol && (
+                      <small className={classes["exchange-data__currency-protocol"]}>
+                        {currentCurrency.protocol}
+                      </small>
+                    )}
+                  </div>
                   <span
                     className={
                       `${classes["exchange-data__select-arrow"]}` +
@@ -113,8 +120,8 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
                   {currencyOptions.map((currency) => (
                     <li
                       className={classes["exchange-data__select-options-item"]}
-                      key={currency.name}
-                      data-name={currency.name}
+                      key={currency.id}
+                      data-id={currency.id}
                       onClick={onChangeCurrency}
                     >
                       <span className={classes["exchange-data__currency-img"]}>
@@ -127,9 +134,16 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
                           quality={100}
                         />
                       </span>
-                      <span className={classes["exchange-data__currency-name"]}>
-                        {currency.name}
-                      </span>
+                      <div className={classes["exchange-data__currency-name-container"]}>
+                        <span className={classes["exchange-data__currency-name"]}>
+                          {currency.name}
+                        </span>
+                        {currency.protocol && (
+                          <small className={classes["exchange-data__currency-protocol"]}>
+                            {currency.protocol}
+                          </small>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>

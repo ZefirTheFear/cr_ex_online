@@ -52,6 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const hashedPassword = await hash(registerData.password, 12);
 
+  // const newUser = new User<IUser>({
   const newUser = new User<IUser>({
     name: registerData.name.trim(),
     email: registerData.email.toLowerCase().trim(),
