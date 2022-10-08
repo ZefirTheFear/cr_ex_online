@@ -8,13 +8,13 @@ export enum navItemRole {
 
 const navItems = (language: Languages) => [
   {
-    id: "1",
+    id: "01",
     icon: FaSignInAlt,
     role: navItemRole.list,
     title: language === Languages.ua ? "обмін" : language === Languages.ru ? "обмен" : "exchange",
     sublist: [
       {
-        id: "1",
+        id: "01_01",
         title:
           language === Languages.ua
             ? "Продати біткоин"
@@ -24,7 +24,7 @@ const navItems = (language: Languages) => [
         url: `/${encodeURIComponent(language)}/btc-to-uah`
       },
       {
-        id: "2",
+        id: "01_02",
         title:
           language === Languages.ua
             ? "Продати ефіріум"
@@ -34,7 +34,7 @@ const navItems = (language: Languages) => [
         url: `/${encodeURIComponent(language)}/eth-to-uah`
       },
       {
-        id: "3",
+        id: "01_03",
         title:
           language === Languages.ua
             ? "Продати USDT"
@@ -44,7 +44,7 @@ const navItems = (language: Languages) => [
         url: `/${encodeURIComponent(language)}/usdt-to-uah`
       },
       {
-        id: "4",
+        id: "01_04",
         title:
           language === Languages.ua
             ? "Обміняти біткоин на ефіріум"
@@ -54,7 +54,7 @@ const navItems = (language: Languages) => [
         url: `/${encodeURIComponent(language)}/btc-to-eth`
       },
       {
-        id: "5",
+        id: "01_05",
         title:
           language === Languages.ua
             ? "Обміняти біткоин на USDT"
@@ -66,21 +66,21 @@ const navItems = (language: Languages) => [
     ]
   },
   {
-    id: "2",
+    id: "02",
     icon: FaSignInAlt,
     role: navItemRole.link,
     title: language === Languages.ua ? "про нас" : language === Languages.ru ? "о нас" : "about us",
     url: `/${encodeURIComponent(language)}/about-us`
   },
   {
-    id: "3",
+    id: "03",
     icon: FaSignInAlt,
     role: navItemRole.link,
     title: language === Languages.ua ? "новини" : language === Languages.ru ? "новости" : "news",
     url: `/${encodeURIComponent(language)}/news`
   },
   {
-    id: "4",
+    id: "04",
     icon: FaSignInAlt,
     role: navItemRole.link,
     title:

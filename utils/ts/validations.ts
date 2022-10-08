@@ -1,6 +1,7 @@
 import validator from "validator";
 
 import { Languages } from "./../../models/language";
+import { Currency } from "../../models/currency";
 
 export interface IRegisterData {
   name: string;
@@ -54,6 +55,18 @@ export interface IEditUserInputErrors {
   newPhone?: string[];
   currentPassword?: string[];
   newPassword?: string[];
+}
+
+export interface IOrderInitData {
+  currencyFromCustomer: Currency;
+  currencyToCustomer: Currency;
+  amountCurrencyFromCustomer: string;
+  amountCurrencyToCustomer: string;
+  language: Languages;
+}
+
+export interface IOrderInitInputErrors {
+  amountCurrencyFromCustomer?: string;
 }
 
 export const registerValidation = (inputData: IRegisterData): IRegisterInputErrors | undefined => {
@@ -289,6 +302,31 @@ export const editUserDataValidation = (
     inputErrors.newPassword = inputErrors.newPassword
       ? [...inputErrors.newPassword, errorMsg]
       : [errorMsg];
+  }
+
+  if (Object.keys(inputErrors).length > 0) {
+    return inputErrors;
+  }
+};
+
+export const initNewOrderValidation = (
+  inputData: IOrderInitData
+): IOrderInitInputErrors | undefined => {
+  const inputErrors: IOrderInitInputErrors = {};
+
+  const { currencyFromCustomer, amountCurrencyFromCustomer, language } = inputData;
+
+  const minUsdValue = 100;
+
+  if (+amountCurrencyFromCustomer * currencyFromCustomer.usdValue < minUsdValue) {
+    const errorMsg =
+      (language === Languages.en
+        ? "The minimum transaction amount is "
+        : language === Languages.ua
+        ? "Мінімальна сума операції - "
+        : "Минимальная сумма операции - ") +
+      `${minUsdValue / currencyFromCustomer.usdValue} ${currencyFromCustomer.name}`;
+    inputErrors.amountCurrencyFromCustomer = errorMsg;
   }
 
   if (Object.keys(inputErrors).length > 0) {

@@ -1,5 +1,6 @@
 import { Schema, model, models, Model, Types } from "mongoose";
 
+import { Currency } from "./currency";
 // import { IUser } from "./user";
 
 enum OrderStatus {
@@ -17,16 +18,25 @@ enum OrderType {
 }
 
 export interface IOrder {
-  // initData: {},
   // _id?: Types.ObjectId;
   // client: IUser["_id"];
-  client: Types.ObjectId;
-  status: OrderStatus;
+  initData: {
+    currencyFromCustomer: Currency;
+    amountFromCustomer: number;
+    currencyToCustomer: Currency;
+    amountToCustomer: number;
+  };
   type: OrderType;
+  client?: Types.ObjectId;
+  status?: OrderStatus;
 }
 
 const orderSchema = new Schema<IOrder>(
   {
+    initData: {
+      type: Schema.Types.Mixed,
+      required: true
+    },
     client: {
       type: Schema.Types.ObjectId,
       ref: "User",

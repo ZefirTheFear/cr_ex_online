@@ -5,8 +5,9 @@ import { Currency } from "../../models/currency";
 import { FaAngleDown } from "react-icons/fa";
 
 import DropdownList from "../DropdownList/DropdownList";
+import InvalidFeedback from "../InvalidFeedback/InvalidFeedback";
 
-import classes from "./ExchangeData.module.scss";
+import classes from "./ExchangeDataInput.module.scss";
 
 interface ExchangeDataProps {
   title: string;
@@ -15,6 +16,8 @@ interface ExchangeDataProps {
   onChangeCurrency: (e: React.MouseEvent<HTMLLIElement>) => void;
   value: string;
   onChangeInputAmount: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string | null;
+  clearError?: () => void;
 }
 
 const ExchangeData: React.FC<ExchangeDataProps> = ({
@@ -23,7 +26,9 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
   currencyOptions,
   onChangeCurrency,
   value,
-  onChangeInputAmount
+  onChangeInputAmount,
+  error,
+  clearError
 }) => {
   const optionsListElem = useRef<HTMLUListElement>(null);
 
@@ -62,9 +67,13 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
   return (
     <div className={classes["exchange-data"]}>
       <div className={classes["exchange-data__title"]}>{title}:</div>
-      <div className={classes["exchange-data__input-group"]}>
+      <div className={classes["exchange-data__input-group"]} onMouseDown={clearError}>
         <input
-          className={classes["exchange-data__input-group__input"]}
+          // className={classes["exchange-data__input-group__input"]}
+          className={
+            `${classes["exchange-data__input-group__input"]}` +
+            (error ? ` ${classes["exchange-data__input-group__input_invalid"]}` : ``)
+          }
           type="number"
           placeholder="0.00"
           autoComplete="off"
@@ -152,6 +161,7 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
           />
         </div>
       </div>
+      {error && <InvalidFeedback msg={error} />}
     </div>
   );
 };

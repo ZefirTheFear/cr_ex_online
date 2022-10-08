@@ -9,7 +9,7 @@ import { ImCheckboxChecked } from "react-icons/im";
 
 import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import Modal from "../Modal/Modal";
-import ExchangeData from "../ExchangeData/ExchangeData";
+import ExchangeDataInput from "../ExchangeDataInput/ExchangeDataInput";
 
 import { Languages } from "../../models/language";
 import {
@@ -31,6 +31,12 @@ import {
   swapCurrencies
 } from "./reducer";
 
+import {
+  initNewOrderValidation,
+  IOrderInitData,
+  IOrderInitInputErrors
+} from "../../utils/ts/validations";
+
 import classes from "./Calculator.module.scss";
 
 interface CalculatorProps {
@@ -51,6 +57,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
   const [calculatorState, dispatch] = useReducer(reducer, initialCurrencies, initFn);
 
   const [newCurrencies, setNewCurrencies] = useState(currencies);
+  const [inputErrors, setInputErrors] = useState<IOrderInitInputErrors>({});
   const [isLoading, setIsLoading] = useState(true);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
 
@@ -190,19 +197,69 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     }
   }, [controller.signal, passRatesToCurrencies]);
 
-  const createNewOrder = useCallback(async () => {
-    // TODO Validation
-    // setIsLoading(true);
-    // try {
-    //   const response = await fetch("/api/orders/init-new-order", {
-    //     method: 'POST',
-    //     signal: controller.signal
-    //   });
-    // } catch (error) {
-    //   setIsLoading(false);
-    // return setIsSomethingWentWrong(true);
-    // }
+  const clearError = useCallback(() => {
+    setInputErrors({});
   }, []);
+
+  const createNewOrder = useCallback(async () => {
+    const orderInitData: IOrderInitData = {
+      currencyFromCustomer: calculatorState.currentCurrencyFromCustomer,
+      amountCurrencyFromCustomer: calculatorState.amountCurrencyFromCustomer,
+      currencyToCustomer: calculatorState.currentCurrencyToCustomer,
+      amountCurrencyToCustomer: calculatorState.amountCurrencyToCustomer,
+      language: language
+    };
+
+    const orderInitInputErrors = initNewOrderValidation(orderInitData);
+    console.log("orderInitInputErrors: ", orderInitInputErrors);
+    if (orderInitInputErrors) {
+      return setInputErrors(orderInitInputErrors);
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/orders/init-new-order", {
+        method: "POST",
+        body: JSON.stringify(orderInitData),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        signal: controller.signal
+      });
+      console.log(response);
+
+      if (response.status === 503) {
+        const data = (await response.json()) as { message: string };
+        console.log(data);
+        setIsSomethingWentWrong(true);
+        setIsLoading(false);
+        return;
+      }
+
+      if (response.status === 200) {
+        const data = (await response.json()) as { orderId: string };
+        router.push(`/${language}/order/${data.orderId}`);
+        // setIsLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      console.log(data);
+      setIsLoading(false);
+      return;
+    } catch (error) {
+      setIsLoading(false);
+      return setIsSomethingWentWrong(true);
+    }
+  }, [
+    calculatorState.amountCurrencyFromCustomer,
+    calculatorState.amountCurrencyToCustomer,
+    calculatorState.currentCurrencyFromCustomer,
+    calculatorState.currentCurrencyToCustomer,
+    controller.signal,
+    language,
+    router
+  ]);
 
   const closeSWWModal = useCallback(() => {
     setIsSomethingWentWrong(false);
@@ -274,7 +331,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
         </div>
         <div className={classes.calculator__converter__block}>
           <div className={classes.calculator__converter}>
-            <ExchangeData
+            <ExchangeDataInput
               title={
                 language === Languages.en
                   ? "Send"
@@ -287,11 +344,17 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               onChangeCurrency={onChangeCurrentCurrencyFromCustomer}
               value={calculatorState.amountCurrencyFromCustomer}
               onChangeInputAmount={changeAmountCurrencyFromCustomer}
+              error={
+                inputErrors.amountCurrencyFromCustomer
+                  ? inputErrors.amountCurrencyFromCustomer
+                  : null
+              }
+              clearError={clearError}
             />
             <div className={classes.calculator__swaper} onClick={swap}>
               <TiArrowRepeat />
             </div>
-            <ExchangeData
+            <ExchangeDataInput
               title={
                 language === Languages.en
                   ? "Receive"
@@ -304,6 +367,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               onChangeCurrency={changeCurrentCurrencyToCustomer}
               value={calculatorState.amountCurrencyToCustomer}
               onChangeInputAmount={changeAmountCurrencyToCustomer}
+              clearError={clearError}
             />
           </div>
           <div className={classes.calculator__note}>
