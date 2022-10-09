@@ -72,7 +72,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       if (!newSelectedCurrency) {
         return;
       }
-      if (newSelectedCurrency.name === calculatorState.currentCurrencyToCustomer.name) {
+
+      if (newSelectedCurrency.id === calculatorState.currentCurrencyToCustomer.id) {
         dispatch(swapCurrencies());
         return;
       }
@@ -95,7 +96,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       dispatch(setCurrentCurrencyFromCustomer(newSelectedCurrency));
     },
     [
-      calculatorState.currentCurrencyToCustomer.name,
+      calculatorState.currentCurrencyToCustomer.id,
       calculatorState.currentCurrencyToCustomer.type,
       newCurrencies
     ]
@@ -112,7 +113,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       if (!newSelectedCurrency) {
         return;
       }
-      if (newSelectedCurrency.name === calculatorState.currentCurrencyFromCustomer.name) {
+
+      if (newSelectedCurrency.id === calculatorState.currentCurrencyFromCustomer.id) {
         dispatch(swapCurrencies());
         return;
       }
@@ -135,7 +137,7 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       dispatch(setCurrentCurrencyToCustomer(newSelectedCurrency));
     },
     [
-      calculatorState.currentCurrencyFromCustomer.name,
+      calculatorState.currentCurrencyFromCustomer.id,
       calculatorState.currentCurrencyFromCustomer.type,
       newCurrencies
     ]

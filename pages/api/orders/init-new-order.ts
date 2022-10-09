@@ -31,11 +31,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     currencyFromCustomer: initOrderData.currencyFromCustomer,
     currencyToCustomer: initOrderData.currencyToCustomer
   });
+  if (!operationType) {
+    return res.status(503).json({ message: "operation type is undefined" });
+  }
 
-  return res.status(201).json({ message: `operationType: ${operationType}` });
+  const newOrder = new Order<IOrder>({
+    initData: {
+      currencyFromCustomer: initOrderData.currencyFromCustomer,
+      amountFromCustomer: +initOrderData.amountCurrencyFromCustomer,
+      currencyToCustomer: initOrderData.currencyToCustomer,
+      amountToCustomer: +initOrderData.amountCurrencyToCustomer
+    },
+    type: operationType
+  });
+  try {
+    await newOrder.save();
+  } catch (error) {
+    console.log("error: ", error);
+    connection.connection.close();
+    return res.status(503).json({ message: "oops. order creating problem" });
+  }
 
-  // const newOrder = new Order<IOrder>({
-  //   initData:initOrderData,
-  //   type:
-  // })
+  connection.connection.close();
+  return res.status(200).json({ orderId: newOrder._id.toString() });
 }

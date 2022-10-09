@@ -31,8 +31,7 @@ const orderSchema = new Schema<IOrder>(
     },
     client: {
       type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true
+      ref: "User"
     },
     status: {
       type: String,

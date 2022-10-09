@@ -2,5 +2,6 @@
 @import "../../utils/css/mixins.scss";
 
 .exchange-form {
-  display: block;
+  @include padding-header;
+  background: $bg-color-main;
 }
