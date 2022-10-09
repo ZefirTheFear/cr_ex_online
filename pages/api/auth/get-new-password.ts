@@ -3,14 +3,14 @@ import { hash } from "bcryptjs";
 import { v4 as uuid } from "uuid";
 
 import { connectToDB } from "../../../utils/ts/db";
-import User from "../../../models/user";
+import User from "../../../models/mongooseSchemas/user";
 import {
   forgotPasswordValidation,
   IForgotPasswordData,
   IForgotPasswordInputErrors
 } from "../../../utils/ts/validations";
 import { Languages } from "../../../models/language";
-import sendEmail from "../../../utils/ts/send-email";
+import sendEmail from "../../../utils/ts/sendEmail";
 
 type Data =
   | {

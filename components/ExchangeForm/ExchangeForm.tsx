@@ -3,7 +3,7 @@ import React from "react";
 import classes from "./ExchangeForm.module.scss";
 
 const ExchangeForm = () => {
-  return <div>Form</div>;
+  return <div className={classes["exchange-form"]}>Form</div>;
 };
 
 export default ExchangeForm;

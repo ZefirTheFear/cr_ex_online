@@ -1,21 +1,8 @@
 import { Schema, model, models, Model, Types } from "mongoose";
 
-import { Currency } from "./currency";
+import { Currency } from "../currency";
+import { OperationType, OrderStatus } from "../utils";
 // import { IUser } from "./user";
-
-enum OrderStatus {
-  init = "init",
-  withFullData = "withFullData",
-  confirmedByUser = "confirmedByUser",
-  confirmedByObserver = "confirmedByObserver",
-  closed = "closed"
-}
-
-enum OrderType {
-  cryptoToFiat = "cryptoToFiat",
-  fiatToCrypto = "fiatToCrypto",
-  cryptoToCrypto = "cryptoToCrypto"
-}
 
 export interface IOrder {
   // _id?: Types.ObjectId;
@@ -26,7 +13,7 @@ export interface IOrder {
     currencyToCustomer: Currency;
     amountToCustomer: number;
   };
-  type: OrderType;
+  type: OperationType;
   client?: Types.ObjectId;
   status?: OrderStatus;
 }
@@ -35,6 +22,11 @@ const orderSchema = new Schema<IOrder>(
   {
     initData: {
       type: Schema.Types.Mixed,
+      required: true
+    },
+    type: {
+      type: String,
+      enum: [OperationType.cryptoToCrypto, OperationType.cryptoToFiat, OperationType.fiatToCrypto],
       required: true
     },
     client: {

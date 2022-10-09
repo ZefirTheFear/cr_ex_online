@@ -1,4 +1,6 @@
-import { Currency, CurrencyType } from "../../models/currency";
+import { Currency } from "../../models/currency";
+import { defineOperationType } from "../../utils/ts/defineOperationType";
+import { OperationType } from "../../models/utils";
 
 enum ActionType {
   SET_CURRENT_CURRENCY_FROM_CUSTOMER = "SET_CURRENT_CURRENCY_FROM_CUSTOMER",
@@ -121,25 +123,10 @@ const convert = (convertData: {
     return "";
   }
 
-  let operationType: "cryptoToFiat" | "fiatToCrypto" | "cryptoToCrypto";
-  if (
-    currencyFromCustomer.type === CurrencyType.crypto &&
-    currencyToCustomer.type === CurrencyType.crypto
-  ) {
-    operationType = "cryptoToCrypto";
-  } else if (
-    currencyFromCustomer.type === CurrencyType.crypto &&
-    currencyToCustomer.type === CurrencyType.fiat
-  ) {
-    operationType = "cryptoToFiat";
-  } else if (
-    currencyFromCustomer.type === CurrencyType.fiat &&
-    currencyToCustomer.type === CurrencyType.crypto
-  ) {
-    operationType = "fiatToCrypto";
-  } else {
-    return "";
-  }
+  const operationType = defineOperationType({
+    currencyFromCustomer: currencyFromCustomer,
+    currencyToCustomer: currencyToCustomer
+  });
 
   const usdValueOfChangedField =
     changedField === "FROM_CUSTOMER"
@@ -158,9 +145,9 @@ const convert = (convertData: {
     const usdValue = usdValueOfChangedField;
 
     const commissionPercent =
-      operationType === "cryptoToFiat"
+      operationType === OperationType.cryptoToFiat
         ? percentageConditions.percentCryptoToFiat
-        : operationType === "fiatToCrypto"
+        : operationType === OperationType.fiatToCrypto
         ? percentageConditions.percentFiatToCrypto
         : percentageConditions.percentExchangeCrypto;
 
@@ -171,9 +158,9 @@ const convert = (convertData: {
 
   if (changedField === "TO_CUSTOMER") {
     const tempCommissionPercent =
-      operationType === "cryptoToFiat"
+      operationType === OperationType.cryptoToFiat
         ? tempPercentageConditions.percentCryptoToFiat
-        : operationType === "fiatToCrypto"
+        : operationType === OperationType.fiatToCrypto
         ? tempPercentageConditions.percentFiatToCrypto
         : tempPercentageConditions.percentExchangeCrypto;
 
@@ -185,9 +172,9 @@ const convert = (convertData: {
         ) || percentageConditionsArray[percentageConditionsArray.length - 1];
 
       const realCommissionPercent =
-        operationType === "cryptoToFiat"
+        operationType === OperationType.cryptoToFiat
           ? realPercentageConditions.percentCryptoToFiat
-          : operationType === "fiatToCrypto"
+          : operationType === OperationType.fiatToCrypto
           ? realPercentageConditions.percentFiatToCrypto
           : realPercentageConditions.percentExchangeCrypto;
 

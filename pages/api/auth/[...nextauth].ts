@@ -4,7 +4,7 @@ import { compare } from "bcryptjs";
 
 import { loginValidation, ILoginData } from "../../../utils/ts/validations";
 import { connectToDB } from "../../../utils/ts/db";
-import User from "../../../models/user";
+import User from "../../../models/mongooseSchemas/user";
 import { LoginInputErrorType } from "../../../components/LoginForm/LoginForm";
 
 export const authOptions: NextAuthOptions = {

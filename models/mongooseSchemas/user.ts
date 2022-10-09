@@ -1,12 +1,7 @@
 import { Schema, model, models, Model, Types } from "mongoose";
 
+import { UserStatus } from "../utils";
 import { IOrder } from "./order";
-
-enum UserStatus {
-  user = "user",
-  observer = "observer",
-  admin = "admin"
-}
 
 export interface IUser {
   // _id?: Types.ObjectId;

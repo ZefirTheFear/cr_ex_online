@@ -1,6 +1,6 @@
 import sendgrid, { MailDataRequired } from "@sendgrid/mail";
 
-import { IUser } from "./../../models/user";
+import { IUser } from "../../models/mongooseSchemas/user";
 
 const sendEmail = async (user: IUser, subject: string, htmlTemplate: string) => {
   if (!process.env.SENDGRID_EMAIL || !process.env.SENDGRID_API_KEY) {

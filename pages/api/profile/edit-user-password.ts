@@ -9,7 +9,7 @@ import {
   IEditUserInputErrors
 } from "../../../utils/ts/validations";
 import { connectToDB } from "../../../utils/ts/db";
-import User from "../../../models/user";
+import User from "../../../models/mongooseSchemas/user";
 import { Languages } from "../../../models/language";
 
 type Data =

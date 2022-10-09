@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { hash } from "bcryptjs";
 
 import { connectToDB } from "../../../utils/ts/db";
-import User, { IUser } from "../../../models/user";
+import User, { IUser } from "../../../models/mongooseSchemas/user";
 import { Languages } from "../../../models/language";
 import {
   registerValidation,
@@ -52,7 +52,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   const hashedPassword = await hash(registerData.password, 12);
 
-  // const newUser = new User<IUser>({
   const newUser = new User<IUser>({
     name: registerData.name.trim(),
     email: registerData.email.toLowerCase().trim(),
