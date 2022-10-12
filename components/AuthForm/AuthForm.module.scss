@@ -3,7 +3,7 @@
 
 .auth-form {
   width: 100%;
-  background: $bg-color-main-shadow;
+  background: $color-main-shadow;
   padding: 2rem;
 
   @media (max-width: 767px) {
@@ -28,7 +28,7 @@
 
 .auth-form__toggler {
   margin-left: 0.5rem;
-  color: $bg-color-secondary;
+  color: $color-secondary;
   cursor: pointer;
 
   @include hover-over-secondary-color;
@@ -45,7 +45,7 @@
 }
 
 .auth-form__forgot-password {
-  color: $bg-color-secondary;
+  color: $color-secondary;
   font-weight: bold;
   font-size: 1.25rem;
   cursor: pointer;

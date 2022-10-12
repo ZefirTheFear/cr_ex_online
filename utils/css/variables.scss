@@ -1,13 +1,13 @@
 // colors
-$bg-color-main: #271dac;
-$bg-color-main-shadow: #3f34cd;
-$bg-color-main-dark: #16143d;
+$color-main: #271dac;
+$color-main-shadow: #3f34cd;
+$color-main-dark: #16143d;
 // $bg-color-main-dark: #020029;
 // $bg-color-secondary: #32c99c;
 // $bg-color-secondary: #30b46b;
 // $bg-color-secondary: #5bb020;
 // $bg-color-secondary: #24c200;
-$bg-color-secondary: #4cbe72;
+$color-secondary: #4cbe72;
 $light-color: #f6f6f6;
 // $light-color: #dadada;
 $invalid-color: #fb742d;
@@ -38,6 +38,7 @@ $header-z-i: 9;
 // $mob-menu-z-i: 8;
 $spinner-z-i: 11;
 $modal-z-i: 11;
+$not-found-z-i: 11;
 
 // transitions
 $main-transition: all 0.15s linear;

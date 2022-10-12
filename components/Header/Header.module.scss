@@ -8,7 +8,7 @@
   height: $header-height;
   z-index: $header-z-i;
   color: $light-color;
-  background: $bg-color-main;
+  background: $color-main;
   border-bottom: 1px solid $light-color;
 
   @media (max-width: 767px) {
@@ -37,7 +37,7 @@
 
   svg {
     height: 100%;
-    fill: $bg-color-secondary;
+    fill: $color-secondary;
     transition: $main-transition;
 
     @mixin hover {
@@ -100,8 +100,8 @@
     justify-content: center;
     align-items: center;
     min-height: calc(((100vh - #{$header-height-sm}) / #{$nav-items-amount}));
-    background: $bg-color-main-dark;
-    border-bottom: $border-bottom-width-mob-nav-item solid $bg-color-secondary;
+    background: $color-main-dark;
+    border-bottom: $border-bottom-width-mob-nav-item solid $color-secondary;
     font-size: 1.25rem;
     transition-property: left, height, color;
     transition-duration: 0.15s, 0.15s, 0.15s;
@@ -163,7 +163,7 @@
 
   @mixin hover {
     .header__menu-btn-line {
-      background: $bg-color-secondary;
+      background: $color-secondary;
     }
   }
   &:active {

@@ -1,21 +1,17 @@
-import { useCallback, useState, useEffect, useMemo } from "react";
+import { useCallback, useState, useEffect, useMemo, useReducer } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-import PageSpinner from "../PageSpinner/PageSpinner";
+import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import Modal from "../Modal/Modal";
+import NotFound from "../NotFound/NotFound";
 
 import { Languages } from "../../models/language";
-
-import classes from "./ExchangeForm.module.scss";
 import { IOrder } from "../../models/mongooseSchemas/order";
 
-enum ExchangeFormStep {
-  userData = "userData",
-  userWallet = "userWallet",
-  payment = "payment",
-  waiting = "waiting"
-}
+import { reducer, initFn, ExchangeFormStep } from "./reducer";
+
+import classes from "./ExchangeForm.module.scss";
 
 interface IExchangeForm {
   orderId: string;
@@ -30,21 +26,12 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
   const language = router.query.lang as Languages;
   const { data: session } = useSession();
 
+  const [exchangeFormState, dispatch] = useReducer(reducer, session, initFn);
+
   const [order, setOrder] = useState<IOrder>();
   const [isLoading, setIsLoading] = useState(true);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
-  const [formStep, setFormStep] = useState(() =>
-    !session ? ExchangeFormStep.userData : ExchangeFormStep.userWallet
-  );
-
-  const formSteps = useMemo(() => {
-    return [
-      ...(!session ? [{ title: "user data" }] : []),
-      { title: "wallet/card" },
-      { title: "payment" },
-      { title: "waiting" }
-    ];
-  }, [session]);
+  const [orderNotFound, setOrderNotFound] = useState(false);
 
   const userData = <div>USER DATA</div>;
   const wallet = <div>WALLET</div>;
@@ -62,9 +49,14 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
       });
       console.log(response);
 
+      if (response.status === 404) {
+        setOrderNotFound(true);
+        return setIsLoading(false);
+      }
+
       if (response.status !== 200) {
-        setIsLoading(false);
-        return setIsSomethingWentWrong(true);
+        setIsSomethingWentWrong(true);
+        return setIsLoading(false);
       }
 
       const responseData = (await response.json()) as { orderData: IOrder };
@@ -91,7 +83,8 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
 
   return (
     <>
-      {isLoading && <PageSpinner />}
+      {isLoading && <BlockSpinner />}
+      {orderNotFound && <NotFound />}
       {isSomethingWentWrong && (
         <Modal
           closeModal={closeSWWModal}
@@ -105,26 +98,31 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
         />
       )}
       <div className={classes["exchange-form"]}>
-        <div>Exchange Form : {orderId}</div>
+        <div className={classes["exchange-form__inner"]}>
+          <div className={classes["exchange-form__container"]}>
+            <div className={classes["exchange-form__steps"]}>
+              {exchangeFormState.steps.map((step, index) => (
+                <div key={step.title}>
+                  <span>{index + 1}: </span>
+                  <span>{step.title}</span>
+                  <span>{step.isActive && "-active"}</span>
+                </div>
+              ))}
+            </div>
+            <div className={classes["exchange-form__current-step"]}>
+              {exchangeFormState.currentStep === ExchangeFormStep.userData && userData}
+              {exchangeFormState.currentStep === ExchangeFormStep.userWallet && wallet}
+              {exchangeFormState.currentStep === ExchangeFormStep.payment && payment}
+              {exchangeFormState.currentStep === ExchangeFormStep.waiting && waiting}
+            </div>
+          </div>
+          {/* <div>Exchange Form : {orderId}</div>
         <div>Type : {order?.type}</div>
         <div>currencyFromCustomer : {order?.initData.currencyFromCustomer.id}</div>
         <div>amountFromCustomer : {order?.initData.amountFromCustomer}</div>
         <div>currencyToCustomer : {order?.initData.currencyToCustomer.id}</div>
         <div>amountToCustomer : {order?.initData.amountToCustomer}</div>
-        <br />
-        <div>
-          {formSteps.map((step, index) => (
-            <div key={step.title}>
-              <span>{index + 1}: </span>
-              <span>{step.title}</span>
-            </div>
-          ))}
-        </div>
-        <div>
-          {formStep === ExchangeFormStep.userData && userData}
-          {formStep === ExchangeFormStep.userWallet && wallet}
-          {formStep === ExchangeFormStep.payment && payment}
-          {formStep === ExchangeFormStep.waiting && waiting}
+        <br /> */}
         </div>
       </div>
     </>

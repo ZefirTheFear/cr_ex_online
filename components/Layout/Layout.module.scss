@@ -1,10 +1,6 @@
 @import "../../utils/css/variables.scss";
 @import "../../utils/css/mixins.scss";
 
-.footer {
-  background: $color-main-dark;
-}
-
-.footer__inner {
-  @include section;
+.page {
+  @include page;
 }

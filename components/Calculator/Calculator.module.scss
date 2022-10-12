@@ -37,8 +37,14 @@
   align-items: center;
   width: 150px;
   padding: 0.25rem;
-  background: darken($bg-color-main-shadow, 5);
+  background: darken($color-main-shadow, 7);
   border-radius: $border-radius;
+}
+
+.calculator__rates-item-img-container {
+  display: flex;
+  // border: 2px solid $light-color;
+  // border-radius: 50%;
 }
 
 .calculator__rates-item-name {
@@ -91,7 +97,7 @@
 
 .calculator__note-icon {
   margin-right: 0.5rem;
-  color: $bg-color-secondary;
+  color: $color-secondary;
   background: $light-color;
   border-radius: $border-radius;
 
@@ -108,7 +114,7 @@
   a {
     text-decoration: none;
     transition: $main-transition;
-    color: $bg-color-secondary;
+    color: $color-secondary;
 
     @include hover-over-secondary-color;
   }

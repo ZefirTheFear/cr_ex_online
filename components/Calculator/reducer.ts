@@ -58,7 +58,7 @@ interface SetPercentageConditionsAction {
   };
 }
 
-type Actions =
+type Action =
   | SetCurrentCurrencyFromCustomerAction
   | SetCurrentCurrencyToCustomerAction
   | SwapCurrenciesAction
@@ -239,7 +239,7 @@ export const initFn = (initialCurrencies: {
   };
 };
 
-export const reducer = (state: CalculatorState, action: Actions): CalculatorState => {
+export const reducer = (state: CalculatorState, action: Action): CalculatorState => {
   switch (action.type) {
     case ActionType.SET_CURRENT_CURRENCY_FROM_CUSTOMER:
       if (state.lastModifiedField === "FROM_CUSTOMER") {

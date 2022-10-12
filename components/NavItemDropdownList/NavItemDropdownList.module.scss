@@ -24,7 +24,9 @@
 
 .nav-item-dropdown-list__toggler_open {
   @media (max-width: 767px) {
-    background: lighten($bg-color-main-dark, 10);
+    // background: lighten($color-main-dark, 10);
+    // background: darken($color-main-dark, 10);
+    color: $color-secondary;
   }
 }
 
@@ -53,12 +55,12 @@
   @media (max-width: 767px) {
     border-radius: 0;
     border: 0;
-    border-top: $border-bottom-width-mob-nav-item solid $bg-color-secondary;
+    border-top: $border-bottom-width-mob-nav-item solid $color-secondary;
   }
 }
 
 .nav-item-dropdown-list__options-item {
-  background: $bg-color-main-shadow;
+  background: $color-main-shadow;
   border-bottom: 1px solid $light-color;
   font-weight: bold;
   font-size: 1rem;

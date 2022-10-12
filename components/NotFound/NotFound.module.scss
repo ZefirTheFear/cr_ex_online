@@ -2,9 +2,9 @@
 @import "../../utils/css/mixins.scss";
 
 .not-found {
-  width: 100vw;
-  height: 100vh;
-  background-color: $bg-color-main;
+  @include modal;
+  background-color: $color-main;
+  z-index: $not-found-z-i;
 }
 
 .not-found__inner {
@@ -54,7 +54,7 @@
 
   svg {
     height: 100%;
-    fill: $bg-color-secondary;
+    fill: $color-secondary;
     transition: $main-transition;
 
     @mixin hover {

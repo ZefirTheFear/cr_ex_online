@@ -2,12 +2,10 @@
 @import "../../utils/css/mixins.scss";
 
 .hero {
-  @include padding-header;
   display: flex;
-  background: $bg-color-main;
+  background: $color-main;
   color: $light-color;
   overflow: hidden;
-  min-height: 90vh;
 }
 
 .hero__inner {
@@ -20,7 +18,7 @@
 }
 
 .hero__text {
-  background: $bg-color-main;
+  background: $color-main;
   padding: 4rem 4rem 2rem 0;
 
   @media (max-width: 992px) {
@@ -69,9 +67,7 @@
 }
 
 .hero__calculator {
-  height: 100%;
-  width: 100%;
-  background: $bg-color-secondary;
+  background: $color-secondary;
   padding: 2rem 0 2rem 4rem;
   position: relative;
   text-align: justify;
@@ -84,7 +80,7 @@
     top: 0;
     height: 100vh;
     width: 100vw;
-    background: $bg-color-main-shadow;
+    background: $color-main-shadow;
 
     @media (max-width: 992px) {
       left: -5rem;

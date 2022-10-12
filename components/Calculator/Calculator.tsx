@@ -307,14 +307,17 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
               } else {
                 return (
                   <div className={classes["calculator__rates-item"]} key={currency.id}>
-                    <Image
-                      src={currency.img}
-                      width={20}
-                      height={20}
-                      alt={`${currency.name}-logo`}
-                      layout="fixed"
-                      quality={100}
-                    />
+                    <span className={classes["calculator__rates-item-img-container"]}>
+                      <Image
+                        src={currency.img}
+                        width={20}
+                        height={20}
+                        alt={`${currency.name}-logo`}
+                        layout="fixed"
+                        quality={100}
+                      />
+                    </span>
+
                     <span className={classes["calculator__rates-item-name"]}>{currency.name}</span>
                     <span className={classes["calculator__rates-item-rate"]}>
                       :{" "}

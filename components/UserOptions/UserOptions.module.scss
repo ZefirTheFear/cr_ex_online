@@ -26,7 +26,7 @@
 
 .user-options__toggler_authenticated {
   // border-width: 0;
-  background: $bg-color-secondary;
+  background: $color-secondary;
   @include hover-bg-over-seconadry-color;
 }
 
@@ -72,7 +72,7 @@
 
 .user-options__list-item {
   white-space: nowrap;
-  background: $bg-color-main-shadow;
+  background: $color-main-shadow;
   border-bottom: 1px solid $light-color;
   cursor: pointer;
   transition: $main-transition;

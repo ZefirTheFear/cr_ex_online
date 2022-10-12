@@ -2,6 +2,33 @@
 @import "../../utils/css/mixins.scss";
 
 .exchange-form {
-  @include padding-header;
-  background: $bg-color-main;
+  flex-grow: 1;
+  background: $color-main;
+  display: flex;
+  flex-direction: column;
+}
+
+.exchange-form__inner {
+  @include section;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.exchange-form__container {
+  display: flex;
+  flex-grow: 1;
+  border-radius: $border-radius;
+  overflow: hidden;
+}
+
+.exchange-form__steps {
+  padding: 3rem 1.5rem;
+  background: $color-main-shadow;
+}
+
+.exchange-form__current-step {
+  padding: 3rem 1.5rem;
+  background: darken($color-main-shadow, 7);
+  flex-grow: 1;
 }

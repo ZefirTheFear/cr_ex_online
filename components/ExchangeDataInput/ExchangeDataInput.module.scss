@@ -24,7 +24,7 @@
 
 .exchange-data__input-group__input {
   @include input;
-  border-right: 2px solid $bg-color-main-shadow;
+  border-right: 2px solid $color-main-shadow;
 }
 
 .exchange-data__input-group__input_invalid {
@@ -34,7 +34,7 @@
 .exchange-data__currency-selector {
   width: 12rem;
   background: $light-color;
-  color: $bg-color-main-shadow;
+  color: $color-main-shadow;
 
   @media (max-width: 767px) {
     width: 9rem;
@@ -50,7 +50,7 @@
 
   @mixin hover {
     .exchange-data__select-arrow {
-      color: $bg-color-secondary;
+      color: $color-secondary;
     }
   }
   &:active {
@@ -112,7 +112,7 @@
   position: relative;
   z-index: 1;
   height: 200px;
-  border: 1px solid $bg-color-main;
+  border: 1px solid $color-main;
   border-radius: $border-radius;
   transition: $main-transition;
   overflow-y: scroll;
@@ -124,20 +124,20 @@
   }
   /* Track */
   &::-webkit-scrollbar-track {
-    background: $bg-color-main-dark;
+    background: $color-main-dark;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
   }
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: $bg-color-secondary;
+    background: $color-secondary;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
   }
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
-    background: darken($bg-color-secondary, 10);
+    background: darken($color-secondary, 10);
   }
 }
 
@@ -146,7 +146,7 @@
   align-items: center;
   padding: 0.25rem 0.5rem;
   background: $light-color;
-  border-bottom: 1px solid $bg-color-main;
+  border-bottom: 1px solid $color-main;
   cursor: pointer;
   transition: $main-transition;
 
