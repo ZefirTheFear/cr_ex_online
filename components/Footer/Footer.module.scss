@@ -8,3 +8,17 @@
 .footer__inner {
   @include section;
 }
+
+.footer__heading {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: $color-secondary;
+  margin-bottom: 0.5rem;
+}
+
+.footer__item {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}

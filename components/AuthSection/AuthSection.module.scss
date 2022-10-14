@@ -2,8 +2,8 @@
 @import "../../utils/css/mixins.scss";
 
 .auth-section {
-  padding-top: $header-height;
-  background: $bg-color-main;
+  flex-grow: 1;
+  background: $color-main;
 
   @media (max-width: 767px) {
     padding-top: $header-height-sm;

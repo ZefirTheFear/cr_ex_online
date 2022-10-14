@@ -30,7 +30,7 @@ const NewOrderPage: NextPage<NewOrderProps> = ({ lang, orderId }) => {
       </Head>
       <Header lang={lang} />
       <ExchangeForm orderId={orderId} />
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };
@@ -49,6 +49,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const lang = params.lang;
   const orderId = params.orderId;
+
+  // const orderId = orderData.slice(3);
+  // const operationType = orderData.slice(0, 3);
 
   return {
     props: {

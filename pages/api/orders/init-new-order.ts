@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDB } from "../../../utils/ts/db";
 import Order, { IOrder } from "../../../models/mongooseSchemas/order";
 import { IOrderInitData } from "./../../../utils/ts/validations";
+// import { OperationType } from "./../../../models/utils";
 import { defineOperationType } from "../../../utils/ts/defineOperationType";
 
 type Data =
@@ -53,5 +54,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   }
 
   connection.connection.close();
+
   return res.status(200).json({ orderId: newOrder._id.toString() });
 }

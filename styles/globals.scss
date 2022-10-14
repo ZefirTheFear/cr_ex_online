@@ -3,6 +3,7 @@
 
 body {
   // font-family: "Roboto Condensed", sans-serif;
+  // font-family: "Manrope", sans-serif;
   font-family: "PT Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,11 +34,13 @@ img {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 // Custom scrollbar

@@ -21,7 +21,7 @@ const NewsPage: NextPage<NewsProps> = ({ lang }) => {
       </Head>
       <Header lang={lang} />
       <div>News</div>
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };

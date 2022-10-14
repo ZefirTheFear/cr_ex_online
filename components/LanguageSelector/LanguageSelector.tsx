@@ -1,4 +1,3 @@
-// import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 
@@ -20,9 +19,8 @@ const LgSelector: React.FC = () => {
 
   const changeLanguage = useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      // console.log(router);
       const languageName = e.currentTarget.getAttribute("data-name");
-      router.push({
+      router.replace({
         pathname: router.pathname,
         query: { ...router.query, lang: languageName }
       });
@@ -54,7 +52,6 @@ const LgSelector: React.FC = () => {
           <>
             <ul className={classes["language-selector__options"]}>
               {languagesOpts.map((lang) => {
-                // const href = { pathname: router.pathname, query: { ...router.query, lang: lang } };
                 return (
                   <li
                     className={classes["language-selector__options-item"]}
@@ -62,7 +59,6 @@ const LgSelector: React.FC = () => {
                     onClick={changeLanguage}
                     key={lang}
                   >
-                    {/* <Link href={href}>{lang}</Link> */}
                     {lang}
                   </li>
                 );

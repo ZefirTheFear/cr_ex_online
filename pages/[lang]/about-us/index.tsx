@@ -22,7 +22,7 @@ const AboutUsPage: NextPage<AboutUsProps> = ({ lang }) => {
       </Head>
       <Header lang={lang} />
       <AboutUs />
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };

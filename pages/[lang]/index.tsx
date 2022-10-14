@@ -54,7 +54,7 @@ const HomePage: NextPage<HomePageProps> = ({ lang }) => {
       </Head>
       <Header lang={lang} />
       <Hero text={heroTextData} />
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };

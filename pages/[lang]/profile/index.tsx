@@ -28,7 +28,7 @@ const ProfilePage: NextPage<ProfileProps> = ({ lang }) => {
       </Head>
       <Header lang={lang} />
       <Profile />
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };

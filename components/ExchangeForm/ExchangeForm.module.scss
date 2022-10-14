@@ -25,9 +25,79 @@
 .exchange-form__steps {
   padding: 3rem 1.5rem;
   background: $color-main-shadow;
+  min-width: 300px;
 }
 
-.exchange-form__current-step {
+.exchange-form__step-list {
+  li {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+
+    &:first-child {
+      margin-top: 0;
+
+      .exchange-form__step-order {
+        &::before {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.exchange-form__step_active {
+  .exchange-form__step-order {
+    color: $color-main-shadow;
+    background: $light-color;
+  }
+
+  .exchange-form__step-title {
+    color: $light-color;
+  }
+}
+
+.exchange-form__step_done {
+  .exchange-form__step-order {
+    background: $color-secondary;
+  }
+
+  .exchange-form__step-title {
+    color: $color-secondary;
+  }
+}
+
+.exchange-form__step-order {
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: $grey-color;
+  color: $light-color;
+  font-weight: bold;
+  font-size: 1.25rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -17px;
+    display: block;
+    height: 10px;
+    width: 1px;
+    background: $grey-color;
+  }
+}
+
+.exchange-form__step-title {
+  font-weight: bold;
+  color: $grey-color;
+}
+
+.exchange-form__current-step-form {
   padding: 3rem 1.5rem;
   background: darken($color-main-shadow, 7);
   flex-grow: 1;

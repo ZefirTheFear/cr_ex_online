@@ -1,0 +1,46 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.confirm-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: rgba(#000, 0.7);
+  z-index: $modal-z-i;
+}
+
+.confirm-dialog__modal {
+  padding: 1rem;
+  max-width: 90%;
+  background: $light-color;
+  border-radius: $border-radius;
+}
+
+.confirm-dialog__msg {
+  text-align: center;
+  color: $color-main;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 2rem;
+}
+
+.confirm-dialog__btn-container {
+  text-align: center;
+
+  button {
+    @include button;
+    width: 4rem;
+    margin-left: 2rem;
+    font-weight: bold;
+
+    &:first-child {
+      margin: 0;
+    }
+  }
+}

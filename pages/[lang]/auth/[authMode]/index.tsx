@@ -42,7 +42,7 @@ const AboutUsPage: NextPage<AuthPageProps> = ({ lang, authMode }) => {
       </Head>
       <Header lang={lang} />
       <AuthSection />
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };

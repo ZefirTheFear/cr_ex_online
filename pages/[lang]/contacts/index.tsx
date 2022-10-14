@@ -21,7 +21,7 @@ const ContactsPage: NextPage<ContactsProps> = ({ lang }) => {
       </Head>
       <Header lang={lang} />
       <div>Contacts</div>
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 };
