@@ -151,6 +151,9 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
     (url: string) => {
       console.log("leavePageHandler");
       console.log("url: ", url);
+      if (url.includes("register") || url.includes("login")) {
+        return;
+      }
       const currentUrl = router.asPath;
       console.log("currentUrl: ", currentUrl);
       const indexOfUrl = currentUrl.indexOf("order");

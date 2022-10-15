@@ -70,7 +70,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ proceed }) => {
           ? "Щоб зберегти історію транзакцій та не вводити щоразу персональні дані ви можете "
           : "Чтобы сохранить историю транзакций и не вводить каждый раз персональные данные вы можете "}
         <span>
-          <Link href={`/${encodeURIComponent(language)}/auth/register`}>
+          <Link href={`/${encodeURIComponent(language)}/auth/register`} replace>
             {language === Languages.en
               ? "Register"
               : language === Languages.ua
@@ -80,7 +80,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ proceed }) => {
         </span>
         {language === Languages.en ? " or " : language === Languages.ua ? " або " : " или "}
         <span>
-          <Link href={`/${encodeURIComponent(language)}/auth/login`}>
+          <Link href={`/${encodeURIComponent(language)}/auth/login`} replace>
             {language === Languages.en ? "Login" : language === Languages.ua ? "Увійти" : "Войти"}
           </Link>
         </span>
