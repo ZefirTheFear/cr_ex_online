@@ -1,32 +1,32 @@
 @import "../../utils/css/variables.scss";
 @import "../../utils/css/mixins.scss";
 
-.auth-input-group {
+.input-group {
   display: flex;
   flex-direction: column;
 }
 
-.auth-input-group__label {
+.input-group__label {
   margin-bottom: 0.5rem;
   font-weight: bold;
 }
 
-.auth-input-group__input-container {
+.input-group__input-container {
   display: flex;
   border-radius: $border-radius;
   overflow: hidden;
   background: $light-color;
 }
 
-.auth-input-group__input {
+.input-group__input {
   @include input;
 }
 
-.auth-input-group__input_invalid {
+.input-group__input_invalid {
   background: rgba($invalid-bg, 0.5);
 }
 
-.auth-input-group__toggler-password-visibility {
+.input-group__toggler-password-visibility {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,6 +39,6 @@
   @include hover-over-main-shadow-color;
 }
 
-.auth-input-group__toggler-password-visibility_invalid-input {
+.input-group__toggler-password-visibility_invalid-input {
   background: rgba($invalid-bg, 0.5);
 }

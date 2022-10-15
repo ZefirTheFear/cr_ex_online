@@ -4,7 +4,7 @@ import cloneDeep from "clone-deep";
 
 import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
-import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
+import InputGroup, { InputGroupType } from "../InputGroup/InputGroup";
 
 import { Languages } from "../../models/language";
 import {
@@ -154,9 +154,9 @@ const ForgotPasswordForm: React.FC = () => {
       <div className={classes["forgot-password"]}>
         <form onSubmit={getPassword} noValidate>
           <div className={classes["forgot-password__form-row"]}>
-            <AuthInputGroup
+            <InputGroup
               title="Email"
-              type={AuthInputGroupType.email}
+              type={InputGroupType.email}
               placeholder={
                 language === Languages.en
                   ? "Enter your email"

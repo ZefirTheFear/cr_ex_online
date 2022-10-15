@@ -1,18 +1,28 @@
 @import "../../utils/css/variables.scss";
 @import "../../utils/css/mixins.scss";
 
+@keyframes slide {
+  from {
+    padding-top: 4rem;
+  }
+
+  to {
+    padding-top: 5rem;
+  }
+}
+
 .confirm-dialog {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  padding-top: 5rem;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   background: rgba(#000, 0.7);
   z-index: $modal-z-i;
+  animation: 0.15s linear forwards slide;
 }
 
 .confirm-dialog__modal {

@@ -2,14 +2,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import cloneDeep from "clone-deep";
+import { signIn } from "next-auth/react";
 
 import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
-import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
+import InputGroup, { InputGroupType } from "../InputGroup/InputGroup";
 import InvalidFeedback from "../InvalidFeedback/InvalidFeedback";
 
 import { Languages } from "../../models/language";
 import {
+  ILoginData,
   IRegisterData,
   IRegisterInputErrors,
   registerValidation
@@ -140,8 +142,43 @@ const RegisterForm: React.FC = () => {
     setIsSomethingWentWrong(false);
   }, []);
 
-  const closeSuccessModal = useCallback(() => {
-    router.push(`/${encodeURIComponent(language)}/auth/login`);
+  // const closeSuccessModal = useCallback(() => {
+  //   router.push(`/${encodeURIComponent(language)}/auth/login`);
+  // }, [language, router]);
+
+  const closeSuccessModal = useCallback(async () => {
+    if (!emailInput.current || !passwordInput.current) {
+      return new Error("no inputs");
+    }
+
+    const loginData: ILoginData = {
+      email: emailInput.current.value.toLowerCase().trim(),
+      password: passwordInput.current.value.trim(),
+      language: language
+    };
+
+    setIsLoading(true);
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: loginData.email,
+        password: loginData.password,
+        language: loginData.language
+      });
+      console.log("loginResult: ", result);
+
+      if (!result || result.error) {
+        setIsSomethingWentWrong(true);
+        setIsLoading(false);
+        return;
+      }
+
+      router.push(`/${encodeURIComponent(language)}`);
+    } catch (error) {
+      setIsSomethingWentWrong(true);
+      setIsLoading(false);
+      return;
+    }
   }, [language, router]);
 
   useEffect(() => {
@@ -180,11 +217,11 @@ const RegisterForm: React.FC = () => {
       <div className={classes.register}>
         <form onSubmit={registerUser} noValidate>
           <div className={classes["register__form-row"]}>
-            <AuthInputGroup
+            <InputGroup
               title={
-                language === Languages.en ? "Name" : language === Languages.ua ? "Ім'я" : "Имя "
+                language === Languages.en ? "Name" : language === Languages.ua ? "Ім'я" : "Имя"
               }
-              type={AuthInputGroupType.text}
+              type={InputGroupType.text}
               placeholder={
                 language === Languages.en
                   ? "Enter your name"
@@ -197,9 +234,9 @@ const RegisterForm: React.FC = () => {
               ref={nameInput}
               onFocus={focusInput}
             />
-            <AuthInputGroup
+            <InputGroup
               title="Email"
-              type={AuthInputGroupType.email}
+              type={InputGroupType.email}
               placeholder={
                 language === Languages.en
                   ? "Enter your email"
@@ -214,9 +251,9 @@ const RegisterForm: React.FC = () => {
             />
           </div>
           <div className={classes["register__form-row"]}>
-            <AuthInputGroup
+            <InputGroup
               title={language === Languages.en ? "Phone number" : "Телефон"}
-              type={AuthInputGroupType.tel}
+              type={InputGroupType.tel}
               placeholder={
                 language === Languages.en
                   ? "Enter your phone number"
@@ -229,9 +266,9 @@ const RegisterForm: React.FC = () => {
               ref={phoneInput}
               onFocus={focusInput}
             />
-            <AuthInputGroup
+            <InputGroup
               title={language === Languages.en ? "Password" : "Пароль"}
-              type={AuthInputGroupType.password}
+              type={InputGroupType.password}
               placeholder={
                 language === Languages.en
                   ? "Enter your password"

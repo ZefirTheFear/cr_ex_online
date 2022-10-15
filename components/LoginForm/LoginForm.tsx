@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 
 import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
-import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
+import InputGroup, { InputGroupType } from "../InputGroup/InputGroup";
 
 import { Languages } from "../../models/language";
 import { ILoginData, ILoginInputErrors, loginValidation } from "../../utils/ts/validations";
@@ -123,7 +123,7 @@ const LoginForm: React.FC = () => {
           }
         }
 
-        router.push(`/${language}`);
+        router.push(`/${encodeURIComponent(language)}`);
       } catch (error) {
         console.log("error: ", error);
         setIsSomethingWentWrong(true);
@@ -156,9 +156,9 @@ const LoginForm: React.FC = () => {
       <div className={classes.login}>
         <form onSubmit={login} noValidate>
           <div className={classes["login__form-row"]}>
-            <AuthInputGroup
+            <InputGroup
               title="Email"
-              type={AuthInputGroupType.email}
+              type={InputGroupType.email}
               placeholder={
                 language === Languages.en
                   ? "Enter your email"
@@ -173,9 +173,9 @@ const LoginForm: React.FC = () => {
             />
           </div>
           <div className={classes["login__form-row"]}>
-            <AuthInputGroup
+            <InputGroup
               title={language === Languages.en ? "Password" : "Пароль"}
-              type={AuthInputGroupType.password}
+              type={InputGroupType.password}
               placeholder={
                 language === Languages.en
                   ? "Enter your password"

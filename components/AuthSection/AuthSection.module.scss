@@ -4,10 +4,6 @@
 .auth-section {
   flex-grow: 1;
   background: $color-main;
-
-  @media (max-width: 767px) {
-    padding-top: $header-height-sm;
-  }
 }
 
 .auth-section__inner {

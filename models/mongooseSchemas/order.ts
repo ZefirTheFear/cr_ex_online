@@ -14,7 +14,16 @@ export interface IOrder {
     amountToCustomer: number;
   };
   type: OperationType;
-  client?: Types.ObjectId;
+  client?: {
+    id?: Types.ObjectId;
+    name?: string;
+    phone?: string;
+    email?: string;
+  };
+  wallet?: {
+    type: string;
+    value: string;
+  };
   status?: OrderStatus;
 }
 
@@ -30,8 +39,11 @@ const orderSchema = new Schema<IOrder>(
       required: true
     },
     client: {
-      type: Schema.Types.ObjectId,
-      ref: "User"
+      type: Schema.Types.Mixed
+      // ref: "User"
+    },
+    wallet: {
+      type: Schema.Types.Mixed
     },
     status: {
       type: String,

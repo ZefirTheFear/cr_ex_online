@@ -6,7 +6,7 @@ import { FaEdit } from "react-icons/fa";
 // import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
-import AuthInputGroup, { AuthInputGroupType } from "../AuthInputGroup/AuthInputGroup";
+import AuthInputGroup, { AuthInputGroupType } from "../InputGroup/InputGroup";
 
 import { Languages } from "../../models/language";
 import {

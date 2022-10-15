@@ -69,6 +69,21 @@ export interface IOrderInitInputErrors {
   amountCurrencyFromCustomer?: string;
 }
 
+export interface IEFPersonalData {
+  name: string;
+  email: string;
+  phone: string;
+  isTermsAgreed: boolean;
+  language: Languages;
+}
+
+export interface IEFPersonalDataInputErrors {
+  name?: string[];
+  email?: string[];
+  phone?: string[];
+  checkbox?: string;
+}
+
 export const registerValidation = (inputData: IRegisterData): IRegisterInputErrors | undefined => {
   const inputErrors: IRegisterInputErrors = {};
 

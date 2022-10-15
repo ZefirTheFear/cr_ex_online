@@ -6,13 +6,13 @@ import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import Modal from "../Modal/Modal";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import NotFound from "../NotFound/NotFound";
+import PersonalDataForm from "../EFPersonalDataForm/EFPersonalDataForm";
 
 import { Languages } from "../../models/language";
 import { IOrder } from "../../models/mongooseSchemas/order";
 import { OperationType } from "../../models/utils";
 
 import classes from "./ExchangeForm.module.scss";
-import PersonalDataForm from "../PersonalDataForm/PersonalDataForm";
 
 enum ExchangeFormStep {
   userData = 1,
@@ -169,14 +169,12 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
   );
 
   const confirmRouteChange = useCallback(() => {
-    console.log("confirmRouteChange");
     router.events.off("routeChangeStart", onRouteChangeStart);
     setIsDialogOpen(false);
     router.replace(newUrl);
   }, [newUrl, onRouteChangeStart, router]);
 
   const rejectRouteChange = useCallback(() => {
-    console.log("rejectRouteChange");
     setIsDialogOpen(false);
   }, []);
 

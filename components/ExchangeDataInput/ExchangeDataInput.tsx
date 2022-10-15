@@ -69,7 +69,6 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
       <div className={classes["exchange-data__title"]}>{title}:</div>
       <div className={classes["exchange-data__input-group"]} onMouseDown={clearError}>
         <input
-          // className={classes["exchange-data__input-group__input"]}
           className={
             `${classes["exchange-data__input-group__input"]}` +
             (error ? ` ${classes["exchange-data__input-group__input_invalid"]}` : ``)
