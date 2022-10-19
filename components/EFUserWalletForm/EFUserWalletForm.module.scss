@@ -1,0 +1,60 @@
+@import "../../utils/css/variables.scss";
+@import "../../utils/css/mixins.scss";
+
+.user-wallet {
+  display: block;
+}
+
+.user-wallet__heading {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.user-wallet__paragraph {
+  font-weight: bold;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid lighten($color-main-shadow, 10);
+}
+
+.user-wallet__card {
+  padding: 1rem;
+  border: 2px solid lighten($color-main-shadow, 10);
+  max-width: 400px;
+  margin: 2rem auto;
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.user-wallet__card-top {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.user-wallet__card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.user-wallet__card-logo {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+
+  svg {
+    display: flex;
+
+    &:first-child {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.user-wallet__submit-btn {
+  @include button;
+  margin-top: 1rem;
+  width: 100%;
+  font-size: 1.5rem;
+  font-weight: bold;
+}

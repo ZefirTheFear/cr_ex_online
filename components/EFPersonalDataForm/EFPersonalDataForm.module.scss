@@ -30,12 +30,12 @@
 
 .personal-data__terms-group {
   display: flex;
-  // align-items: flex-end;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .personal-data__terms {
   display: flex;
-  align-items: center;
 }
 
 .personal-data__checkbox-container {

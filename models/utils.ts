@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export enum UserStatus {
   user = "user",
   observer = "observer",
@@ -17,3 +19,18 @@ export enum OperationType {
   fiatToCrypto = "fiatToCrypto",
   cryptoToCrypto = "cryptoToCrypto"
 }
+
+export type OrderWallet = {
+  type: string;
+  value: string;
+};
+
+export type OrderClient =
+  | {
+      id: Types.ObjectId;
+    }
+  | {
+      name: string;
+      phone: string;
+      email: string;
+    };

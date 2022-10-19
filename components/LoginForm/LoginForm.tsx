@@ -123,7 +123,7 @@ const LoginForm: React.FC = () => {
           }
         }
 
-        router.push(`/${encodeURIComponent(language)}`);
+        router.replace(`/${encodeURIComponent(language)}`);
       } catch (error) {
         console.log("error: ", error);
         setIsSomethingWentWrong(true);

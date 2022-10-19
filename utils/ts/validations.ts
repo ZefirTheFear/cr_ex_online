@@ -69,7 +69,7 @@ export interface IOrderInitInputErrors {
   amountCurrencyFromCustomer?: string;
 }
 
-export interface IEFPersonalData {
+export interface IPersonalData {
   name: string;
   email: string;
   phone: string;
@@ -77,7 +77,7 @@ export interface IEFPersonalData {
   language: Languages;
 }
 
-export interface IEFPersonalDataInputErrors {
+export interface IPersonalDataInputErrors {
   name?: string[];
   email?: string[];
   phone?: string[];
@@ -342,6 +342,58 @@ export const initNewOrderValidation = (
         : "Минимальная сумма операции - ") +
       `${minUsdValue / currencyFromCustomer.usdValue} ${currencyFromCustomer.name}`;
     inputErrors.amountCurrencyFromCustomer = errorMsg;
+  }
+
+  if (Object.keys(inputErrors).length > 0) {
+    return inputErrors;
+  }
+};
+
+export const personalDataValidation = (
+  inputData: IPersonalData
+): IPersonalDataInputErrors | undefined => {
+  const inputErrors: IRegisterInputErrors = {};
+
+  const { name, email, phone, isTermsAgreed, language } = inputData;
+
+  if (!isTermsAgreed) {
+    const errorMsg =
+      language === Languages.en
+        ? "required field"
+        : language === Languages.ua
+        ? "обов'язкове поле"
+        : "обязательное поле";
+    inputErrors.checkbox = errorMsg;
+  }
+
+  if (name.trim().length < 1 || name.trim().length > 40) {
+    const errorMsg =
+      language === Languages.en
+        ? "from 1 to 40 characters"
+        : language === Languages.ua
+        ? "від 1 до 40 символів"
+        : "от 1 до 40 символов";
+    inputErrors.name = inputErrors.name ? [...inputErrors.name, errorMsg] : [errorMsg];
+  }
+
+  if (!validator.isEmail(email.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "enter valid email"
+        : language === Languages.ua
+        ? "введіть дійсний email"
+        : "введите действительный email";
+    inputErrors.email = inputErrors.email ? [...inputErrors.email, errorMsg] : [errorMsg];
+  }
+
+  if (!validator.isMobilePhone(phone.trim())) {
+    const errorMsg =
+      language === Languages.en
+        ? "enter valid phone number"
+        : language === Languages.ua
+        ? "введіть дійсний номер телефону"
+        : "введите действительный номер телефона";
+    inputErrors.phone = inputErrors.phone ? [...inputErrors.phone, errorMsg] : [errorMsg];
   }
 
   if (Object.keys(inputErrors).length > 0) {

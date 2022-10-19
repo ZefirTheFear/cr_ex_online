@@ -1,7 +1,7 @@
-import { Schema, model, models, Model, Types } from "mongoose";
+import { Schema, model, models, Model } from "mongoose";
 
 import { Currency } from "../currency";
-import { OperationType, OrderStatus } from "../utils";
+import { OperationType, OrderClient, OrderStatus, OrderWallet } from "../utils";
 // import { IUser } from "./user";
 
 export interface IOrder {
@@ -14,16 +14,8 @@ export interface IOrder {
     amountToCustomer: number;
   };
   type: OperationType;
-  client?: {
-    id?: Types.ObjectId;
-    name?: string;
-    phone?: string;
-    email?: string;
-  };
-  wallet?: {
-    type: string;
-    value: string;
-  };
+  client?: OrderClient;
+  clientWallet?: OrderWallet;
   status?: OrderStatus;
 }
 
@@ -42,7 +34,7 @@ const orderSchema = new Schema<IOrder>(
       type: Schema.Types.Mixed
       // ref: "User"
     },
-    wallet: {
+    clientWallet: {
       type: Schema.Types.Mixed
     },
     status: {

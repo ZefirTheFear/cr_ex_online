@@ -6,7 +6,7 @@ import { FaEdit } from "react-icons/fa";
 // import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import PageSpinner from "../PageSpinner/PageSpinner";
 import Modal from "../Modal/Modal";
-import AuthInputGroup, { AuthInputGroupType } from "../InputGroup/InputGroup";
+import InputGroup, { InputGroupType } from "../InputGroup/InputGroup";
 
 import { Languages } from "../../models/language";
 import {
@@ -348,7 +348,7 @@ const Profile: React.FC = () => {
             <>
               <form className={classes["profile__edit-form"]} onSubmit={changeUserData} noValidate>
                 {editState === EditState.editName && (
-                  <AuthInputGroup
+                  <InputGroup
                     title={
                       language === Languages.en
                         ? "Name"
@@ -356,7 +356,7 @@ const Profile: React.FC = () => {
                         ? "Ім'я"
                         : "Имя "
                     }
-                    type={AuthInputGroupType.text}
+                    type={InputGroupType.text}
                     placeholder={
                       language === Languages.en
                         ? "Enter your new name"
@@ -371,9 +371,9 @@ const Profile: React.FC = () => {
                   />
                 )}
                 {editState === EditState.editEmail && (
-                  <AuthInputGroup
+                  <InputGroup
                     title="Email"
-                    type={AuthInputGroupType.email}
+                    type={InputGroupType.email}
                     placeholder={
                       language === Languages.en
                         ? "Enter your new email"
@@ -388,9 +388,9 @@ const Profile: React.FC = () => {
                   />
                 )}
                 {editState === EditState.editPhone && (
-                  <AuthInputGroup
+                  <InputGroup
                     title={language === Languages.en ? "Phone number" : "Телефон"}
-                    type={AuthInputGroupType.tel}
+                    type={InputGroupType.tel}
                     placeholder={
                       language === Languages.en
                         ? "Enter your new phone number"
@@ -407,7 +407,7 @@ const Profile: React.FC = () => {
                 {editState === EditState.editPassword && (
                   <>
                     <div className={classes["profile__input-with-mb"]}>
-                      <AuthInputGroup
+                      <InputGroup
                         title={
                           language === Languages.en
                             ? "Current Password"
@@ -415,7 +415,7 @@ const Profile: React.FC = () => {
                             ? "Поточний пароль"
                             : "Текущий пароль"
                         }
-                        type={AuthInputGroupType.password}
+                        type={InputGroupType.password}
                         placeholder={
                           language === Languages.en
                             ? "Enter your current password"
@@ -429,7 +429,7 @@ const Profile: React.FC = () => {
                         onFocus={focusInput}
                       />
                     </div>
-                    <AuthInputGroup
+                    <InputGroup
                       title={
                         language === Languages.en
                           ? "New Password"
@@ -437,7 +437,7 @@ const Profile: React.FC = () => {
                           ? "Новий пароль"
                           : "Новый пароль"
                       }
-                      type={AuthInputGroupType.password}
+                      type={InputGroupType.password}
                       placeholder={
                         language === Languages.en
                           ? "Enter your new password"

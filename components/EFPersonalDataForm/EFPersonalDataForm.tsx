@@ -6,8 +6,13 @@ import Link from "next/link";
 import InputGroup, { InputGroupType } from "../InputGroup/InputGroup";
 import InvalidFeedback from "../InvalidFeedback/InvalidFeedback";
 
+import { OrderClient } from "../../models/utils";
 import { Languages } from "../../models/language";
-import { IEFPersonalDataInputErrors } from "../../utils/ts/validations";
+import {
+  IPersonalData,
+  IPersonalDataInputErrors,
+  personalDataValidation
+} from "../../utils/ts/validations";
 
 import classes from "./EFPersonalDataForm.module.scss";
 
@@ -19,7 +24,7 @@ enum PersonalDataInputFieldName {
 }
 
 interface PersonalDataFormProps {
-  proceed: () => void;
+  proceed: (clientData: OrderClient) => void;
 }
 
 const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ proceed }) => {
@@ -31,7 +36,7 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ proceed }) => {
   const phoneInput = useRef<HTMLInputElement>(null);
 
   const [isTermsAgreed, setIsTermsAgreed] = useState(true);
-  const [inputErrors, setInputErrors] = useState<IEFPersonalDataInputErrors>({});
+  const [inputErrors, setInputErrors] = useState<IPersonalDataInputErrors>({});
 
   const toggleCheckbox = useCallback(() => {
     setIsTermsAgreed((prevState) => !prevState);
@@ -50,9 +55,36 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ proceed }) => {
     [inputErrors]
   );
 
-  const goToNextStep = useCallback((event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  }, []);
+  const goToNextStep = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (!emailInput.current || !nameInput.current || !phoneInput.current) {
+        return new Error("no inputs");
+      }
+
+      const personalData: IPersonalData = {
+        name: nameInput.current.value.trim(),
+        email: emailInput.current.value.toLowerCase().trim(),
+        phone: phoneInput.current.value.trim(),
+        isTermsAgreed: isTermsAgreed,
+        language: language
+      };
+
+      const personalDataInputErrors = personalDataValidation(personalData);
+      console.log("personalDataInputErrors: ", personalDataInputErrors);
+      if (personalDataInputErrors) {
+        return setInputErrors(personalDataInputErrors);
+      }
+
+      proceed({
+        name: nameInput.current.value,
+        email: emailInput.current.value,
+        phone: phoneInput.current.value
+      });
+    },
+    [isTermsAgreed, language, proceed]
+  );
 
   return (
     <div>
@@ -158,22 +190,26 @@ const PersonalDataForm: React.FC<PersonalDataFormProps> = ({ proceed }) => {
                     ? "Я ознайомлений та згоден з "
                     : "Я ознакомлен и согласен с "}
                   <span className={classes["personal-data__terms-link"]}>
-                    <Link href={`/${encodeURIComponent(language)}/terms-and-conditions`}>
-                      {language === Languages.en
-                        ? "Terms of use"
-                        : language === Languages.ua
-                        ? "Правилами використання сайту"
-                        : "Правилами использования сайта"}
+                    <Link href={`/${encodeURIComponent(language)}/terms-and-conditions`} passHref>
+                      <a target="_blank" rel="noopener noreferrer">
+                        {language === Languages.en
+                          ? "Terms of use"
+                          : language === Languages.ua
+                          ? "Правилами використання сайту"
+                          : "Правилами использования сайта"}
+                      </a>
                     </Link>
                   </span>
                   {language === Languages.en ? " and " : language === Languages.ua ? " та " : " и "}
                   <span className={classes["personal-data__terms-link"]}>
-                    <Link href={`/${encodeURIComponent(language)}/privacy-policy`}>
-                      {language === Languages.en
-                        ? "Privacy policy"
-                        : language === Languages.ua
-                        ? "Політикою конфіденційності"
-                        : "Политикой конфиденциальности"}
+                    <Link href={`/${encodeURIComponent(language)}/privacy-policy`} passHref>
+                      <a target="_blank" rel="noopener noreferrer">
+                        {language === Languages.en
+                          ? "Privacy policy"
+                          : language === Languages.ua
+                          ? "Політикою конфіденційності"
+                          : "Политикой конфиденциальности"}
+                      </a>
                     </Link>
                   </span>
                 </div>

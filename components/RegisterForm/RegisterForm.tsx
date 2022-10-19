@@ -173,7 +173,7 @@ const RegisterForm: React.FC = () => {
         return;
       }
 
-      router.push(`/${encodeURIComponent(language)}`);
+      router.replace(`/${encodeURIComponent(language)}`);
     } catch (error) {
       setIsSomethingWentWrong(true);
       setIsLoading(false);

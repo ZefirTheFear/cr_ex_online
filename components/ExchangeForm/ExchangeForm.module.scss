@@ -86,10 +86,16 @@
   .exchange-form__step-order {
     color: $color-main-shadow;
     background: $light-color;
+    font-size: 1.25rem;
   }
 
   .exchange-form__step-title {
+    font-size: 1.25rem;
     color: $light-color;
+
+    @media (max-width: 767px) {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -116,7 +122,7 @@
   background: $grey-color;
   color: $light-color;
   font-weight: bold;
-  font-size: 1.25rem;
+  // font-size: 1.25rem;
 
   &::before {
     content: "";
@@ -145,7 +151,7 @@
 
 .exchange-form__current-step-form {
   padding: 3rem 2rem;
-  background: darken($color-main-shadow, 7);
+  background: darken($color-main-shadow, 5);
   flex-grow: 1;
 
   @media (max-width: 767px) {

@@ -7,10 +7,11 @@ import Modal from "../Modal/Modal";
 import ConfirmDialog from "../ConfirmDialog/ConfirmDialog";
 import NotFound from "../NotFound/NotFound";
 import PersonalDataForm from "../EFPersonalDataForm/EFPersonalDataForm";
+import UserWalletForm from "../EFUserWalletForm/EFUserWalletForm";
 
 import { Languages } from "../../models/language";
 import { IOrder } from "../../models/mongooseSchemas/order";
-import { OperationType } from "../../models/utils";
+import { OperationType, OrderClient, OrderWallet } from "../../models/utils";
 
 import classes from "./ExchangeForm.module.scss";
 
@@ -41,15 +42,18 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
   const language = router.query.lang as Languages;
   const { data: session } = useSession();
 
-  const [currentFormStep, setCurrentFormStep] = useState(
-    session ? ExchangeFormStep.userWallet : ExchangeFormStep.userData
-  );
+  // const [currentFormStep, setCurrentFormStep] = useState(
+  //   session ? ExchangeFormStep.userWallet : ExchangeFormStep.userData
+  // );
+  const [currentFormStep, setCurrentFormStep] = useState(ExchangeFormStep.userWallet);
   const [order, setOrder] = useState<IOrder>();
   const [isLoading, setIsLoading] = useState(true);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
   const [orderNotFound, setOrderNotFound] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newUrl, setNewUrl] = useState("");
+  const [client, setClient] = useState<OrderClient>();
+  const [clientWallet, setClientWallet] = useState<OrderWallet>();
 
   const formSteps: Step[] = useMemo(() => {
     if (!order) {
@@ -108,9 +112,21 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
     ];
   }, [currentFormStep, language, order, session]);
 
-  const proceedPersonalDataForm = useCallback(() => {
+  const proceedPersonalDataForm = useCallback((clientData: OrderClient) => {
     setCurrentFormStep(ExchangeFormStep.userWallet);
+    setClient(clientData);
   }, []);
+
+  const proceedClientWalletForm = useCallback(
+    (wallet: string) => {
+      if (!order) {
+        return;
+      }
+      setCurrentFormStep(ExchangeFormStep.payment);
+      setClientWallet({ value: wallet, type: order.initData.currencyToCustomer.id });
+    },
+    [order]
+  );
 
   const fetchOrder = useCallback(async () => {
     try {
@@ -251,7 +267,9 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
               {currentFormStep === ExchangeFormStep.userData && (
                 <PersonalDataForm proceed={proceedPersonalDataForm} />
               )}
-              {currentFormStep === ExchangeFormStep.userWallet && <div>WALLET</div>}
+              {currentFormStep === ExchangeFormStep.userWallet && order && (
+                <UserWalletForm operationType={order.type} proceed={proceedClientWalletForm} />
+              )}
               {currentFormStep === ExchangeFormStep.payment && <div>PAYMENT</div>}
               {currentFormStep === ExchangeFormStep.waiting && <div>WAITING</div>}
             </div>

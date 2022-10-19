@@ -115,7 +115,7 @@ const ForgotPasswordForm: React.FC = () => {
   }, []);
 
   const closeSuccessModal = useCallback(() => {
-    router.push(`/${encodeURIComponent(language)}/auth/login`);
+    router.replace(`/${encodeURIComponent(language)}/auth/login`);
   }, [language, router]);
 
   useEffect(() => {
