@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDB } from "../../../utils/ts/db";
 import Order, { IOrder } from "../../../models/mongooseSchemas/order";
 import { IOrderInitData } from "./../../../utils/ts/validations";
-// import { OperationType } from "./../../../models/utils";
 import { defineOperationType } from "../../../utils/ts/defineOperationType";
+import { OrderStatus } from "../../../models/utils";
 
 type Data =
   | {
@@ -36,6 +36,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     return res.status(503).json({ message: "operation type is undefined" });
   }
 
+  const clienId = initOrderData.clientId;
+
   const newOrder = new Order<IOrder>({
     initData: {
       currencyFromCustomer: initOrderData.currencyFromCustomer,
@@ -43,7 +45,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       currencyToCustomer: initOrderData.currencyToCustomer,
       amountToCustomer: +initOrderData.amountCurrencyToCustomer
     },
-    type: operationType
+    type: operationType,
+    status: clienId ? OrderStatus.clientWallet : OrderStatus.clientPersonalData,
+    ...(clienId && { client: { id: clienId } })
   });
   try {
     await newOrder.save();

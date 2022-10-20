@@ -40,8 +40,8 @@ export enum CurrencyType {
 }
 
 export enum CurrencyProtocol {
-  trc20 = "trc20",
-  erc20 = "erc20"
+  trc20 = "TRC20",
+  erc20 = "ERC20"
 }
 
 export interface Currency {
@@ -50,5 +50,6 @@ export interface Currency {
   type: CurrencyType;
   usdValue: number;
   img: StaticImageData;
+  placeholder?: string;
   protocol?: CurrencyProtocol;
 }

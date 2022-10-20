@@ -21,6 +21,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.btc,
     type: CurrencyType.crypto,
     img: btcIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 2
   },
   {
@@ -28,6 +29,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.eth,
     type: CurrencyType.crypto,
     img: ethIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -36,6 +38,7 @@ export const currencies: Currency[] = [
     protocol: CurrencyProtocol.trc20,
     type: CurrencyType.crypto,
     img: usdtIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 1
   },
   {
@@ -44,6 +47,7 @@ export const currencies: Currency[] = [
     protocol: CurrencyProtocol.erc20,
     type: CurrencyType.crypto,
     img: usdtIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 1
   },
   {
@@ -51,6 +55,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.lct,
     type: CurrencyType.crypto,
     img: ltcIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -58,6 +63,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.xrp,
     type: CurrencyType.crypto,
     img: xrpIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -65,6 +71,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.xmr,
     type: CurrencyType.crypto,
     img: xmrIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -72,6 +79,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.doge,
     type: CurrencyType.crypto,
     img: dogeIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -79,6 +87,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.shib,
     type: CurrencyType.crypto,
     img: shibaIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -86,6 +95,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.trx,
     type: CurrencyType.crypto,
     img: trxIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -93,6 +103,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.dash,
     type: CurrencyType.crypto,
     img: dashIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -100,6 +111,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.ada,
     type: CurrencyType.crypto,
     img: adaIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {
@@ -107,6 +119,7 @@ export const currencies: Currency[] = [
     name: CurrencyName.sol,
     type: CurrencyType.crypto,
     img: solIcon,
+    placeholder: "1BoatSLRHtKNngkdXEeobR76b53LETtpyT",
     usdValue: 0
   },
   {

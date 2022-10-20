@@ -26,11 +26,18 @@
   background: rgba($invalid-bg, 0.5);
 }
 
+.input-group__input_mini-font {
+  @media (max-width: 767px) {
+    font-size: 0.75rem;
+    height: 50px;
+  }
+}
+
 .input-group__toggler-password-visibility {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: 0 1rem;
   color: $color-main-shadow;
   font-size: 1.5rem;
   cursor: pointer;

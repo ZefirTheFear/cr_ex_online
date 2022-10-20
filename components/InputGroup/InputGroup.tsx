@@ -16,13 +16,14 @@ interface InputGroupProps {
   title: string;
   type: InputGroupType;
   placeholder: string;
+  miniFont?: boolean;
   name: string;
   errors: string[] | null;
   onFocus: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const InputGroup = React.forwardRef<HTMLInputElement, InputGroupProps>(
-  ({ title, type, placeholder, name, errors, onFocus }, ref) => {
+  ({ title, type, placeholder, miniFont, name, errors, onFocus }, ref) => {
     const [isShownPassword, setIsShownPassword] = useState(false);
 
     const toggleIsShownPassword = useCallback(() => {
@@ -36,7 +37,8 @@ const InputGroup = React.forwardRef<HTMLInputElement, InputGroupProps>(
           <input
             className={
               `${classes["input-group__input"]}` +
-              (errors ? ` ${classes["input-group__input_invalid"]}` : ``)
+              (errors ? ` ${classes["input-group__input_invalid"]}` : ``) +
+              (miniFont ? ` ${classes["input-group__input_mini-font"]}` : ``)
             }
             type={
               type === InputGroupType.password

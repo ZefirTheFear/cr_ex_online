@@ -7,9 +7,10 @@ export enum UserStatus {
 }
 
 export enum OrderStatus {
-  init = "init",
-  withFullData = "withFullData",
-  confirmedByUser = "confirmedByUser",
+  clientPersonalData = "clientPersonalData",
+  clientWallet = "clientWallet",
+  payment = "payment",
+  waiting = "waiting",
   confirmedByObserver = "confirmedByObserver",
   closed = "closed"
 }

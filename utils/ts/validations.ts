@@ -1,4 +1,5 @@
 import validator from "validator";
+import { Types } from "mongoose";
 
 import { Languages } from "./../../models/language";
 import { Currency } from "../../models/currency";
@@ -63,6 +64,7 @@ export interface IOrderInitData {
   amountCurrencyFromCustomer: string;
   amountCurrencyToCustomer: string;
   language: Languages;
+  clientId?: Types.ObjectId;
 }
 
 export interface IOrderInitInputErrors {

@@ -39,6 +39,10 @@
   background: $color-main-shadow;
   min-width: 300px;
 
+  @media (max-width: 1200px) {
+    padding: 1.5rem;
+  }
+
   @media (max-width: 767px) {
     padding: 1rem;
   }
@@ -153,6 +157,10 @@
   padding: 3rem 2rem;
   background: darken($color-main-shadow, 5);
   flex-grow: 1;
+
+  @media (max-width: 1200px) {
+    padding: 1.5rem;
+  }
 
   @media (max-width: 767px) {
     padding: 1rem;

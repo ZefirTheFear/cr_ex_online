@@ -64,20 +64,32 @@
 }
 
 .exchange-data__currency-img {
+  flex-shrink: 0;
   margin-right: 0.25rem;
+  width: 30px;
+  height: 30px;
+
+  @media (max-width: 767px) {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 .exchange-data__currency-name-container {
-  @media (max-width: 767px) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  // @media (max-width: 767px) {
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  // }
 }
 
 .exchange-data__currency-name {
   font-weight: bold;
   font-size: 1.5rem;
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+  }
 }
 
 .exchange-data__currency-protocol {
@@ -87,7 +99,7 @@
   text-transform: uppercase;
 
   @media (max-width: 767px) {
-    margin-left: 0;
+    font-size: 0.6rem;
   }
 }
 
@@ -100,7 +112,7 @@
   transition: $main-transition;
 
   @media (max-width: 767px) {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -144,7 +156,7 @@
 .exchange-data__select-options-item {
   display: flex;
   align-items: center;
-  padding: 0.25rem 0.5rem;
+  padding: 0.5rem;
   background: $light-color;
   border-bottom: 1px solid $color-main;
   cursor: pointer;

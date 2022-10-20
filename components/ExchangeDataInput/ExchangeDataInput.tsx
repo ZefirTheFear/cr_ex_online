@@ -93,9 +93,10 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
                     <Image
                       src={currentCurrency.img}
                       alt={currentCurrency.name + "-logo"}
-                      width={30}
-                      height={30}
-                      layout="fixed"
+                      // width={30}
+                      // height={30}
+                      // layout="fixed"
+                      layout="responsive"
                       quality={100}
                     />
                   </span>
@@ -136,9 +137,10 @@ const ExchangeData: React.FC<ExchangeDataProps> = ({
                         <Image
                           src={currency.img}
                           alt={currency.name + "-logo"}
-                          width={30}
-                          height={30}
-                          layout="fixed"
+                          // width={30}
+                          // height={30}
+                          // layout="fixed"
+                          layout="responsive"
                           quality={100}
                         />
                       </span>

@@ -9,6 +9,10 @@
   font-size: 3rem;
   font-weight: bold;
   margin-bottom: 1rem;
+
+  @media (max-width: 767px) {
+    font-size: 2rem;
+  }
 }
 
 .user-wallet__paragraph {
@@ -35,6 +39,10 @@
 .user-wallet__card-title {
   font-size: 1.5rem;
   font-weight: bold;
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+  }
 }
 
 .user-wallet__card-logo {
@@ -57,4 +65,12 @@
   width: 100%;
   font-size: 1.5rem;
   font-weight: bold;
+
+  @media (max-width: 767px) {
+    font-size: 1.25rem;
+  }
+}
+
+.user-wallet__crypto {
+  padding: 1rem;
 }

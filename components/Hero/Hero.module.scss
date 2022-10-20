@@ -5,7 +5,7 @@
   display: flex;
   background: $color-main;
   color: $light-color;
-  overflow: hidden;
+  overflow: clip visible;
 }
 
 .hero__inner {

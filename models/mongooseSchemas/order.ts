@@ -14,9 +14,9 @@ export interface IOrder {
     amountToCustomer: number;
   };
   type: OperationType;
+  status: OrderStatus;
   client?: OrderClient;
   clientWallet?: OrderWallet;
-  status?: OrderStatus;
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -40,14 +40,14 @@ const orderSchema = new Schema<IOrder>(
     status: {
       type: String,
       enum: [
-        OrderStatus.init,
-        OrderStatus.withFullData,
-        OrderStatus.confirmedByUser,
+        OrderStatus.clientPersonalData,
+        OrderStatus.clientWallet,
+        OrderStatus.payment,
+        OrderStatus.waiting,
         OrderStatus.confirmedByObserver,
         OrderStatus.closed
       ],
-      required: true,
-      default: OrderStatus.init
+      required: true
     }
   },
   { timestamps: true }

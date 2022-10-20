@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import { useSession } from "next-auth/react";
 import cloneDeep from "clone-deep";
 
 import { TiArrowRepeat } from "react-icons/ti";
@@ -50,6 +51,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
   const controller = useMemo(() => {
     return new AbortController();
   }, []);
+
+  const { data: session } = useSession();
 
   const router = useRouter();
   const language = router.query.lang as Languages;
@@ -209,7 +212,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
       amountCurrencyFromCustomer: calculatorState.amountCurrencyFromCustomer,
       currencyToCustomer: calculatorState.currentCurrencyToCustomer,
       amountCurrencyToCustomer: calculatorState.amountCurrencyToCustomer,
-      language: language
+      language: language,
+      ...(session && { clientId: session.user.id })
     };
 
     const orderInitInputErrors = initNewOrderValidation(orderInitData);
@@ -260,7 +264,8 @@ const Calculator: React.FC<CalculatorProps> = ({ initialCurrencies }) => {
     calculatorState.currentCurrencyToCustomer,
     controller.signal,
     language,
-    router
+    router,
+    session
   ]);
 
   const closeSWWModal = useCallback(() => {

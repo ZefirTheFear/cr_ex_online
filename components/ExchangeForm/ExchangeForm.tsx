@@ -1,6 +1,5 @@
 import { useCallback, useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 
 import BlockSpinner from "../BlockSpinner/BlockSpinner";
 import Modal from "../Modal/Modal";
@@ -11,7 +10,7 @@ import UserWalletForm from "../EFUserWalletForm/EFUserWalletForm";
 
 import { Languages } from "../../models/language";
 import { IOrder } from "../../models/mongooseSchemas/order";
-import { OperationType, OrderClient, OrderWallet } from "../../models/utils";
+import { OperationType, OrderClient, OrderStatus } from "../../models/utils";
 
 import classes from "./ExchangeForm.module.scss";
 
@@ -40,41 +39,36 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
 
   const router = useRouter();
   const language = router.query.lang as Languages;
-  const { data: session } = useSession();
 
   // const [currentFormStep, setCurrentFormStep] = useState(
   //   session ? ExchangeFormStep.userWallet : ExchangeFormStep.userData
   // );
-  const [currentFormStep, setCurrentFormStep] = useState(ExchangeFormStep.userWallet);
+  const [currentFormStep, setCurrentFormStep] = useState(ExchangeFormStep.userData);
   const [order, setOrder] = useState<IOrder>();
   const [isLoading, setIsLoading] = useState(true);
   const [isSomethingWentWrong, setIsSomethingWentWrong] = useState(false);
   const [orderNotFound, setOrderNotFound] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newUrl, setNewUrl] = useState("");
-  const [client, setClient] = useState<OrderClient>();
-  const [clientWallet, setClientWallet] = useState<OrderWallet>();
+  // const [client, setClient] = useState<OrderClient>();
+  // const [clientWallet, setClientWallet] = useState<OrderWallet>();
 
   const formSteps: Step[] = useMemo(() => {
     if (!order) {
       return [];
     }
     return [
-      ...(!session
-        ? [
-            {
-              id: "1",
-              title:
-                language === Languages.en
-                  ? "Personal Data"
-                  : language === Languages.ua
-                  ? "Особисті дані"
-                  : "Персональные данные",
-              isActive: currentFormStep === ExchangeFormStep.userData,
-              isDone: currentFormStep > ExchangeFormStep.userData
-            }
-          ]
-        : []),
+      {
+        id: "1",
+        title:
+          language === Languages.en
+            ? "Personal Data"
+            : language === Languages.ua
+            ? "Особисті дані"
+            : "Персональные данные",
+        isActive: currentFormStep === ExchangeFormStep.userData,
+        isDone: currentFormStep > ExchangeFormStep.userData
+      },
       {
         id: "2",
         title:
@@ -110,12 +104,37 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
         isDone: false
       }
     ];
-  }, [currentFormStep, language, order, session]);
+  }, [currentFormStep, language, order]);
 
-  const proceedPersonalDataForm = useCallback((clientData: OrderClient) => {
-    setCurrentFormStep(ExchangeFormStep.userWallet);
-    setClient(clientData);
-  }, []);
+  const proceedPersonalDataForm = useCallback(
+    async (clientData: OrderClient) => {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/orders/set-client-data", {
+          method: "PUT",
+          body: JSON.stringify(clientData),
+          headers: {
+            "order-id": orderId,
+            "Content-Type": "application/json"
+          },
+          signal: controller.signal
+        });
+        console.log(response);
+
+        if (response.status !== 200) {
+          setIsSomethingWentWrong(true);
+          return setIsLoading(false);
+        }
+
+        setCurrentFormStep(ExchangeFormStep.userWallet);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        return setIsSomethingWentWrong(true);
+      }
+    },
+    [controller.signal, orderId]
+  );
 
   const proceedClientWalletForm = useCallback(
     (wallet: string) => {
@@ -123,7 +142,7 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
         return;
       }
       setCurrentFormStep(ExchangeFormStep.payment);
-      setClientWallet({ value: wallet, type: order.initData.currencyToCustomer.id });
+      // setClientWallet({ value: wallet, type: order.initData.currencyToCustomer.id });
     },
     [order]
   );
@@ -152,6 +171,15 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
       const responseData = (await response.json()) as { orderData: IOrder };
       console.log(responseData);
       setOrder(responseData.orderData);
+      if (responseData.orderData.status === OrderStatus.clientPersonalData) {
+        setCurrentFormStep(ExchangeFormStep.userData);
+      } else if (responseData.orderData.status === OrderStatus.clientWallet) {
+        setCurrentFormStep(ExchangeFormStep.userWallet);
+      } else if (responseData.orderData.status === OrderStatus.payment) {
+        setCurrentFormStep(ExchangeFormStep.payment);
+      } else {
+        setCurrentFormStep(ExchangeFormStep.waiting);
+      }
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -212,6 +240,10 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
     };
   }, [controller, fetchOrder]);
 
+  if (order && order.status === OrderStatus.closed) {
+    return <div>order is closed!</div>;
+  }
+
   return (
     <>
       {isDialogOpen && (
@@ -268,7 +300,11 @@ const ExchangeForm: React.FC<IExchangeForm> = ({ orderId }) => {
                 <PersonalDataForm proceed={proceedPersonalDataForm} />
               )}
               {currentFormStep === ExchangeFormStep.userWallet && order && (
-                <UserWalletForm operationType={order.type} proceed={proceedClientWalletForm} />
+                <UserWalletForm
+                  operationType={order.type}
+                  currency={order.initData.currencyToCustomer}
+                  proceed={proceedClientWalletForm}
+                />
               )}
               {currentFormStep === ExchangeFormStep.payment && <div>PAYMENT</div>}
               {currentFormStep === ExchangeFormStep.waiting && <div>WAITING</div>}
